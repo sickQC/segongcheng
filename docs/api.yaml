@@ -1,0 +1,165 @@
+openapi: 3.1.0
+info:
+  title: 软件工程学习辅助系统 · Sprint 0
+  version: 0.1.0
+paths:
+  /health:
+    get:
+      summary: Health
+      operationId: health_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/dev/question:
+    get:
+      summary: Question
+      operationId: question_api_dev_question_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/dev/submissions:
+    post:
+      summary: Submit
+      operationId: submit_api_dev_submissions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Submission'
+        required: true
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/diagnoses:
+    get:
+      summary: List Diagnoses
+      operationId: list_diagnoses_api_diagnoses_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/diagnoses/{diagnosis_id}:
+    get:
+      summary: Get Diagnosis
+      operationId: get_diagnosis_api_diagnoses__diagnosis_id__get
+      parameters:
+      - name: diagnosis_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Diagnosis Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/diagnoses/{diagnosis_id}/retry:
+    post:
+      summary: Retry
+      operationId: retry_api_diagnoses__diagnosis_id__retry_post
+      parameters:
+      - name: diagnosis_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Diagnosis Id
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Submission:
+      properties:
+        answer:
+          type: string
+          maxLength: 4000
+          minLength: 1
+          title: Answer
+        duration_seconds:
+          type: integer
+          maximum: 86400.0
+          minimum: 0.0
+          title: Duration Seconds
+          default: 0
+        mode:
+          type: string
+          enum:
+          - live
+          - demo
+          title: Mode
+          default: live
+      additionalProperties: false
+      type: object
+      required:
+      - answer
+      title: Submission
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
