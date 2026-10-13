@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy import select, text, update
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.api.tutor import router as tutor_router
 from app.core.config import ROOT, Settings
 from app.core.database import database
 from app.models import Diagnosis, LearningEvent, ModelTrace
@@ -50,6 +51,9 @@ def create_app(settings=None):
 
     app = FastAPI(title="软件工程学习辅助系统 · Sprint 0", version="0.1.0", lifespan=lifespan)
     app.state.sessions, app.state.engine = sessions, engine
+    app.state.settings = settings
+    # M7 AI 助教路由；M8 诊断路由保留在本文件，两者共用 model_traces。
+    app.include_router(tutor_router)
 
     @app.get("/health")
     def health():
