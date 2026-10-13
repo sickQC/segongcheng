@@ -10,6 +10,9 @@ dependencies = [
   "fastapi>=0.115,<1", "uvicorn>=0.30,<1", "pydantic>=2.9,<3",
   "pydantic-settings>=2.5,<3", "SQLAlchemy>=2.0.36,<3", "alembic>=1.14,<2",
   "httpx>=0.27,<1", "psycopg[binary]>=3.2,<4",
+  # M7 AI 助教检索层：jieba 分词、BM25 稀疏检索、numpy 稠密向量。
+  # 三者都是纯 CPU 依赖、不需要下载模型，保证新环境按 README 即可离线跑通。
+  "jieba>=0.42,<1", "rank-bm25>=0.2,<1", "numpy>=1.26,<3",
 ]
 
 [project.optional-dependencies]

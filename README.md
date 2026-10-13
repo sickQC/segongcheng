@@ -1,8 +1,8 @@
 # 知序 · 软件工程课程智能学习辅助系统
 
-当前版本为 **Sprint 0 本地演示骨架**：模拟学生提交一道「软件验证与确认」练习，先持久化学习事件，再运行诊断，最后查看结果、证据和 trace。前端 Vue 3 + TypeScript + Vite + Element Plus，后端 Python + FastAPI + Pydantic + SQLAlchemy + Alembic。
+当前版本为 **Sprint 0 骨架 + M7 AI 助教检索增强**：模拟学生提交一道「软件验证与确认」练习，先持久化学习事件，再运行诊断，最后查看结果、证据和 trace；同时可按课程知识库提问，得到带出处的回答。前端 Vue 3 + TypeScript + Vite + Element Plus，后端 Python + FastAPI + Pydantic + SQLAlchemy + Alembic。
 
-默认使用 **SQLite**，无需安装 PostgreSQL、Docker 或配置 MySQL。这样可以优先完成课堂展示。PostgreSQL + pgvector 配置保留在 `deploy/`，下一阶段引入 RAG 时切换。
+默认使用 **SQLite**，无需安装 PostgreSQL、Docker 或配置 MySQL。这样可以优先完成课堂展示。PostgreSQL + pgvector 配置保留在 `deploy/`，向量检索当前由 `backend/app/rag/` 内的本地索引承担。
 
 ## 现在能展示什么
 
@@ -12,8 +12,42 @@
 - **模拟演示模式**：仅使用固定题目及预置答案，显著标注“模拟数据 / 没有调用大模型”；不会产生模型费用，也不能作为真实模型验收证据。
 - Pydantic 校验诊断 JSON；拒绝伪造事件、错误知识点和未导入的课程引用。
 - 原答案独立提交；诊断失败可重试，保留所有调用记录；单进程重启后中断任务会标为失败。
+- **AI 助教（M7）**：按 5 篇课程讲义提问，返回带可核查出处的回答；资料不足时明确拒答；提示注入被拦截、索要测验答案被拒绝；每次问答写入一条 `asked` 学习事件与一条 trace。
 
-**尚未完成**：一次真实模型调用的人工验收、PostgreSQL 实机验证、完整 RAG、登录鉴权、正式题库、追问作答、学生画像、推荐、正式评测。Sprint 0 代码与 mock 测试不能替代真实模型调用验收。
+**尚未完成**：一次真实模型调用的人工验收、PostgreSQL 实机验证、登录鉴权、正式题库、追问作答、学生画像、推荐、正式评测报告。Sprint 0 代码与 mock 测试不能替代真实模型调用验收。
+
+## AI 助教（M7 检索增强）
+
+知识库覆盖 5 个知识域、39 个知识点、49 条先修关系，切分为 100 个片段。检索采用稠密向量 + BM25 双路召回、
+RRF 融合与特征重排；拒答由「实词加权覆盖率」与「关键实词命中」两个条件共同判定。
+策略与取舍见 [RAG 策略文档](docs/rag-strategy.md)，需求细化与可行性结论见
+[M7 需求细化与 RAG 可行性技术报告](docs/M7-需求细化与RAG可行性技术报告.md)，决策记录见
+[ADR 0004](docs/adr/0004-hybrid-retrieval.md) 与 [ADR 0005](docs/adr/0005-abstention-threshold.md)。
+
+```powershell
+# 构建索引（首次可省略：服务启动时会自动构建，耗时 <1 秒）
+.\.venv\Scripts\python.exe .\scripts\build_rag_index.py
+
+# 在开发集上标定拒答阈值，并输出扫描表
+.\.venv\Scripts\python.exe .\scripts\calibrate_rag.py
+
+# 在测试集上报告检索与端到端指标
+.\.venv\Scripts\python.exe .\scripts\eval_rag.py --split test
+```
+
+提问（未配置密钥时用 `mode=demo`，回答由检索证据抽取拼接并带显式标注）：
+
+```powershell
+curl.exe -X POST http://127.0.0.1:8000/api/tutor/ask -H "Content-Type: application/json" `
+  -d '{\"question\":\"圈复杂度是怎么计算的？\",\"mode\":\"demo\"}'
+```
+
+主要接口：`POST /api/tutor/ask`、`GET /api/tutor/ask/stream`（SSE，满足首字符 <5 秒）、
+`GET /api/tutor/kb`、`GET /api/tutor/graph`、`GET /api/tutor/retrieve-debug`、
+`GET /api/traces/{trace_id}`、`GET /api/cost-report`。完整契约见 [docs/api.yaml](docs/api.yaml)。
+
+**知识库缺口**：尚缺《软件测试》章节，问"等价类划分是什么"会被正确拒答。
+补充方式是往 `data/kb/docs/` 放一篇 Markdown、往 `data/kb/meta/` 放对应的知识点 JSON，再重建索引，无需改代码。
 
 ## 本机快速启动
 
@@ -96,7 +130,10 @@ cd backend
 ..\.venv\Scripts\python.exe ..\scripts\export_openapi.py
 ```
 
-自动化测试使用临时数据库和 HTTP mock，不读取真实模型结果、不产生 API 费用。覆盖先入库再调用、缺失密钥、超时、HTTP 错误、非法 JSON、错误证据、诊断重试、模拟标识、请求校验和迁移升降级。实际执行记录见 `docs/sprint/sprint-0.md`。
+自动化测试使用临时数据库和 HTTP mock，不读取真实模型结果、不产生 API 费用。覆盖先入库再调用、缺失密钥、超时、HTTP 错误、非法 JSON、错误证据、诊断重试、模拟标识、请求校验和迁移升降级；M7 部分覆盖检索命中与排序、知识点挂接、提示注入与作弊诱导拦截、资料净化、引用编号校验、问答落库、流式路径与 trace 回放。实际执行记录见 `docs/sprint/sprint-0.md`。
+
+当前共 66 项测试（Sprint 0 基础 26 项，含 0002 迁移往返；M7 检索层 40 项），`ruff check` 无告警。检索层的关键词表、
+分块与拒答参数都可单独配置，因此检索设计的消融实验只需改 `RagConfig` 而不必改代码。
 
 ## 后续切换 PostgreSQL + pgvector
 
@@ -114,16 +151,23 @@ docker compose --env-file .env -f deploy/compose.yaml up -d
 
 ```text
 backend/app/          配置、数据模型、校验、接口、诊断服务与提示词
-backend/alembic/      版本化数据库迁移
-backend/tests/        接口、异常与迁移测试
+backend/app/rag/      M7 检索内核：切分、索引、混合检索、护栏、拒答、trace
+backend/app/agents/   提示词（diagnosis / tutor），与代码分离便于版本化
+backend/app/api/      路由（tutor），诊断路由仍在 main.py
+backend/alembic/      版本化数据库迁移（0001 Sprint 0，0002 M7 trace 扩展）
+backend/tests/        接口、异常、迁移与检索层测试
 frontend/src/         两个页面及接口客户端
 deploy/              PostgreSQL + pgvector 可选环境
-scripts/             Windows 安装、启动、测试及契约导出脚本
-docs/                架构、接口、开发记录和演示说明
-data/                演示数据说明，后续扩展课程数据
+scripts/             Windows 安装/启动/测试、OpenAPI 导出、RAG 索引与评测脚本
+docs/                架构、接口、ADR、追溯矩阵、RAG 策略与可行性报告
+data/kb/             课程讲义与知识点元数据（入版本控制）
+data/index/          索引产物，可重建，不入版本控制
+data/eval/           评测集（56 题）与评测报告
 tests/               集成检查入口说明
 ```
 
 本版没有登录鉴权，所有记录属于固定模拟学生，只监听 127.0.0.1，用于本机开发与课堂展示。不要改成公网部署或录入真实学生数据。后台任务是进程内任务，当前只支持一个后端进程；后续正式部署再加入持久任务队列和用户权限。
+
+助教接口同样不接受客户端传入身份：提问者固定为模拟学生，避免在无鉴权阶段越权写入他人事件。
 
 故障排查：8000 被占用时停止旧的本项目服务或修改启动端口；页面修改后重新 `npm run build` 并重启；模型参数修改后重启；数据库报错先检查迁移和 `DATABASE_URL`。Swagger 文档在 `/docs`（其界面资源可能需要网络），机器可读契约在 `/openapi.json`，导出副本在 `docs/api.yaml`。

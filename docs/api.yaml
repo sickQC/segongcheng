@@ -3,6 +3,221 @@ info:
   title: 软件工程学习辅助系统 · Sprint 0
   version: 0.1.0
 paths:
+  /api/tutor/kb:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Kb Overview
+      description: 知识库规模与文档清单。
+      operationId: kb_overview_api_tutor_kb_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/tutor/knowledge-points:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Knowledge Points
+      operationId: knowledge_points_api_tutor_knowledge_points_get
+      parameters:
+      - name: doc_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 按文档过滤，如 SE-01
+          title: Doc Id
+        description: 按文档过滤，如 SE-01
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 按名称或定义过滤
+          title: Keyword
+        description: 按名称或定义过滤
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/tutor/graph:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Knowledge Graph
+      description: 知识点先修图（M4 可视化与 M9 路径规划的数据源）。
+      operationId: knowledge_graph_api_tutor_graph_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/tutor/retrieve-debug:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Retrieve Debug
+      description: 检索中间结果：稠密/稀疏排名、RRF、覆盖率、可回答性特征。
+      operationId: retrieve_debug_api_tutor_retrieve_debug_get
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          title: Q
+      - name: top_n
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 20
+          minimum: 1
+          default: 6
+          title: Top N
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/tutor/ask:
+    post:
+      tags:
+      - M7 AI 助教
+      summary: Tutor Ask
+      description: 回答学生问题，并把问题、回答、引用与知识点写入 asked 学习事件（M6-2）。
+      operationId: tutor_ask_api_tutor_ask_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TutorAskRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Tutor Ask Api Tutor Ask Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/tutor/ask/stream:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Tutor Ask Stream
+      description: SSE 流式回答，满足 NF-2「首字符 < 5 秒」。结束后落库的事件与 trace 与同步接口一致。
+      operationId: tutor_ask_stream_api_tutor_ask_stream_get
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          title: Q
+      - name: mode
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^(live|demo)$
+          default: live
+          title: Mode
+      - name: top_n
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            maximum: 20
+            minimum: 1
+          - type: 'null'
+          title: Top N
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/traces/{trace_id}:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Trace Detail
+      description: 按 trace ID 回放一次模型调用（NF-14）。
+      operationId: trace_detail_api_traces__trace_id__get
+      parameters:
+      - name: trace_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Trace Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/cost-report:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Cost Report
+      description: 按功能汇总调用次数、token 与耗时（NF-4）。
+      operationId: cost_report_api_cost_report_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
   /health:
     get:
       summary: Health
@@ -137,6 +352,39 @@ components:
       required:
       - answer
       title: Submission
+    TutorAskRequest:
+      properties:
+        question:
+          type: string
+          maxLength: 2000
+          minLength: 1
+          title: Question
+        mode:
+          type: string
+          enum:
+          - live
+          - demo
+          title: Mode
+          default: live
+        top_n:
+          anyOf:
+          - type: integer
+            maximum: 20.0
+            minimum: 1.0
+          - type: 'null'
+          title: Top N
+          description: 进入上下文的片段数
+      additionalProperties: false
+      type: object
+      required:
+      - question
+      title: TutorAskRequest
+      description: 'M7 AI 助教的提问请求。
+
+
+        `mode` 与诊断接口保持同一语义：live 走真实大模型，demo 使用检索证据的演示回答。
+
+        提问者身份由服务端固定（Sprint 0 无登录鉴权），不接受客户端传入，避免越权写入他人事件。'
     ValidationError:
       properties:
         loc:

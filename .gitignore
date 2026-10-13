@@ -18,3 +18,8 @@ dist/
 coverage.xml
 .coverage
 playwright-report/
+.DS_Store
+
+# M7 检索层的构建产物与运行期 trace，可由 scripts/build_rag_index.py 重建
+data/index/
+data/logs/
