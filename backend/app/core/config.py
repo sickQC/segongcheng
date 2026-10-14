@@ -14,3 +14,14 @@ class Settings(BaseSettings):
     llm_model: str = ""
     llm_timeout_seconds: float = Field(default=30, ge=1, le=120)
     enable_demo: bool = True
+
+    enable_dev_routes: bool = False
+    session_hours: int = Field(default=12, ge=1, le=168)
+    cookie_secure: bool = False
+    allowed_origins: list[str] = [
+        "http://127.0.0.1:8000",
+        "http://localhost:8000",
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+    ]
+    seed_password: SecretStr = SecretStr("")

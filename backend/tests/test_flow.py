@@ -17,6 +17,7 @@ from app.services import diagnosis as service
 def app(tmp_path):
     settings = Settings(
         _env_file=None,
+        enable_dev_routes=True,
         database_url=f"sqlite:///{(tmp_path / 'test.db').as_posix()}",
         llm_api_key="",
         llm_model="test-model",
@@ -65,7 +66,7 @@ def valid_response(request):
 
 
 def test_health(client):
-    assert client.get("/health").json() == {"status": "ok", "database": "sqlite", "sprint": 0}
+    assert client.get("/health").json() == {"status": "ok", "database": "sqlite", "sprint": 1}
 
 
 def test_missing_key_retains_submission(client, app, monkeypatch):

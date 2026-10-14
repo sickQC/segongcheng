@@ -1,4 +1,21 @@
-# Sprint 0 需求追溯
+# P1 需求追溯
+
+更新：2026-10-14。以下为已实现账号课程范围；未来功能仍以需求规划和接口草案为目标。
+
+| 需求 | 用户故事 | 模块/接口 | 测试 | 状态 |
+|---|---|---|---|---|
+| M1-1 | US-01 登录 | routes/auth、security、deps；/api/v1/auth/* | test_login_logout_and_no_secret_leak、test_expiry_rotation_and_independent_sessions | 已实现/验证 |
+| M1-2 | US-02 课程结构 | routes/courses、knowledge；课程/章节/知识点接口 | test_teacher_student_full_flow | 已实现/浏览器验证 |
+| M4-1 | US-09 节点信息 | KnowledgePoint、KpCreate、教师编辑与学生目录 | test_invalid_updates_do_not_mutate、完整流程 | 字段基础完成；图谱未做 |
+| NF-6 | 角色/课程权限 | course_access、Teacher、数据库会话、Argon2id | test_course_isolation_and_enrollment、test_origin_csrf_and_validation | 本阶段接口已验证 |
+| NF-7 | 本地秘密配置 | .env、.gitignore、非超级用户应用账号 | Git 忽略检查，响应不含密码哈希测试 | 已配置，CI 扫描待后续 |
+| NF-16 | 迁移及启动 | 0002、seed_data、start/test.ps1 | test_migrations_incremental_preserve_legacy、test_seed_is_idempotent_and_preserves_changes | 本机完成；Docker/CI 后续 |
+
+新增的课程成员接口支持手工加入已存在学生，用于新课程演示；不冒充 M1-3 CSV 批量导入已完成。个人中心 M1-4、M2–M10 完整功能及 E1/E7 尚未完成。
+
+## Sprint 0 保留记录
+
+### 原骨架追溯
 
 | 需求 | 实现 | 验证 | 当前边界 |
 |---|---|---|---|

@@ -1,22 +1,40 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { request } from './api'
-const health = ref('正在连接')
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { loadPublicConfig, logout, session } from './composables/useSession'
+import { errorMessage } from './api/client'
+const router = useRouter()
+const health = ref('正在连接'), leaving = ref(false)
 onMounted(async () => {
-  try { const value = await request<{database: string}>('/health'); health.value = `${value.database.toUpperCase()} · 已连接` }
+  void loadPublicConfig()
+  try { const r = await fetch('/health'); const data = await r.json(); health.value = r.ok ? `${data.database.toUpperCase()} · 已连接` : '数据库待检查' }
   catch { health.value = '后端未连接' }
 })
+async function signOut() {
+  leaving.value = true
+  try { await logout(); await router.push('/login') } catch (e) { ElMessage.error(errorMessage(e)) }
+  finally { leaving.value = false }
+}
 </script>
-
 <template>
-  <div class="app-shell">
+  <RouterView v-if="$route.path === '/login'" />
+  <div v-else class="app-shell">
     <aside class="sidebar">
-      <a class="brand" href="#/"><span class="brand-mark">知</span><span>知序<small>软件工程学习实验室</small></span></a>
-      <div class="nav-label">学习工作台</div>
-      <nav><RouterLink to="/" :class="{active: $route.path === '/'}"><span>01</span> 模拟作答</RouterLink><RouterLink to="/diagnoses" :class="{active: $route.path.startsWith('/diagnoses')}"><span>02</span> 诊断记录</RouterLink></nav>
-      <div class="scope-note"><span class="eyebrow">SPRINT 0</span><h3>从一次作答开始</h3><p>记录学习过程，检查诊断证据，让每一步都有迹可循。</p><div class="scope-chip">本地课堂演示</div></div>
+      <RouterLink class="brand" to="/courses"><span class="brand-mark">知</span><span>知序<small>软件工程学习平台</small></span></RouterLink>
+      <div class="nav-label">{{ session.user?.role === 'teacher' ? '教师工作台' : '学习工作台' }}</div>
+      <nav>
+        <RouterLink to="/courses" :class="{ active: $route.path.includes('courses') }"><span>01</span>我的课程</RouterLink>
+        <RouterLink v-if="session.devEnabled" to="/dev/submit" :class="{ active: $route.path === '/dev/submit' }"><span>02</span>单题诊断演示</RouterLink>
+        <RouterLink v-if="session.devEnabled" to="/diagnoses" :class="{ active: $route.path.startsWith('/diagnoses') }"><span>03</span>演示诊断记录</RouterLink>
+      </nav>
+      <div class="scope-note"><span class="eyebrow">一步一步，建立理解</span><h3>从课程结构开始</h3><p>浏览章节与知识点，让学习目标清晰可见。</p><div class="scope-chip">软件工程课程</div></div>
       <div class="sidebar-footer"><span class="connection-dot"></span>{{ health }}</div>
     </aside>
-    <div class="workspace"><header class="topbar"><span>软件工程课程 <span class="slash">/</span> 验证与确认</span><el-tag type="info" effect="plain">模拟学生 · 001</el-tag></header><main><RouterView /></main><footer class="page-footer">Sprint 0 · 未接入课程检索与正式学情评测 · 仅使用模拟学生数据</footer></div>
+    <div class="workspace">
+      <header class="topbar"><span>知序 <span class="slash">/</span>{{ $route.meta.dev ? '课堂演示' : '课程中心' }}</span><div class="user-actions"><el-tag v-if="session.user" effect="plain">{{ session.user.role === 'teacher' ? '教师' : '学生' }} · {{ session.user.display_name }}</el-tag><el-button v-if="session.user" text :loading="leaving" @click="signOut">退出登录</el-button><RouterLink v-else to="/login">登录</RouterLink></div></header>
+      <main><RouterView :key="$route.path" /></main>
+      <footer class="page-footer">知序 · 软件工程课程智能学习辅助系统</footer>
+    </div>
   </div>
 </template>
