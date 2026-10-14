@@ -1,129 +1,140 @@
 # 知序 · 软件工程课程智能学习辅助系统
 
-当前版本为 **Sprint 0 本地演示骨架**：模拟学生提交一道「软件验证与确认」练习，先持久化学习事件，再运行诊断，最后查看结果、证据和 trace。前端 Vue 3 + TypeScript + Vite + Element Plus，后端 Python + FastAPI + Pydantic + SQLAlchemy + Alembic。
+当前为 **P1 真实业务 + 四类业务页面与接口框架版本**。前端 Vue 3 + TypeScript + Vite + Element Plus，后端 FastAPI + SQLAlchemy + Alembic。已连接本机 PostgreSQL 18；数据库账号与密码仅保存在被 Git 忽略的 `.env`。初版规划的 PostgreSQL 16 不再是本机版本限制。
 
-默认使用 **SQLite**，无需安装 PostgreSQL、Docker 或配置 MySQL。这样可以优先完成课堂展示。PostgreSQL + pgvector 配置保留在 `deploy/`，下一阶段引入 RAG 时切换。
+## 已实现
 
-## 现在能展示什么
+- 学生/教师登录、退出、会话过期，Argon2 密码哈希、HttpOnly Cookie、来源与 CSRF 校验。
+- 我的课程、课程目录；教师创建课程、新建/编辑章节、新建/编辑/删除知识点。
+- 教师按已存在学生用户名添加课程成员；学生仅可浏览本人课程。
+- 知识点包含编号、定义、难度、学习目标，同课程编号唯一。
+- 增量数据库迁移 `0002`，可重复初始化的演示数据，保留旧迁移和原诊断回归。
+- 独立 `/api/v1` 业务接口；旧无鉴权演示由 `ENABLE_DEV_ROUTES` 显式控制。
 
-- 两个页面：模拟作答、诊断记录/详情。
-- 真实写入 `learning_events`，包含 `event_id/actor/verb/object/result/context/timestamp`。
-- **真实调用模式**：请求可配置的 OpenAI 风格 `/chat/completions` 接口；没配置密钥时显示明确失败，绝不自动切换固定结果。
-- **模拟演示模式**：仅使用固定题目及预置答案，显著标注“模拟数据 / 没有调用大模型”；不会产生模型费用，也不能作为真实模型验收证据。
-- Pydantic 校验诊断 JSON；拒绝伪造事件、错误知识点和未导入的课程引用。
-- 原答案独立提交；诊断失败可重试，保留所有调用记录；单进程重启后中断任务会标为失败。
+新增页面：资源学习（答疑/5E 侧栏）、课程测验（四种题型/结果布局）、个人学习报告（诊断/画像/推荐/记录/错题）、教师看板（热力图/学生详情）。它们有类型化请求层和受权限保护的后端占位接口，但业务尚未实现，真实请求明确返回 501。
 
-**尚未完成**：一次真实模型调用的人工验收、PostgreSQL 实机验证、完整 RAG、登录鉴权、正式题库、追问作答、学生画像、推荐、正式评测。Sprint 0 代码与 mock 测试不能替代真实模型调用验收。
+**页面已做不等于业务已做。** 视频/课件存储解析、正式题库测验判分、RAG、多用户诊断、画像推荐、统计、5E 和推荐增强均待实现。资源管理、题库组卷和图谱的前端界面也待开发。未执行真实模型调用。pgvector 在本机尚未安装，本阶段没有向量字段，后续检索阶段补齐。
 
-## 本机快速启动
+## 本机直接运行
 
-环境：Python 3.11+、Node.js 20.14+（本项目锁定 Vite 6）、npm。当前电脑使用 Python 3.12.4、Node 20.14.0。
-
-在 PowerShell 中运行：
+此电脑的数据库、迁移、依赖和前端构建已经准备完成。在项目根目录运行：
 
 ```powershell
-cd D:\develope\segongcheng
-# 首次使用，或重新安装依赖时执行；需要联网。
-powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1
-# 启动前会自动执行数据库迁移；已安装并构建后只需此命令。
 powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1
 ```
 
-浏览器访问 **http://127.0.0.1:8000**。保留启动终端；按 Ctrl+C 停止。构建后的前端由后端直接提供，只需一个服务，无需同时启动两个终端。
+打开 [课程平台](http://127.0.0.1:8000)。如已有本项目服务占用 8000，直接访问或先结束旧服务再启动。脚本会先迁移数据库，但不会重置账号、删除数据或重跑种子。
 
-首次没有 `.env` 也能启动。数据库文件是 `backend/learning.db`，关闭浏览器或重启服务不会丢失已保存的答案。不要把数据库、`.env` 或个人数据提交到 Git。已有原始需求文档保留在根目录。
+演示账号：`teacher`（教师）、`student01` / `student02`（学生）。本机初始密码由根目录 `.env` 中 `SEED_PASSWORD` 配置，初始化后只以 Argon2 哈希存入数据库。修改这个配置不会修改已存在账号的密码。请勿把 PostgreSQL 管理员密码当成平台账号密码。
 
-## 课堂展示（无需 API Key）
+演示顺序：教师登录 → 打开“软件工程基础” → 新建章节和知识点 → 退出 → student01 登录 → 打开同一课程并刷新查看。新建课程默认只有创建教师，需在课程底部“课程成员”加入 student01 后该学生才可见。
 
-1. 进入模拟作答页，选择“模拟演示 · 无模型调用”。预置答案自动填入。
-2. 点击“保存并查看模拟演示”，展示固定模拟诊断、追问、事件 JSON 和 trace。
-3. 返回作答，切换“真实模型调用”，填入示例后提交。
-4. 未配置密钥时，展示“作答已保存 / 诊断未完成 / MISSING_API_KEY”，证明失败不会丢答案。
-5. 打开诊断记录，查看两次提交，刷新浏览器验证持久化。
+## 查看新页面
 
-详细讲解顺序见 [课堂演示说明](docs/classroom-demo.md)。所有掌握度与置信度都是模型暂估值或显式模拟值，不是教师成绩或已验证评测结果。
+登录 → 我的课程 → 打开课程 → 点击“资源学习 / 课程测验 / 学习报告”；教师课程页另有“教师看板”。
 
-## 开发模式
+- 默认“真实接口”：显示业务尚未实现的提示；不会把模拟内容当成真实结果。
+- 手动打开“界面预览（样例）”：可检查资源布局、提问/引用、四题型、结果布局、报告标签页及教师学生详情。
+- 样例不入库、不调用模型、不提交真实作答；“查看结果布局样例”与判分区分。切换模式/页面会清空交互。
+- 真实视频/文档未导入，所以样例显示媒体占位区域。新页面仍需登录，教师看板有角色守卫。
+- 更新代码后先在 frontend 运行 `npm run build`，再重启后端；旧服务不会自动加载新增 Python 路由。
 
-终端一：
+| 页面地址（`/#` 后） | 组件 |
+|---|---|
+| /courses/:id/learn | LearningView.vue |
+| /courses/:id/quiz | QuizView.vue |
+| /courses/:id/report | LearningReportView.vue |
+| /teacher/courses/:id/dashboard | TeacherDashboardView.vue |
 
-```powershell
-cd D:\develope\segongcheng\backend
-..\.venv\Scripts\python.exe -m alembic upgrade head
-..\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
-```
+## 新环境初始化
 
-终端二：
+需要 Python 3.11+、Node.js/npm、本地 PostgreSQL（本机验证版本 18）。依赖固定在两个 lock 文件；不用 Docker 也可运行步骤 1。
 
-```powershell
-cd D:\develope\segongcheng\frontend
-npm run dev
-```
-
-前端开发地址为 http://127.0.0.1:5173，Vite 将 API 请求代理到 8000 端口。前端不保存密钥。普通演示优先使用前面的单服务启动方式。
-
-## 配置真实模型并人工验证
+1. 安装依赖并构建：
 
 ```powershell
-cd D:\develope\segongcheng
-Copy-Item .env.example .env
+powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1
 ```
 
-如果已经有 `.env`，直接编辑，**不要覆盖现有配置**。填写：
+2. 在 PostgreSQL 中创建独立项目角色和数据库（在 SQL Shell 或 pgAdmin 中执行，替换示例密码，不改已有数据库）：
 
-```dotenv
-LLM_API_KEY=在本机填写服务商的密钥
-LLM_BASE_URL=https://服务商的兼容接口地址/v1
-LLM_MODEL=服务商支持的模型名称
-LLM_TIMEOUT_SECONDS=30
+```sql
+CREATE ROLE se_learning_app LOGIN PASSWORD '在本机设置的专用密码' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+CREATE DATABASE se_learning OWNER se_learning_app;
 ```
 
-密钥不用发到聊天里。服务需支持 Chat Completions 及 `response_format: {"type":"json_object"}`；不兼容时会明确返回模型 HTTP 错误，不会静默假装成功。选定服务商后可能需要针对其协议进行适配。
-
-1. 重启后端，选择“真实模型调用”并提交模拟学生答案。请求可能产生该服务商费用。
-2. 检查模式为 `live`，trace 状态为 `succeeded`，结果 JSON 通过校验，证据 ID 与原事件相同，`citations=[]`。
-3. 核查诊断是否符合答案实际内容；结构合法不等于诊断语义已被证明正确。
-4. 记录实际模型、trace ID、耗时，以及服务商真实返回的 token 数；费用未配置计价时不推测。
-5. 人工核查后再在 Sprint 记录中补记真实调用证据。目前不声称真实模型验收已通过。
-
-## 自动化检查
+3. 只有没有 `.env` 时才复制 `.env.example`，设置 DATABASE_URL 和 SEED_PASSWORD（至少 8 位）。连接密码的 URL 特殊字符需要编码。不要覆盖已有本机配置。
+4. 在根目录初始化：
 
 ```powershell
-cd D:\develope\segongcheng
+.\.venv\Scripts\python.exe -m alembic -c backend/alembic.ini upgrade head
+.\.venv\Scripts\python.exe scripts/seed_data.py
+powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1
+```
+
+种子创建一名教师、两名学生、一门课程、两章四个知识点。重复执行不重置密码、不覆盖现有编辑；缺失的内置演示记录会补建。遇到同名非种子账号会报冲突，绝不覆盖。
+
+SQLite 旧库保留在原位置，没有自动复制到 PostgreSQL。切换数据库只改变连接目标；迁移会保留目标数据库已有 Sprint 0 数据。
+
+## 开发与验证
+
+后端（根目录）：
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
+```
+
+前端另开终端在 `frontend` 下运行 `npm run dev`。Vite 代理 `/api` 与 `/health`；受信任来源在 ALLOWED_ORIGINS 配置，增加端口或域名时同步修改。开发者工具不要向控制台打印 `.env` 或数据库连接密码。
+
+```powershell
+# SQLite 回归 + 前端类型检查/构建
 powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1
-cd backend
-..\.venv\Scripts\python.exe -m ruff check app tests alembic
-..\.venv\Scripts\python.exe ..\scripts\export_openapi.py
+# 另加本机 PostgreSQL 测试（独立随机 schema，测试后清理）
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Postgres
+.\.venv\Scripts\python.exe -m ruff check backend/app backend/tests backend/alembic scripts/seed_data.py
+.\.venv\Scripts\python.exe -m alembic -c backend/alembic.ini check
 ```
 
-自动化测试使用临时数据库和 HTTP mock，不读取真实模型结果、不产生 API 费用。覆盖先入库再调用、缺失密钥、超时、HTTP 错误、非法 JSON、错误证据、诊断重试、模拟标识、请求校验和迁移升降级。实际执行记录见 `docs/sprint/sprint-0.md`。
+导出接口（在 backend 目录）：`..\.venv\Scripts\python.exe ..\scripts\export_openapi.py`。
+实际契约：[api.yaml](docs/api.yaml)，浏览器 [Swagger](http://127.0.0.1:8000/docs)，JSON [OpenAPI](http://127.0.0.1:8000/openapi.json)。Swagger UI 依赖外部静态资源；Cookie 写接口还需发送正确 Origin 和 X-CSRF-Token，普通页面已处理。
 
-## 后续切换 PostgreSQL + pgvector
+## 旧课堂演示
 
-当前不要求安装 Docker。准备好 Docker Desktop 后，在根目录 `.env` 设置自己的 `POSTGRES_PASSWORD`：
+本机 `.env` 显式启用了 ENABLE_DEV_ROUTES，可从侧栏打开单题诊断和记录；它使用独立模拟学生数据，尚未接入正式账号，不能当作正式学生记录。其他环境默认关闭，关闭后旧接口返回 404。`ENABLE_DEMO` 仅控制固定模拟答案，不能代替开发路由开关。
 
-```powershell
-docker compose --env-file .env -f deploy/compose.yaml up -d
-```
+原版启动和真实模型配置说明保留在 [Sprint 0 历史说明](docs/sprint/sprint-0-readme.md)。真实模型失败不自动变成模拟成功；当前保留了这套回归逻辑。
 
-将 `DATABASE_URL` 改为 `postgresql+psycopg://se_learning:密码@127.0.0.1:5432/se_learning`，密码中的特殊字符需 URL 编码。然后从 `backend/` 执行 `alembic upgrade head` 并重启服务。pgvector 扩展由初始化 SQL 创建，Sprint 0 不创建向量表或执行检索。
+## 文档与后续
 
-这是在新数据库中建表，**不会自动转移 SQLite 中的旧演示数据**。PostgreSQL 启动及迁移尚需在安装环境后实测。
+- [需求规划](需求规划.md)：完整功能和技术栈。
+- [实施路线](docs/implementation-plan.md)：目录与分步执行。
+- [接口草案](docs/api-design.md)：未来模块设计；P1 已实现部分见实际 OpenAPI。
+- [P1 验证记录](docs/sprint/p1-foundation.md)：本轮验证与边界。
 
-## 目录与边界
+## 交接入口与目录
+
+请接手者优先阅读：
+
+1. [接口交接文档](docs/handoff-api.md)：真实接口、10 个占位接口、字段定义、权限、与旧草案的差异。
+2. [剩余开发清单](docs/handoff-todo.md)：尚未实现的后端业务及前端功能、开发顺序和验证边界。
+3. [完整需求规划](需求规划.md)：老师要求与最终验收目标。
 
 ```text
-backend/app/          配置、数据模型、校验、接口、诊断服务与提示词
-backend/alembic/      版本化数据库迁移
-backend/tests/        接口、异常与迁移测试
-frontend/src/         两个页面及接口客户端
-deploy/              PostgreSQL + pgvector 可选环境
-scripts/             Windows 安装、启动、测试及契约导出脚本
-docs/                架构、接口、开发记录和演示说明
-data/                演示数据说明，后续扩展课程数据
-tests/               集成检查入口说明
+frontend/src/
+  views/                  登录、课程、四类新页面与旧演示
+  components/             WorkspaceHeader、ReportPanels
+  api/client.ts           Cookie / CSRF / 错误处理
+  api/workspace.ts         新页面的真实请求函数
+  api/preview.ts           仅手动预览使用的内存样例
+  types/workspace.ts       前端业务契约
+backend/app/
+  api/routes/workspace.py  新接口占位（501），复用现有权限
+  schemas/workspace.py     请求和未来成功响应的字段模型
+  services/               当前真实 P1 / 旧演示服务；待增加业务服务
+backend/alembic/           现有迁移，本轮无新表
 ```
 
-本版没有登录鉴权，所有记录属于固定模拟学生，只监听 127.0.0.1，用于本机开发与课堂展示。不要改成公网部署或录入真实学生数据。后台任务是进程内任务，当前只支持一个后端进程；后续正式部署再加入持久任务队列和用户权限。
+本轮验证：37 项后端测试、前端类型检查与构建、Ruff。浏览器检查脚本为 `tests/browser-workspace.cjs`（需要 Playwright 和 Edge）。下一步从资源管理、学习事件和知识图谱开始，再接题库测验。不要把前端样例作为数据库种子或正式接口结果。
 
-故障排查：8000 被占用时停止旧的本项目服务或修改启动端口；页面修改后重新 `npm run build` 并重启；模型参数修改后重启；数据库报错先检查迁移和 `DATABASE_URL`。Swagger 文档在 `/docs`（其界面资源可能需要网络），机器可读契约在 `/openapi.json`，导出副本在 `docs/api.yaml`。
+
+浏览器实测通过（Edge）：四页真实模式 501 提示、样例交互、四题型、报告标签页、学生详情、390px 手机无横向溢出、学生教师路由隔离；无 JS 运行错误，预览无业务 POST。

@@ -1,0 +1,1 @@
+<template><el-result icon="info" title="页面不存在" sub-title="请返回课程中心继续浏览"><template #extra><RouterLink to="/courses"><el-button type="primary">返回课程中心</el-button></RouterLink></template></el-result></template>

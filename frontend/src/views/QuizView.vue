@@ -1,0 +1,25 @@
+<script setup lang="ts">
+import { computed, onUnmounted, ref, watch } from 'vue'
+import WorkspaceHeader from '../components/WorkspaceHeader.vue'
+import { useWorkspace } from '../composables/useWorkspace'
+import { workspaceApi } from '../api/workspace'
+import * as sample from '../api/preview'
+import { errorMessage } from '../api/client'
+import type { Quiz, Attempt, QuizResult } from '../types/workspace'
+const { courseId, preview, loading, error, run } = useWorkspace()
+const quizzes = ref<Quiz[]>([]), attempt = ref<Attempt>(), result = ref<QuizResult>(), answers = ref<Record<string, string[]>>({}), busy = ref(false), actionError = ref(''), now = ref(Date.now())
+const timer = setInterval(() => now.value = Date.now(), 1000); onUnmounted(() => clearInterval(timer))
+const seconds = computed(() => attempt.value ? Math.max(0, Math.floor((Date.parse(attempt.value.expires_at) - now.value) / 1000)) : 0)
+const answered = computed(() => Object.values(answers.value).filter(v => v.some(s => s.trim())).length)
+function load() { quizzes.value = []; attempt.value = undefined; result.value = undefined; answers.value = {}; actionError.value = ''; void run(() => preview.value ? Promise.resolve(sample.quizzes) : workspaceApi.quizzes(courseId.value), data => quizzes.value = data) }
+watch(preview, load, { immediate: true })
+async function start(q: Quiz) { busy.value = true; actionError.value = ''; try { attempt.value = preview.value ? { ...sample.attempt, expires_at: new Date(Date.now() + 1200000).toISOString() } : await workspaceApi.start(courseId.value, q.id); answers.value = Object.fromEntries(attempt.value.questions.map(q => [q.id, []])); result.value = undefined } catch (e) { actionError.value = errorMessage(e) } finally { busy.value = false } }
+async function submit() { if (!attempt.value || busy.value) return; if (answered.value < attempt.value.questions.length && seconds.value > 0) { actionError.value = '还有未作答题目，请检查后提交。'; return }; busy.value = true; actionError.value = ''; try { if (preview.value) { actionError.value = '预览模式仅检查表单，不执行判分或保存。真实提交接口尚未实现。'; return }; result.value = await workspaceApi.submit(courseId.value, attempt.value.id, attempt.value.questions.map(q => ({ question_id: q.id, value: answers.value[q.id] ?? [] }))) } catch (e) { actionError.value = errorMessage(e) } finally { busy.value = false } }
+function showResult() { result.value = { score: 75, total: 100, answers: sample.attempt.questions.map((q, i) => ({ question_id: q.id, correct: i !== 1, explanation: '这是结果布局样例，不是对当前作答的评分。真实解析由提交接口返回。' })) } }
+</script>
+<template><WorkspaceHeader :course-id="courseId" title="课程测验" v-model:preview="preview" :loading="loading || busy" :error="error" @reload="load" />
+<section v-loading="loading" class="panel"><el-alert v-if="actionError" :title="actionError" type="warning" :closable="false" />
+<template v-if="!attempt"><el-empty v-if="!quizzes.length" description="暂无已发布测验" /><article v-for="q in quizzes" :key="q.id" class="knowledge-card"><h2>{{ q.title }}</h2><p>{{ q.duration_minutes }} 分钟 · 剩余 {{ q.attempts_remaining }} 次机会</p><el-button type="primary" :loading="busy" :disabled="q.attempts_remaining < 1" @click="start(q)">开始测验</el-button></article></template>
+<template v-else-if="!result"><div class="toolbar"><strong>已答 {{ answered }} / {{ attempt.questions.length }}</strong><el-tag>剩余 {{ Math.floor(seconds / 60) }}:{{ String(seconds % 60).padStart(2, '0') }}</el-tag></div><el-alert v-if="seconds === 0" title="作答时间已结束，请提交已有答案；最终有效性由服务端判定。" :closable="false" /><article v-for="(q, i) in attempt.questions" :key="q.id" class="knowledge-card"><h3>{{ i + 1 }}. {{ q.stem }}</h3><p class="muted">{{ {single:'单选题',multiple:'多选题',boolean:'判断题',fill:'填空题'}[q.type] }} · {{ q.points }} 分</p><el-checkbox-group v-if="q.type === 'multiple'" v-model="answers[q.id]" :disabled="seconds === 0 || busy"><el-checkbox v-for="o in q.options" :key="o" :value="o">{{ o }}</el-checkbox></el-checkbox-group><el-input v-else-if="q.type === 'fill'" :model-value="answers[q.id]?.[0] ?? ''" @update:model-value="answers[q.id] = [$event]" :disabled="seconds === 0 || busy" maxlength="2000" aria-label="填空答案" /><el-radio-group v-else :model-value="answers[q.id]?.[0]" @update:model-value="answers[q.id] = [String($event)]" :disabled="seconds === 0 || busy"><el-radio v-for="o in q.options" :key="o" :value="o">{{ o }}</el-radio></el-radio-group></article><el-button type="primary" :loading="busy" @click="submit">提交答卷</el-button><el-button v-if="preview" @click="showResult">查看结果布局样例</el-button></template>
+<template v-else><h2>{{ preview ? '结果布局样例' : '测验结果' }} · {{ result.score }} / {{ result.total }}</h2><article v-for="a in result.answers" :key="a.question_id" class="knowledge-card"><h3>{{ attempt?.questions.find(q => q.id === a.question_id)?.stem }}</h3><el-tag :type="a.correct ? 'success' : 'danger'">{{ a.correct ? '正确' : '需要巩固' }}</el-tag><p>{{ a.explanation }}</p></article><el-button @click="load">返回测验列表</el-button><RouterLink :to="`/courses/${courseId}/report`"><el-button type="primary">查看学习报告</el-button></RouterLink></template>
+</section></template>
