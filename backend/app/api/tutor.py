@@ -30,7 +30,11 @@ def _settings(request: Request):
 
 
 def _raise(exc: TutorError) -> None:
-    status = 503 if exc.code in ("MISSING_API_KEY", "MISSING_MODEL") else 500
+    status = (
+        403
+        if exc.code == "DEMO_DISABLED"
+        else (503 if exc.code in ("MISSING_API_KEY", "MISSING_MODEL") else 500)
+    )
     detail = {"code": exc.code, "message": exc.message}
     # 失败时事件与 trace 已经写入，把 ID 一并返回，便于前端提示"问题已保存"。
     if exc.event_id:
@@ -92,7 +96,7 @@ def tutor_ask_stream(
     mode: str = Query(default="live", pattern="^(live|demo)$"),
     top_n: int | None = Query(default=None, ge=1, le=20),
 ) -> StreamingResponse:
-    """SSE 流式回答，满足 NF-2「首字符 < 5 秒」。结束后落库的事件与 trace 与同步接口一致。"""
+    """SSE 流式回答；首字符延迟需真实模型实测，不在接口中承诺。"""
     settings = _settings(request)
     sessions = _sessions(request)
 

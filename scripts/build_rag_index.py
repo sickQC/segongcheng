@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """构建 RAG 索引。
 
-    python scripts/build_index.py
-    SE_RAG_EMBED_BACKEND=st python scripts/build_index.py   # 换嵌入后端重建
+    python scripts/build_rag_index.py
+    SE_RAG_EMBED_BACKEND=st python scripts/build_rag_index.py   # 换嵌入后端重建
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
-from app.rag import RagConfig, build_index  # noqa: E402
+from app.rag import RagConfig, build_index
 
 
 def main() -> int:
@@ -41,4 +41,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    # Windows redirected stdout may default to GBK and fail on report symbols.
+    sys.stdout.reconfigure(encoding="utf-8")
     raise SystemExit(main())

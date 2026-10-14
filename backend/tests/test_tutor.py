@@ -24,7 +24,8 @@ from app.rag.retrieve import HybridRetriever, is_supporting
 
 @pytest.fixture(scope="module")
 def rag_config():
-    return RagConfig.from_env()
+    # Unit tests must stay offline even when the developer configured a live provider.
+    return RagConfig()
 
 
 @pytest.fixture(scope="module")
@@ -42,6 +43,7 @@ def app(tmp_path):
         database_url=f"sqlite:///{(tmp_path / 'test.db').as_posix()}",
         llm_api_key="",
         llm_model="test-model",
+        enable_dev_routes=True,
     )
     app = create_app(settings)
     Base.metadata.create_all(app.state.engine)
@@ -309,9 +311,7 @@ def test_stream_records_event_and_trace(client, app):
             select(func.count()).select_from(LearningEvent).where(LearningEvent.verb == "asked")
         )
         assert count == 1
-        trace = session.scalars(
-            select(ModelTrace).where(ModelTrace.feature == "tutor.ask.stream")
-        ).one()
+        trace = session.scalars(select(ModelTrace).where(ModelTrace.feature == "tutor.ask.stream")).one()
         assert trace.event_id is not None
 
 
@@ -350,3 +350,19 @@ def test_eval_set_is_split_deterministically():
     assert len(cases) >= 40
     splits = {case_split(c) for c in cases}
     assert splits == {"dev", "test"}
+
+
+def test_tutor_routes_disabled_in_normal_application(tmp_path):
+    settings = Settings(
+        _env_file=None, database_url=f"sqlite:///{tmp_path / 'normal.db'}", enable_dev_routes=False
+    )
+    application = create_app(settings)
+    with TestClient(application) as client:
+        for path in ["/api/tutor/kb", "/api/tutor/ask/stream?q=test", "/api/traces/test", "/api/cost-report"]:
+            assert client.get(path).status_code == 404
+        assert client.post("/api/tutor/ask", json={"question": "test"}).status_code == 404
+
+
+def test_demo_disabled_is_rejected(client, app):
+    app.state.settings.enable_demo = False
+    assert ask(client, "什么是软件危机？").status_code == 403

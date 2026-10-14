@@ -69,6 +69,8 @@ def reset_cache() -> None:
 
 
 def build_rag(settings, mode: str) -> TutorRAG:
+    if mode == "demo" and not settings.enable_demo:
+        raise TutorError("DEMO_DISABLED", "模拟演示已禁用。")
     cfg = RagConfig.from_settings(settings)
     if mode == "live":
         if not cfg.llm.api_key:

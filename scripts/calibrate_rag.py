@@ -25,9 +25,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
-from app.rag import RagConfig, RagIndex  # noqa: E402
-from app.rag.evalutil import case_split, load_cases  # noqa: E402
-from app.rag.retrieve import HybridRetriever  # noqa: E402
+from app.rag import RagConfig, RagIndex
+from app.rag.evalutil import case_split, load_cases
+from app.rag.retrieve import HybridRetriever
 
 EVAL_PATH = ROOT / "data" / "eval" / "eval_set.jsonl"
 GRID = [round(0.20 + 0.05 * i, 2) for i in range(11)]
@@ -124,4 +124,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    # Windows redirected stdout may default to GBK and fail on report symbols.
+    sys.stdout.reconfigure(encoding="utf-8")
     raise SystemExit(main())

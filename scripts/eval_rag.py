@@ -25,16 +25,15 @@ import json
 import statistics
 import sys
 import time
-from dataclasses import asdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
-from app.rag import RagConfig, RagIndex, TutorRAG  # noqa: E402
-from app.rag.evalutil import case_split, describe, filter_split, load_cases  # noqa: E402
-from app.rag.retrieve import HybridRetriever, is_supporting  # noqa: E402
-from app.rag.textutil import normalize  # noqa: E402
+from app.rag import RagConfig, RagIndex, TutorRAG
+from app.rag.evalutil import case_split, describe, filter_split, load_cases
+from app.rag.retrieve import HybridRetriever, is_supporting
+from app.rag.textutil import normalize
 
 EVAL_PATH = ROOT / "data" / "eval" / "eval_set.jsonl"
 
@@ -277,4 +276,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    # Windows redirected stdout may default to GBK and fail on report symbols.
+    sys.stdout.reconfigure(encoding="utf-8")
     raise SystemExit(main())

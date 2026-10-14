@@ -15,18 +15,23 @@ import sqlalchemy as sa
 
 from alembic import op
 
-revision = "0002"
-down_revision = "0001"
+revision = "0003"
+down_revision = "0002"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
+    # The historical partner branch also used revision 0002, for a different schema.
+    # Refuse to silently stamp/skip tables if that database is supplied here.
+    if not sa.inspect(op.get_bind()).has_table("users"):
+        raise RuntimeError(
+            "This database uses the historical RAG-only 0002 schema. "
+            "Do not stamp it as the foundation revision; migrate it separately or use a new database."
+        )
     with op.batch_alter_table("model_traces") as batch:
         batch.alter_column("diagnosis_id", existing_type=sa.String(36), nullable=True)
-        batch.add_column(
-            sa.Column("feature", sa.String(40), nullable=False, server_default="diagnosis")
-        )
+        batch.add_column(sa.Column("feature", sa.String(40), nullable=False, server_default="diagnosis"))
         batch.add_column(sa.Column("event_id", sa.String(36), nullable=True))
         batch.add_column(sa.Column("details", sa.JSON, nullable=True))
     op.create_index("ix_model_traces_feature", "model_traces", ["feature"])
