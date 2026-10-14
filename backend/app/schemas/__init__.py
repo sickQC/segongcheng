@@ -32,3 +32,17 @@ class DiagnosisOutput(BaseModel):
         elif self.mastery is None or self.problem_type == "insufficient_evidence":
             raise ValueError("supported 输出需要掌握度和明确类型")
         return self
+
+
+class TutorAskRequest(BaseModel):
+    """M7 AI 助教的提问请求。
+
+    `mode` 与诊断接口保持同一语义：live 走真实大模型，demo 使用检索证据的演示回答。
+    提问者身份由服务端固定（Sprint 0 无登录鉴权），不接受客户端传入，避免越权写入他人事件。
+    """
+
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+    question: str = Field(min_length=1, max_length=2000)
+    mode: Literal["live", "demo"] = "live"
+    top_n: int | None = Field(default=None, ge=1, le=20, description="进入上下文的片段数")
+

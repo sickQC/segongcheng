@@ -41,7 +41,13 @@ class Diagnosis(Base):
 class ModelTrace(Base):
     __tablename__ = "model_traces"
     trace_id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
-    diagnosis_id: Mapped[str] = mapped_column(ForeignKey("diagnoses.id"), index=True)
+    diagnosis_id: Mapped[str | None] = mapped_column(ForeignKey("diagnoses.id"), index=True, nullable=True)
+    # Match the existing RAG migration: event identifier, without a foreign key.
+    event_id: Mapped[str | None] = mapped_column(String(36), index=True, nullable=True)
+    feature: Mapped[str] = mapped_column(
+        String(40), default="diagnosis", server_default="diagnosis", index=True
+    )
+    details: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     source: Mapped[str] = mapped_column(String(10))
     model: Mapped[str] = mapped_column(String(200))
     prompt_version: Mapped[str] = mapped_column(String(40), default="diagnosis-v1")

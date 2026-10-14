@@ -1,7 +1,26 @@
 # 数据范围
 
-Sprint 0 仅包含 `backend/app/services/diagnosis.py` 中的一道项目自编演示题和模拟学生身份。
+Sprint 0 包含 `backend/app/services/diagnosis.py` 中的一道项目自编演示题和模拟学生身份。
 固定示例答案刻意交换验证与确认概念；它不是教师题库或真实学生数据。
 模拟诊断在同文件 `demo_output` 中明确标注，仅供课堂演示；不作为正式评测样本或结论。
+
+M7 检索增强新增以下目录：
+
+```text
+data/kb/docs/     课程讲义正文（Markdown），5 篇，覆盖 5 个知识域
+data/kb/meta/     知识点元数据：名称、定义、难度、布鲁姆层级、先修知识点
+data/kb/synonyms.json  领域术语与缩写表，同时注册进 jieba 用户词典
+data/index/       索引构建产物（索引、知识点图谱、统计），可重建，不入版本控制
+data/eval/        评测集（56 题）与评测报告
+data/logs/        运行期 JSONL 明细 trace，不入版本控制
+```
+
+`data/kb/` 的语料按 GitHub 上公开的权威资料（SWEBOK v4.0、ISO/IEC 25010、ISO/IEC/IEEE 29148 等）整理，
+每篇文末列出参考来源，属于课程自编讲义，不是教师提供的原始课件，也不是真实学生数据。
+
+评测集分四类：课程内问题 36 题、超范围问题 8 题、提示注入 6 题、作弊诱导 6 题。
+课程要求 M7 评测集规模为 ≥60 题（课程内 ≥40、超范围 ≥10、注入与作弊 ≥10），当前规模尚未达标。
+评测集按 ID 奇偶确定性划分为开发集与测试集：阈值只在开发集标定，指标在测试集报告。
+
 运行产生的 SQLite 文件及本地配置不进入版本控制。
-后续按规划扩展 kg/、questions/、simulator/、eval/。
+后续按规划扩展 kg/、questions/、simulator/。

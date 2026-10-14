@@ -54,6 +54,10 @@ def create_app(settings=None):
     app.include_router(api)
     if settings.enable_dev_routes:
         app.include_router(create_dev_router(sessions, settings))
+        # Fixed simulated actor and shared local KB: not a course-scoped production API.
+        from app.api.tutor import router as tutor_router
+
+        app.include_router(tutor_router)
 
     @app.get("/health", tags=["System"])
     def health():

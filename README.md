@@ -1,5 +1,6 @@
 # 知序 · 软件工程课程智能学习辅助系统
 
+> 后续整合说明：伙伴的 RAG 演示模块已纳入整合分支，详见 [合并修复与可用性检查](docs/integration-review.md)。正式课程聊天仍为 501 占位；下文“未实现”不代表文件检索内核不存在。
 当前为 **P1 真实业务 + 四类业务页面与接口框架版本**。前端 Vue 3 + TypeScript + Vite + Element Plus，后端 FastAPI + SQLAlchemy + Alembic。已连接本机 PostgreSQL 18；数据库账号与密码仅保存在被 Git 忽略的 `.env`。初版规划的 PostgreSQL 16 不再是本机版本限制。
 
 ## 已实现
