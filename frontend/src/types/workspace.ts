@@ -1,5 +1,12 @@
 export interface Resource { id: string; title: string; type: 'video' | 'doc'; url: string | null; description: string; knowledge_point_ids: string[] }
-export interface Citation { resource_id: string; title: string; page: number | null; seconds: number | null }
+export interface Citation {
+  resource_id: string
+  title: string
+  page: number | null
+  seconds: number | null
+  /** 讲义类来源没有页码/时间点，用小节路径定位 */
+  section?: string | null
+}
 export interface ChatReply { message: string; citations: Citation[]; phase: string | null }
 export interface Question { id: string; type: 'single' | 'multiple' | 'boolean' | 'fill'; stem: string; options: string[]; points: number }
 export interface Quiz { id: string; title: string; duration_minutes: number; attempts_remaining: number }

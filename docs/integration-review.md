@@ -54,3 +54,17 @@
 - 额外修复 Windows 下构建/评测脚本因 GBK 控制台无法输出符号而崩溃的问题。
 
 重现：在项目环境安装 requirements-lock.txt，执行 scripts/test.ps1 -Postgres；离线评测设置 SE_RAG_LLM_PROVIDER=offline、SE_RAG_EMBED_BACKEND=hashing，先运行 scripts/build_rag_index.py，再运行 scripts/eval_rag.py --mode all --split test --out .local/rag-integration-eval.json。运行应用请重启后端，旧进程不会自动注册新增路由。
+
+## 2026-10-14 后续：课程答疑接入 RAG
+
+原整合方案把 `/api/v1/courses/{id}/chat` 留作 501 占位。现按 M7 需求将其接入检索内核：
+
+- `services/tutor.course_chat` 复用同一套检索、护栏与拒答逻辑，改用**登录用户**作为事件 actor，
+  并把 `course_id`、`resource_id` 记入 `LearningEvent.context`，可按课程回溯。
+- 复用请求自身的数据库会话；仅"模型不可用"的失败记录改用独立事务，
+  否则会被错误响应的事务回滚，学生的问题丢失。
+- 事件里保存的是**学生可见的引用结构**（resource_id/title/section），
+  片段 ID 与检索分数保留在 `model_traces.details.retrieved`，供误差分析。
+- 讲义类来源没有页码与视频时间点，引用改由 `section` 定位；前端标签优先显示小节路径。
+- `mode=5e` 仍返回 501：不把普通答疑静默降级冒充 5E 引导。
+- 未配置密钥且 `ENABLE_DEMO=false` 时返回 503 `MISSING_API_KEY`，并保留学生的问题，不写入伪造回答。

@@ -21,8 +21,10 @@ class ResourceOut(BaseModel):
 class CitationOut(BaseModel):
     resource_id: str
     title: str
-    page: int | None = Field(ge=1)
-    seconds: float | None = Field(ge=0)
+    # 讲义类来源没有页码与时间点，两者为 null，改由 section 定位小节。
+    page: int | None = Field(default=None, ge=1)
+    seconds: float | None = Field(default=None, ge=0)
+    section: str | None = None
 
 
 class ChatIn(Input):

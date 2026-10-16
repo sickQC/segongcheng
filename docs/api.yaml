@@ -747,7 +747,13 @@ paths:
     post:
       tags:
       - Workspace · 尚未实现
-      summary: '[占位] 课程答疑或 5E 对话'
+      summary: 课程答疑（M7 检索增强）
+      description: '基于课程知识库回答，并给出可核查的出处。
+
+
+        证据不足时明确拒答；提问注入与作弊诱导由检索层护栏拦截。
+
+        提问者取当前登录用户，写入 asked 学习事件与一条 trace。'
       operationId: chat_api_v1_courses__course_id__chat_post
       parameters:
       - name: course_id
@@ -1874,12 +1880,15 @@ components:
             minimum: 0.0
           - type: 'null'
           title: Seconds
+        section:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Section
       type: object
       required:
       - resource_id
       - title
-      - page
-      - seconds
       title: CitationOut
     CourseCreate:
       properties:

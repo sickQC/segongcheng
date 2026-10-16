@@ -11,7 +11,16 @@
 | NF-7 | 本地秘密配置 | .env、.gitignore、非超级用户应用账号 | Git 忽略检查，响应不含密码哈希测试 | 已配置，CI 扫描待后续 |
 | NF-16 | 迁移及启动 | 0002、seed_data、start/test.ps1 | test_migrations_incremental_preserve_legacy、test_seed_is_idempotent_and_preserves_changes | 本机完成；Docker/CI 后续 |
 
+| M7-1 | US-07 回答附出处 | services/tutor.course_chat；POST /api/v1/courses/{id}/chat | test_chat_returns_answer_with_located_citations | 已实现/验证 |
+| M7-2 | US-12 无依据不编造 | retrieve.is_supporting 双闸门、拒答话术 | test_chat_refuses_out_of_scope_question | 已实现/验证 |
+| M7-3 | 拒绝作弊诱导 | guardrails.CHEATING_PATTERNS | test_cheating_is_refused（检索层） | 已实现/验证 |
+| M6-2 | 对话产生事件 | asked 事件含问题、回答、引用、知识点 | test_chat_writes_asked_event_and_trace_for_logged_in_user | 已实现/验证 |
+| NF-10 | 提示注入防护 | 输入正则 + 资料逐行净化 | test_chat_blocks_prompt_injection | 已实现/验证 |
+| NF-14 | 调用可追溯 | model_traces.details（检索过程）+ /api/traces/{id} | test_trace_endpoint_replays_one_call | 已实现/验证 |
+| E1 | 5E 引导 | — | test_five_e_mode_stays_explicit_placeholder | 未实现（明确 501） |
+
 新增的课程成员接口支持手工加入已存在学生，用于新课程演示；不冒充 M1-3 CSV 批量导入已完成。个人中心 M1-4、M2–M10 完整功能及 E1/E7 尚未完成。
+知识库当前覆盖 5 个知识域，缺《软件测试》章节，因此问等价类划分会被正确拒答；补充讲义后重建索引即可，无需改代码。
 
 ## Sprint 0 保留记录
 

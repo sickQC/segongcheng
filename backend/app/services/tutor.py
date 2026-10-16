@@ -26,6 +26,8 @@ logger = logging.getLogger(__name__)
 
 FEATURE = "tutor.ask"
 FEATURE_STREAM = "tutor.ask.stream"
+# 课程级答疑（/api/v1/courses/{id}/chat），与 dev 路由共用同一套检索内核。
+FEATURE_COURSE = "tutor.course_chat"
 
 # 每 100 万 token 的参考价（美元）。仅用于成本报表的估算；表里没有的模型返回 null，
 # 不做线性外推，避免出现看似精确的虚构费用。
@@ -250,8 +252,8 @@ def _status_of_stream(guardrail: dict, abstained: bool, mode: str) -> tuple[str,
     return ("demo" if mode == "demo" else "succeeded"), None
 
 
-def _persist(
-    sessions,
+def _write_records(
+    session,
     *,
     actor: str,
     feature: str,
@@ -270,63 +272,209 @@ def _persist(
     usage: dict | None,
     input_summary: dict,
     details: dict,
+    course_id: str | None = None,
+    resource_id: str | None = None,
 ) -> dict:
-    """在**一个**事务中写入 asked 学习事件（M6-2）与模型调用记录（NF-14）。"""
-    with sessions.begin() as session:
-        event = LearningEvent(
-            actor=actor,
-            verb="asked",
-            object={"type": "question", "id": None, "kp": kp_ids, "source": mode},
-            result={
-                "question": question,
-                "answer": answer,
-                "citations": citations,
-                "abstained": abstained,
-                "guardrail": guardrail,
-                "citation_report": citation_report,
-            },
-            context={
-                "course": "SE",
-                "feature": feature,
-                "mode": mode,
-                "synthetic": mode == "demo",
-            },
-        )
-        session.add(event)
-        session.flush()
+    """在当前会话中写入 asked 学习事件（M6-2）与模型调用记录（NF-14）。
 
-        trace = ModelTrace(
-            diagnosis_id=None,
-            event_id=event.event_id,
-            feature=feature,
-            source=mode,
-            model=model_name,
-            prompt_version=PROMPT_VERSION,
-            status=status,
-            input_summary=input_summary,
-            details=details,
-            latency_ms=latency_ms,
-            usage=usage,
-            error_code=error_code,
-        )
-        session.add(trace)
-        session.flush()
+    不在此处提交：由调用方决定事务边界。dev 路由自己开一个写事务，
+    课程级接口复用请求会话，避免同一请求内开启两个 SQLite 写事务。
+    """
+    context = {
+        "course": course_id or "SE",
+        "feature": feature,
+        "mode": mode,
+        "synthetic": mode == "demo",
+    }
+    if course_id:
+        context["course_id"] = course_id
+    if resource_id:
+        context["resource_id"] = resource_id
 
-        return {
-            "event_id": event.event_id,
-            "trace_id": trace.trace_id,
-            "feature": feature,
-            "status": status,
-            "mode": mode,
+    event = LearningEvent(
+        actor=actor,
+        verb="asked",
+        object={"type": "question", "id": None, "kp": kp_ids, "source": mode},
+        result={
+            "question": question,
             "answer": answer,
-            "abstained": abstained,
             "citations": citations,
+            "abstained": abstained,
             "guardrail": guardrail,
             "citation_report": citation_report,
-            "knowledge_point_ids": kp_ids,
-            "latency_ms": latency_ms,
-            "usage": usage,
+        },
+        context=context,
+    )
+    session.add(event)
+    session.flush()
+
+    trace = ModelTrace(
+        diagnosis_id=None,
+        event_id=event.event_id,
+        feature=feature,
+        source=mode,
+        model=model_name,
+        prompt_version=PROMPT_VERSION,
+        status=status,
+        input_summary=input_summary,
+        details=details,
+        latency_ms=latency_ms,
+        usage=usage,
+        error_code=error_code,
+    )
+    session.add(trace)
+    session.flush()
+
+    return {
+        "event_id": event.event_id,
+        "trace_id": trace.trace_id,
+        "feature": feature,
+        "status": status,
+        "mode": mode,
+        "answer": answer,
+        "abstained": abstained,
+        "citations": citations,
+        "guardrail": guardrail,
+        "citation_report": citation_report,
+        "knowledge_point_ids": kp_ids,
+        "latency_ms": latency_ms,
+        "usage": usage,
+    }
+
+
+def _persist(sessions, **kwargs) -> dict:
+    """dev 路由用：自己开一个写事务。"""
+    with sessions.begin() as session:
+        return _write_records(session, **kwargs)
+
+
+def presented_citations(citations) -> list[dict]:
+    """把检索引用映射成接口与学生可见的结构。
+
+    讲义类来源没有页码与视频时间点，改用小节路径定位；片段的精确 ID 与分数
+    保存在 trace.details.retrieved 中，供误差分析使用。
+    """
+    return [
+        {
+            "resource_id": c.doc_id,
+            "title": c.doc_title,
+            "page": None,
+            "seconds": None,
+            "section": c.section,
         }
+        for c in citations
+    ]
+
+
+def resolve_mode(settings) -> str:
+    """决定本次问答走真实模型还是检索演示。
+
+    配置了密钥与模型 -> live（真实调用）；否则在允许演示时退回 demo
+    （证据抽取式，输出带显式标注）；两者都不成立时抛明确错误，绝不静默伪造回答。
+    """
+    if settings.llm_api_key.get_secret_value().strip() and settings.llm_model.strip():
+        return "live"
+    if settings.enable_demo:
+        return "demo"
+    raise TutorError("MISSING_API_KEY", "尚未配置 LLM_API_KEY 与 LLM_MODEL，且演示模式已关闭。")
+
+
+def course_chat(
+    db,
+    sessions,
+    settings,
+    *,
+    course_id: str,
+    actor: str,
+    message: str,
+    resource_id: str | None = None,
+) -> dict:
+    """课程级答疑（M7）：复用检索内核，把问答写入 asked 事件与 trace。
+
+    与 dev 路由的区别：actor 取登录用户、复用请求会话、
+    并把 course_id 与 resource_id 记入事件，便于按课程回溯。
+    """
+    started = time.perf_counter()
+    try:
+        mode = resolve_mode(settings)
+        rag = build_rag(settings, mode)
+    except TutorError as exc:
+        # 与诊断接口一致：模型不可用也要留下记录，不丢学生的问题。
+        # 必须用**独立事务**：这个异常最终会变成 HTTP 错误响应，
+        # 请求自己的事务会被回滚，写在里面等于没写。
+        with sessions.begin() as failure_session:
+            _write_records(
+                failure_session,
+                actor=actor,
+                feature=FEATURE_COURSE,
+                question=message,
+                mode="unavailable",
+                answer="",
+                citations=[],
+                abstained=False,
+                guardrail={"action": "allow", "reasons": [], "message": ""},
+                citation_report={},
+                kp_ids=[],
+                status="failed",
+                error_code=exc.code,
+                model_name=settings.llm_model or "unconfigured",
+                latency_ms=round((time.perf_counter() - started) * 1000),
+                usage=None,
+                input_summary={"question_length": len(message), "retrieval_count": 0},
+                details={"error": exc.message},
+                course_id=course_id,
+                resource_id=resource_id,
+            )
+        raise
+
+    try:
+        result = rag.answer(message)
+    except Exception:  # noqa: BLE001 —— 不把第三方异常正文写入响应
+        logger.exception("course chat failed")
+        raise TutorError("INTERNAL_TUTOR_ERROR", "助教处理异常，请凭日志排查。") from None
+
+    latency_ms = round((time.perf_counter() - started) * 1000)
+    status, error_code = _status_of(result, mode)
+    usage = {
+        k: result.llm[k]
+        for k in ("prompt_tokens", "completion_tokens")
+        if isinstance(result.llm.get(k), int)
+    }
+    usage["total_tokens"] = usage.get("prompt_tokens", 0) + usage.get("completion_tokens", 0)
+
+    records = _write_records(
+        db,
+        actor=actor,
+        feature=FEATURE_COURSE,
+        question=message,
+        mode=mode,
+        answer=result.answer,
+        citations=presented_citations(result.citations),
+        abstained=result.abstained,
+        guardrail=result.guardrail,
+        citation_report=result.citation_report,
+        kp_ids=result.kp_ids,
+        status=status,
+        error_code=error_code,
+        model_name=result.llm.get("model") or settings.llm_model or "unconfigured",
+        latency_ms=latency_ms,
+        usage=usage,
+        input_summary={
+            "question_length": len(message),
+            "retrieval_count": len(result.retrieved),
+            "guardrail_action": result.guardrail.get("action", "allow"),
+            "resource_id": resource_id,
+        },
+        details={
+            "rag_trace_id": result.trace_id,
+            "retrieved": result.retrieved,
+            "citation_report": result.citation_report,
+            "removed_instruction_lines": result.removed_instruction_lines,
+        },
+        course_id=course_id,
+        resource_id=resource_id,
+    )
+    return records
 
 
 def kb_overview(settings) -> dict:

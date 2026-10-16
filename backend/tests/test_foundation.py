@@ -303,13 +303,28 @@ def test_workspace_contracts_do_not_fake_success(foundation):
         assert r.status_code == 501
         assert r.json()["detail"]["code"] == "NOT_IMPLEMENTED"
     for path, body in [
-        ("/chat", {"resource_id": "r", "message": "question", "mode": "rag"}),
         ("/attempts", {"quiz_id": "q"}),
         ("/attempts/a/submit", {"answers": []}),
         ("/report/followup", {"message": "question"}),
         (f"/students/{sid}/diagnoses", None),
     ]:
         assert c.post(base + path, json=body, headers=h).status_code == 501
+    # /chat 已接入 M7 检索增强：课程答疑返回真实检索结果，5E 仍是明确占位。
+    rag = c.post(
+        base + "/chat",
+        json={"resource_id": "r", "message": "什么是软件危机？", "mode": "rag"},
+        headers=h,
+    )
+    assert rag.status_code == 200
+    assert rag.json()["citations"]
+    assert (
+        c.post(
+            base + "/chat",
+            json={"resource_id": "r", "message": "带我学需求工程", "mode": "5e"},
+            headers=h,
+        ).status_code
+        == 501
+    )
     assert c.post(base + "/attempts", json={"quiz_id": "q"}, headers=ORIGIN).status_code == 403
     assert (
         c.post(

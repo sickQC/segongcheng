@@ -1,11 +1,12 @@
-"""Reserved learning endpoints: validate access/input, then return explicit HTTP 501.
+"""课程级业务接口。
 
-Implement services behind these contracts; never return fixture data from this router.
+/courses/{id}/chat 已接入 M7 检索增强（app/services/tutor.py）；
+其余仍是占位：先校验访问权限与入参，再明确返回 HTTP 501，绝不返回固定样例数据。
 """
 
 from typing import Literal
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from sqlalchemy import select
 
 from app.api.deps import CurrentUser, Db, Teacher, course_access
@@ -16,6 +17,7 @@ from app.schemas.workspace import (
     AttemptOut,
     ChatIn,
     ChatOut,
+    CitationOut,
     DashboardOut,
     FollowupIn,
     JobOut,
@@ -26,6 +28,7 @@ from app.schemas.workspace import (
     StartAttemptIn,
     SubmitIn,
 )
+from app.services import tutor as tutor_service
 
 router = APIRouter(
     prefix="/courses/{course_id}",
@@ -57,10 +60,37 @@ def resources(course_id: str, db: Db, user: CurrentUser):
     pending()
 
 
-@router.post("/chat", response_model=ChatOut, summary="[占位] 课程答疑或 5E 对话")
-def chat(course_id: str, body: ChatIn, db: Db, user: CurrentUser):
+@router.post("/chat", response_model=ChatOut, summary="课程答疑（M7 检索增强）")
+def chat(course_id: str, body: ChatIn, db: Db, user: CurrentUser, request: Request):
+    """基于课程知识库回答，并给出可核查的出处。
+
+    证据不足时明确拒答；提问注入与作弊诱导由检索层护栏拦截。
+    提问者取当前登录用户，写入 asked 学习事件与一条 trace。
+    """
     course_access(db, user, course_id)
-    pending()
+    if body.mode == "5e":
+        # E1 5E 智能体尚未实现。不做静默降级，避免把普通答疑当成 5E 引导交付。
+        fail(501, "NOT_IMPLEMENTED", "5E 引导智能体尚未实现；请使用课程答疑。")
+
+    try:
+        result = tutor_service.course_chat(
+            db,
+            request.app.state.sessions,
+            request.app.state.settings,
+            course_id=course_id,
+            actor=user.username,
+            message=body.message,
+            resource_id=body.resource_id,
+        )
+    except tutor_service.TutorError as exc:
+        status = 503 if exc.code in ("MISSING_API_KEY", "MISSING_MODEL") else 500
+        fail(status, exc.code, exc.message)
+
+    return ChatOut(
+        message=result["answer"],
+        citations=[CitationOut(**citation) for citation in result["citations"]],
+        phase=None,
+    )
 
 
 @router.get("/quizzes", response_model=list[QuizOut], summary="[占位] 可参加测验列表")
