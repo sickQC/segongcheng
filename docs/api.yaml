@@ -687,8 +687,8 @@ paths:
   /api/v1/courses/{course_id}/resources:
     get:
       tags:
-      - Workspace · 尚未实现
-      summary: '[占位] 学习资源列表'
+      - Workspace · 演示与占位
+      summary: 演示讲义列表
       operationId: resources_api_v1_courses__course_id__resources_get
       parameters:
       - name: course_id
@@ -746,8 +746,8 @@ paths:
   /api/v1/courses/{course_id}/chat:
     post:
       tags:
-      - Workspace · 尚未实现
-      summary: '[占位] 课程答疑或 5E 对话'
+      - Workspace · 演示与占位
+      summary: 演示课程个性化答疑；5E 尚未实现
       operationId: chat_api_v1_courses__course_id__chat_post
       parameters:
       - name: course_id
@@ -808,7 +808,7 @@ paths:
   /api/v1/courses/{course_id}/quizzes:
     get:
       tags:
-      - Workspace · 尚未实现
+      - Workspace · 演示与占位
       summary: '[占位] 可参加测验列表'
       operationId: quizzes_api_v1_courses__course_id__quizzes_get
       parameters:
@@ -867,7 +867,7 @@ paths:
   /api/v1/courses/{course_id}/attempts:
     post:
       tags:
-      - Workspace · 尚未实现
+      - Workspace · 演示与占位
       summary: '[占位] 开始测验'
       operationId: start_attempt_api_v1_courses__course_id__attempts_post
       parameters:
@@ -929,7 +929,7 @@ paths:
   /api/v1/courses/{course_id}/attempts/{attempt_id}/submit:
     post:
       tags:
-      - Workspace · 尚未实现
+      - Workspace · 演示与占位
       summary: '[占位] 交卷与判分'
       operationId: submit_api_v1_courses__course_id__attempts__attempt_id__submit_post
       parameters:
@@ -997,8 +997,8 @@ paths:
   /api/v1/courses/{course_id}/report:
     get:
       tags:
-      - Workspace · 尚未实现
-      summary: '[占位] 本人学习报告'
+      - Workspace · 演示与占位
+      summary: 演示学生学习历史；正式报告尚未实现
       operationId: report_api_v1_courses__course_id__report_get
       parameters:
       - name: course_id
@@ -1063,8 +1063,8 @@ paths:
   /api/v1/courses/{course_id}/report/followup:
     post:
       tags:
-      - Workspace · 尚未实现
-      summary: '[占位] 诊断追问'
+      - Workspace · 演示与占位
+      summary: 基于演示学习历史的个性化提问
       operationId: followup_api_v1_courses__course_id__report_followup_post
       parameters:
       - name: course_id
@@ -1125,7 +1125,7 @@ paths:
   /api/v1/courses/{course_id}/dashboard:
     get:
       tags:
-      - Workspace · 尚未实现
+      - Workspace · 演示与占位
       summary: '[占位] 教师学情汇总'
       operationId: dashboard_api_v1_courses__course_id__dashboard_get
       parameters:
@@ -1181,7 +1181,7 @@ paths:
   /api/v1/courses/{course_id}/students/{student_id}/report:
     get:
       tags:
-      - Workspace · 尚未实现
+      - Workspace · 演示与占位
       summary: '[占位] 学生报告'
       operationId: student_report_api_v1_courses__course_id__students__student_id__report_get
       parameters:
@@ -1243,7 +1243,7 @@ paths:
   /api/v1/courses/{course_id}/students/{student_id}/diagnoses:
     post:
       tags:
-      - Workspace · 尚未实现
+      - Workspace · 演示与占位
       summary: '[占位] 手动诊断任务'
       operationId: diagnose_api_v1_courses__course_id__students__student_id__diagnoses_post
       parameters:
@@ -1741,6 +1741,37 @@ components:
       required:
       - title
       title: ChapterCreate
+    ChapterHistoryOut:
+      properties:
+        title:
+          type: string
+          title: Title
+        accuracy:
+          type: number
+          maximum: 100.0
+          minimum: 0.0
+          title: Accuracy
+        high_error:
+          type: boolean
+          title: High Error
+        wrong_questions:
+          items:
+            $ref: '#/components/schemas/WrongQuestionOut'
+          type: array
+          title: Wrong Questions
+        weak_knowledge_points:
+          items:
+            $ref: '#/components/schemas/WeakKnowledgePointOut'
+          type: array
+          title: Weak Knowledge Points
+      type: object
+      required:
+      - title
+      - accuracy
+      - high_error
+      - wrong_questions
+      - weak_knowledge_points
+      title: ChapterHistoryOut
     ChapterOut:
       properties:
         id:
@@ -1848,6 +1879,10 @@ components:
           - type: string
           - type: 'null'
           title: Phase
+        personalization:
+          anyOf:
+          - $ref: '#/components/schemas/PersonalizationOut'
+          - type: 'null'
       type: object
       required:
       - message
@@ -2309,6 +2344,28 @@ components:
       - page
       - page_size
       title: Page[MemberOut]
+    PersonalizationOut:
+      properties:
+        source:
+          type: string
+          const: synthetic
+          title: Source
+        matched_knowledge_points:
+          items:
+            type: string
+          type: array
+          title: Matched Knowledge Points
+        similarity:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Similarity
+      type: object
+      required:
+      - source
+      - matched_knowledge_points
+      - similarity
+      title: PersonalizationOut
     ProfileItem:
       properties:
         label:
@@ -2449,6 +2506,20 @@ components:
       title: RecordItem
     ReportOut:
       properties:
+        history_source:
+          anyOf:
+          - type: string
+            enum:
+            - synthetic
+            - real
+          - type: 'null'
+          title: History Source
+        chapter_history:
+          items:
+            $ref: '#/components/schemas/ChapterHistoryOut'
+          type: array
+          title: Chapter History
+          default: []
         diagnosis:
           items:
             $ref: '#/components/schemas/DiagnosisItem'
@@ -2726,3 +2797,37 @@ components:
       - msg
       - type
       title: ValidationError
+    WeakKnowledgePointOut:
+      properties:
+        name:
+          type: string
+          title: Name
+        learning_gap:
+          type: string
+          title: Learning Gap
+        practice:
+          type: string
+          title: Practice
+      type: object
+      required:
+      - name
+      - learning_gap
+      - practice
+      title: WeakKnowledgePointOut
+    WrongQuestionOut:
+      properties:
+        stem:
+          type: string
+          title: Stem
+        answer:
+          type: string
+          title: Answer
+        knowledge_point:
+          type: string
+          title: Knowledge Point
+      type: object
+      required:
+      - stem
+      - answer
+      - knowledge_point
+      title: WrongQuestionOut

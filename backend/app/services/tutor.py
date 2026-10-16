@@ -105,6 +105,10 @@ def ask(
     mode: str = "live",
     actor: str = "sim-student-001",
     top_n: int | None = None,
+    course_id: str = "SE",
+    feature: str = FEATURE,
+    learner_history: dict | None = None,
+    doc_ids: list[str] | None = None,
 ) -> dict:
     """回答一个学生问题，并把问题、回答、引用与知识点写入学习事件（M6-2）。"""
     started = time.perf_counter()
@@ -117,7 +121,7 @@ def ask(
         persisted = _persist(
             sessions,
             actor=actor,
-            feature=FEATURE,
+            feature=feature,
             question=question,
             mode=mode,
             answer="",
@@ -133,11 +137,12 @@ def ask(
             usage=None,
             input_summary={"question_length": len(question), "top_n": top_n, "retrieval_count": 0},
             details={"error": exc.message},
+            course_id=course_id,
         )
         raise TutorError(exc.code, exc.message, persisted["event_id"], persisted["trace_id"]) from None
 
     try:
-        result = rag.answer(question, top_n=top_n)
+        result = rag.answer(question, top_n=top_n, doc_ids=doc_ids, learner_history=learner_history)
     except Exception:  # noqa: BLE001 —— 不把第三方异常正文写入响应，避免泄露密钥
         logger.exception("tutor ask failed")
         raise TutorError("INTERNAL_TUTOR_ERROR", "助教处理异常，请凭日志排查。") from None
@@ -145,9 +150,7 @@ def ask(
     latency_ms = round((time.perf_counter() - started) * 1000)
     status, error_code = _status_of(result, mode)
     usage = {
-        k: result.llm[k]
-        for k in ("prompt_tokens", "completion_tokens")
-        if isinstance(result.llm.get(k), int)
+        k: result.llm[k] for k in ("prompt_tokens", "completion_tokens") if isinstance(result.llm.get(k), int)
     }
     usage["total_tokens"] = usage.get("prompt_tokens", 0) + usage.get("completion_tokens", 0)
     model_name = result.llm.get("model") or settings.llm_model or "unconfigured"
@@ -160,12 +163,13 @@ def ask(
         "guardrail": result.guardrail,
         "citation_report": result.citation_report,
         "timings_ms": result.timings_ms,
+        "personalization": result.personalization,
     }
 
-    return _persist(
+    persisted = _persist(
         sessions,
         actor=actor,
-        feature=FEATURE,
+        feature=feature,
         question=question,
         mode=mode,
         answer=result.answer,
@@ -190,8 +194,13 @@ def ask(
             "retrieved": result.retrieved,
             "citation_report": result.citation_report,
             "removed_instruction_lines": result.removed_instruction_lines,
+            "personalization": result.personalization,
         },
+        course_id=course_id,
+        profile_source=learner_history.get("source") if learner_history else None,
     )
+    persisted["personalization"] = result.personalization
+    return persisted
 
 
 def record_stream_result(
@@ -270,6 +279,8 @@ def _persist(
     usage: dict | None,
     input_summary: dict,
     details: dict,
+    course_id: str = "SE",
+    profile_source: str | None = None,
 ) -> dict:
     """在**一个**事务中写入 asked 学习事件（M6-2）与模型调用记录（NF-14）。"""
     with sessions.begin() as session:
@@ -286,10 +297,11 @@ def _persist(
                 "citation_report": citation_report,
             },
             context={
-                "course": "SE",
+                "course": course_id,
                 "feature": feature,
                 "mode": mode,
                 "synthetic": mode == "demo",
+                "profile_source": profile_source,
             },
         )
         session.add(event)
@@ -375,9 +387,7 @@ def knowledge_graph(settings) -> dict:
         for k in index.kps
     ]
     edges = [
-        {"source": k.id, "target": pid, "type": "prerequisite"}
-        for k in index.kps
-        for pid in k.prereq_ids
+        {"source": k.id, "target": pid, "type": "prerequisite"} for k in index.kps for pid in k.prereq_ids
     ]
     return {
         "nodes": nodes,

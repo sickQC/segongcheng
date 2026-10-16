@@ -1,12 +1,14 @@
 # 前后端接口交接文档
 
+> 2026-10-16 状态更新：下文保留最初的接口设计。演示课程中，`GET /resources` 已返回内置 Markdown 讲义目录；学生 `POST /chat` 的 `mode=rag` 已接真实模型和按相关性筛选的模拟学习历史；`GET /report?algorithm=baseline` 已返回分章节模拟历史；`POST /report/followup` 已接同一问答服务。这四条仅覆盖预置课程及 `student01`、`student02`，数据来源在响应和页面标为 `synthetic`。`mode=5e`、`algorithm=enhanced`、正式测验、教师看板等仍返回 501。新增字段和演示步骤见 [个性化演示说明](personalized-demo.md)，运行时契约以 `/openapi.json` 为准。
+
 > 后续整合说明：伙伴的 RAG 演示模块已纳入整合分支，详见 [合并修复与可用性检查](integration-review.md)。正式课程聊天仍为 501 占位；下文“未实现”不代表文件检索内核不存在。
 日期：2026-10-14。交付范围：P1 真实业务 + 四类页面及接口框架，未完成课程全功能验收。
 
 ## 1. 先看状态
 
 - **已实现**：登录/会话、课程、章节、知识点、课程成员。实际读写 PostgreSQL。
-- **仅契约与权限骨架**：本文件第 4 节的 10 个新接口。已注册路由、校验参数和课程权限，但合法请求统一返回 HTTP 501 `NOT_IMPLEMENTED`，无业务写入、无模型调用。
+- **仅契约与权限骨架**：第 4 节除上方更新说明中的演示分支外，其余业务仍返回 HTTP 501 `NOT_IMPLEMENTED`。
 - **尚无路由**：上传与解析、题库维护和发布、图谱、行为采集、推荐反馈等。目标设计仍见 `api-design.md`，不能按已上线接口调用。
 - **旧演示**：`/api/dev/*`、`/api/diagnoses*` 由 ENABLE_DEV_ROUTES 开关控制，固定模拟用户，不是正式账号的学习报告。
 
@@ -44,9 +46,9 @@
 
 AuthOut 为 `{user,csrf_token,expires_at,courses}`，user 为 `{id,username,display_name,role}`。Outline 为 `{course,chapters}`，每个 chapter 含 knowledge_points。知识点难度 1–5，bloom_level 为 remember/understand/apply/analyze/evaluate/create。当前没有注册、重置密码、批量导入学生功能。
 
-## 4. 本轮预留接口（全部业务未实现）
+## 4. 原预留接口（部分已有受限演示实现）
 
-公共前缀 `B=/api/v1/courses/{course_id}`。成功结构在第 5 节；目前均为 501。
+公共前缀 `B=/api/v1/courses/{course_id}`。成功结构在第 5 节；实际状态按本文开头的 2026-10-16 更新说明区分。
 
 | 方法与路径 | 请求参数 | 未来成功结构 | 页面 |
 |---|---|---|---|

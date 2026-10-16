@@ -1,4 +1,4 @@
-"""UI handoff contracts. No persistence or model execution is implemented here."""
+"""Course workspace contracts; unimplemented routes still return HTTP 501."""
 
 from typing import Literal
 
@@ -25,6 +25,12 @@ class CitationOut(BaseModel):
     seconds: float | None = Field(ge=0)
 
 
+class PersonalizationOut(BaseModel):
+    source: Literal["synthetic"]
+    matched_knowledge_points: list[str]
+    similarity: float = Field(ge=0, le=1)
+
+
 class ChatIn(Input):
     resource_id: str = Field(min_length=1, max_length=100)
     message: str = Field(min_length=1, max_length=2000)
@@ -39,6 +45,7 @@ class ChatOut(BaseModel):
     message: str
     citations: list[CitationOut]
     phase: str | None
+    personalization: PersonalizationOut | None = None
 
 
 class QuizOut(BaseModel):
@@ -124,7 +131,29 @@ class TimelineItem(BaseModel):
     description: str
 
 
+class WrongQuestionOut(BaseModel):
+    stem: str
+    answer: str
+    knowledge_point: str
+
+
+class WeakKnowledgePointOut(BaseModel):
+    name: str
+    learning_gap: str
+    practice: str
+
+
+class ChapterHistoryOut(BaseModel):
+    title: str
+    accuracy: float = Field(ge=0, le=100)
+    high_error: bool
+    wrong_questions: list[WrongQuestionOut]
+    weak_knowledge_points: list[WeakKnowledgePointOut]
+
+
 class ReportOut(BaseModel):
+    history_source: Literal["synthetic", "real"] | None = None
+    chapter_history: list[ChapterHistoryOut] = []
     diagnosis: list[DiagnosisItem]
     profile: list[ProfileItem]
     recommendations: list[RecommendationItem]

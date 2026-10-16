@@ -8,6 +8,7 @@
 
 import json
 
+import httpx
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import func, select
@@ -17,8 +18,10 @@ from app.core.database import Base
 from app.main import create_app
 from app.models import LearningEvent, ModelTrace
 from app.rag import RagConfig, RagIndex, build_index
+from app.rag.config import LLMConfig
 from app.rag.evalutil import DEFAULT_EVAL_PATH, case_split, load_cases
 from app.rag.guardrails import sanitize_evidence, scan_input, validate_citations
+from app.rag.llm import OpenAICompatLLM
 from app.rag.retrieve import HybridRetriever, is_supporting
 
 
@@ -60,6 +63,26 @@ def client(app):
 
 def ask(client, question, **kwargs):
     return client.post("/api/tutor/ask", json={"question": question, "mode": "demo", **kwargs})
+
+
+def test_deepseek_answer_does_not_use_thinking_and_empty_content_is_failure():
+    captured = []
+
+    def respond(request):
+        captured.append(json.loads(request.content))
+        return httpx.Response(200, json={"choices": [{"message": {"content": ""}}]})
+
+    cfg = LLMConfig(
+        api_key="mock-key", base_url="https://api.deepseek.com/v1", model="deepseek-flash",
+        max_retries=0,
+    )
+    llm = OpenAICompatLLM(cfg)
+    llm._client = httpx.Client(transport=httpx.MockTransport(respond))
+    result = llm.complete("system", "user")
+    llm._client.close()
+    assert captured[0]["thinking"] == {"type": "disabled"}
+    assert result.degraded and not result.text
+    assert "EMPTY_MODEL_RESPONSE" in result.error
 
 
 # ------------------------------------------------------------------ 检索内核

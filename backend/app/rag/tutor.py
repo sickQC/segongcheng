@@ -41,6 +41,51 @@ def _union_kp_ids(hits: list[RetrievedChunk]) -> list[str]:
     return ids
 
 
+PROFILE_MATCH_THRESHOLD = 0.55
+
+
+def _match_learning_history(hits: list[RetrievedChunk], index: RagIndex, history: dict | None) -> dict | None:
+    """Only send a weak point when retrieved course evidence matches its topic."""
+    if not history or history.get("source") != "synthetic":
+        return None
+    matched: list[dict] = []
+    for chapter in history.get("chapters", []):
+        for weak in chapter.get("weak_knowledge_points", []):
+            score = max(
+                (
+                    hit.relevance
+                    for hit in hits
+                    if hit.relevance >= PROFILE_MATCH_THRESHOLD and is_supporting(hit, index.cfg)
+                    and any(
+                        kp is not None and kp.name == weak["rag_topic"]
+                        for kp in (index.kp_by_id(kp_id) for kp_id in hit.chunk.kp_ids)
+                    )
+                ),
+                default=0.0,
+            )
+            if not score:
+                continue
+            wrong = [
+                q for q in chapter.get("wrong_questions", []) if q.get("knowledge_point") == weak["name"]
+            ]
+            matched.append(
+                {
+                    "knowledge_point": weak["name"],
+                    "chapter": chapter["title"],
+                    "accuracy": chapter["accuracy"],
+                    "learning_gap": weak["learning_gap"],
+                    "practice": weak["practice"],
+                    "wrong_question": wrong[0]["stem"] if wrong else None,
+                    "wrong_answer": wrong[0]["answer"] if wrong else None,
+                    "similarity": round(score, 3),
+                }
+            )
+    if not matched:
+        return None
+    matched.sort(key=lambda item: item["similarity"], reverse=True)
+    return {"source": "synthetic", "items": matched[:2], "similarity": matched[0]["similarity"]}
+
+
 @dataclass
 class Citation:
     index: int
@@ -82,6 +127,7 @@ class AnswerResult:
     removed_instruction_lines: list[str] = field(default_factory=list)
     # 本次回答实际引用到的知识点，供 M6 事件与 M8 诊断复用。
     kp_ids: list[str] = field(default_factory=list)
+    personalization: dict | None = None
 
     def to_dict(self) -> dict:
         return {
@@ -96,6 +142,7 @@ class AnswerResult:
             "retrieved": self.retrieved,
             "timings_ms": self.timings_ms,
             "prompt_version": self.prompt_version,
+            "personalization": self.personalization,
         }
 
 
@@ -158,6 +205,7 @@ class TutorRAG:
         timings: dict,
         removed: list[str],
         retrieval_history: list[dict],
+        personalization: dict | None = None,
     ) -> AnswerResult:
         citations = self._make_citations(hits) if not abstained else []
         report = validate_citations(answer, len(hits)).to_dict()
@@ -175,6 +223,7 @@ class TutorRAG:
             config_snapshot=self.cfg.describe(),
             removed_instruction_lines=removed,
             kp_ids=_union_kp_ids(hits) if not abstained else [],
+            personalization=personalization,
         )
         self.tracer.log(
             {
@@ -203,6 +252,7 @@ class TutorRAG:
         top_n: int | None = None,
         doc_ids: list[str] | None = None,
         kp_ids: list[str] | None = None,
+        learner_history: dict | None = None,
     ) -> AnswerResult:
         t_start = time.perf_counter()
         timings: dict[str, float] = {}
@@ -270,19 +320,30 @@ class TutorRAG:
         t = time.perf_counter()
         evidence, removed = self._build_evidence(hits)
         user_prompt = USER_TEMPLATE.format(question=question, evidence=evidence)
+        personalization = _match_learning_history(hits, self.index, learner_history)
+        system_prompt = SYSTEM_PROMPT
+        if personalization:
+            system_prompt += (
+                "\n8. 下方若有模拟学习历史，只把它用于调整讲解重点；它不是课程知识证据，"
+                "不能据此编造事实或认定真实成绩。回答后给出一到两步针对性练习，"
+                "并称其为演示学习记录。"
+            )
+            user_prompt += "\n\n【演示学习记录，仅用于个性化；不可作为知识引用】\n" + "\n".join(
+                f"{item['chapter']}正确率{item['accuracy']}%；薄弱点：{item['knowledge_point']}；"
+                f"常见困难：{item['learning_gap']}；曾错题：{item['wrong_question']}；"
+                f"当时回答：{item['wrong_answer']}；建议练习：{item['practice']}。"
+                for item in personalization["items"]
+            )
         timings["prompt_build"] = (time.perf_counter() - t) * 1000
 
         # 5) 生成
         t = time.perf_counter()
-        llm_res = self.llm.complete(SYSTEM_PROMPT, user_prompt)
+        llm_res = self.llm.complete(system_prompt, user_prompt)
         timings["generate"] = (time.perf_counter() - t) * 1000
 
         answer = llm_res.text
         if llm_res.degraded and not answer:
-            answer = (
-                "⚠️ 大模型调用失败，已降级。请稍后重试或切换到离线模式。\n"
-                f"错误信息：{llm_res.error}"
-            )
+            answer = f"⚠️ 大模型调用失败，已降级。请稍后重试或切换到离线模式。\n错误信息：{llm_res.error}"
 
         # 6) 输出护栏：引用校验（NF-11）
         t = time.perf_counter()
@@ -307,6 +368,7 @@ class TutorRAG:
             timings=timings,
             removed=removed,
             retrieval_history=history,
+            personalization=personalization,
         )
 
     # ------------------------------------------------------------- streaming

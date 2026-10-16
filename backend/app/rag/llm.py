@@ -13,6 +13,7 @@ import re
 import time
 from dataclasses import dataclass
 from typing import Iterator
+from urllib.parse import urlparse
 
 import httpx
 
@@ -92,7 +93,7 @@ class OpenAICompatLLM(BaseLLM):
         self.last_usage: dict = {}
 
     def _payload(self, system: str, user: str, *, stream: bool) -> dict:
-        return {
+        payload = {
             "model": self.cfg.model,
             "messages": [
                 {"role": "system", "content": system},
@@ -102,6 +103,11 @@ class OpenAICompatLLM(BaseLLM):
             "max_tokens": self.cfg.max_tokens,
             "stream": stream,
         }
+        # DeepSeek currently enables thinking by default. A short teaching answer can
+        # otherwise spend the whole token budget on reasoning and return empty content.
+        if urlparse(self.cfg.base_url).hostname == "api.deepseek.com":
+            payload["thinking"] = {"type": "disabled"}
+        return payload
 
     def _headers(self) -> dict:
         return {
@@ -125,6 +131,8 @@ class OpenAICompatLLM(BaseLLM):
                 resp.raise_for_status()
                 data = resp.json()
                 text = (data["choices"][0]["message"].get("content") or "").strip()
+                if not text:
+                    raise ValueError("EMPTY_MODEL_RESPONSE")
                 usage = data.get("usage") or {}
                 pt = int(usage.get("prompt_tokens") or estimate_tokens(system + user))
                 ct = int(usage.get("completion_tokens") or estimate_tokens(text))

@@ -20,7 +20,8 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000';
    const route=suffix==='dashboard'?`/teacher/courses/${cid}/dashboard`:`/courses/${cid}/${suffix}`;
    await page.goto(base+'/#'+route);
    await page.getByRole('heading',{name:title,exact:true}).waitFor();
-   await page.getByText('此业务尚未实现；可手动开启界面预览查看布局。',{exact:true}).waitFor();
+   if(suffix==='learn') await page.getByRole('heading',{name:'全部内置讲义 · AI 问答',exact:true}).waitFor();
+   else await page.getByText('此业务尚未实现；可手动开启界面预览查看布局。',{exact:true}).waitFor();
    await page.locator('.el-switch').click();
    await page.getByText(/界面样例：所有内容仅供预览/).waitFor();
    if(suffix==='learn') {
@@ -44,9 +45,9 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000';
    }
    if(suffix==='report') {
     for(const name of ['学习画像','推荐路径','学习记录','错题本','诊断与证据']) await page.getByRole('tab',{name,exact:true}).click();
-    await page.getByRole('textbox',{name:'诊断追问'}).fill('如何巩固？');
-    await page.getByRole('button',{name:'提交追问',exact:true}).click();
-    await page.getByText('此处展示诊断追问回复。样例模式不更新诊断或画像。',{exact:true}).waitFor();
+    await page.getByRole('textbox',{name:'学习提问'}).fill('如何巩固？');
+    await page.getByRole('button',{name:'发送问题',exact:true}).click();
+    await page.getByText('此处展示提问回复。界面预览不调用模型，也不更新画像。',{exact:true}).waitFor();
    }
    if(suffix==='dashboard') {
     await page.getByRole('button',{name:'样例学生甲',exact:true}).click();
@@ -60,7 +61,8 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000';
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${suffix} mobile overflow`);
    await page.setViewportSize({width:1440,height:1000});
    await page.locator('.el-switch').click();
-   await page.getByText('此业务尚未实现；可手动开启界面预览查看布局。',{exact:true}).waitFor();
+   if(suffix==='learn') await page.getByRole('heading',{name:'全部内置讲义 · AI 问答',exact:true}).waitFor();
+   else await page.getByText('此业务尚未实现；可手动开启界面预览查看布局。',{exact:true}).waitFor();
   }
   assert.deepEqual(writes,[], 'preview must not POST business data');
   await page.getByRole('button',{name:'退出登录',exact:true}).click();
@@ -68,11 +70,15 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000';
   await page.getByPlaceholder('请输入密码').fill(password);
   await page.getByRole('button',{name:'登录 →',exact:true}).click();
   await page.waitForURL('**/#/courses');
+  await page.goto(base+`/#/courses/${cid}/report`);
+  await page.getByText('分章节学习历史',{exact:true}).waitFor();
+  await page.getByText(/模拟学习历史，不是实际测验成绩/).waitFor();
+  await page.getByText('错误率较高',{exact:true}).waitFor();
   await page.goto(base+`/#/teacher/courses/${cid}/dashboard`);
   await page.waitForURL('**/#/courses');
   await page.getByRole('button',{name:'退出登录',exact:true}).click();
   assert.deepEqual(errors,[]);
-  console.log('PASS: four pages, explicit 501, preview interactions, no business writes, mobile overflow, student route guard, no JS errors');
+  console.log('PASS: course KB, synthetic student history, remaining 501 pages, preview interactions, mobile overflow and route guard');
  } catch(e) { await page.screenshot({path:'.local/workspace-error.png',fullPage:true}); throw e; }
  finally { await browser.close(); }
 })().catch(e=>{console.error(e);process.exitCode=1});

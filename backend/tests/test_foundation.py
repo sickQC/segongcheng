@@ -11,7 +11,7 @@ from app.core.config import Settings
 from app.core.database import Base
 from app.core.security import hash_password, token_hash
 from app.main import create_app
-from app.models import Chapter, Course, CourseMember, KnowledgePoint, User, UserSession
+from app.models import Chapter, Course, CourseMember, KnowledgePoint, LearningEvent, User, UserSession
 from app.models.legacy import now
 from app.services.seed import seed_data
 
@@ -298,18 +298,24 @@ def test_workspace_contracts_do_not_fake_success(foundation):
     base = f"/api/v1/courses/{cid}"
     members = c.get(base + "/members").json()["items"]
     sid = next(m["user"]["id"] for m in members if m["role"] == "student")
-    for path in ["/resources", "/quizzes", "/report", "/dashboard", f"/students/{sid}/report"]:
+    assert c.get(base + "/resources").status_code == 200
+    for path in ["/quizzes", "/report", "/dashboard", f"/students/{sid}/report"]:
         r = c.get(base + path)
         assert r.status_code == 501
         assert r.json()["detail"]["code"] == "NOT_IMPLEMENTED"
     for path, body in [
-        ("/chat", {"resource_id": "r", "message": "question", "mode": "rag"}),
         ("/attempts", {"quiz_id": "q"}),
         ("/attempts/a/submit", {"answers": []}),
         ("/report/followup", {"message": "question"}),
         (f"/students/{sid}/diagnoses", None),
     ]:
         assert c.post(base + path, json=body, headers=h).status_code == 501
+    assert (
+        c.post(
+            base + "/chat", json={"resource_id": "r", "message": "question", "mode": "rag"}, headers=h
+        ).status_code
+        == 501
+    )
     assert c.post(base + "/attempts", json={"quiz_id": "q"}, headers=ORIGIN).status_code == 403
     assert (
         c.post(
@@ -322,7 +328,73 @@ def test_workspace_contracts_do_not_fake_success(foundation):
     sign_in(c, "student01")
     assert c.get(base + "/dashboard").status_code == 403
     assert c.get(base + f"/students/{sid}/report").status_code == 403
-    assert c.get(base + "/resources").status_code == 501
+    assert c.get(base + "/resources").status_code == 200
+    assert c.get(base + "/report").json()["history_source"] == "synthetic"
     sign_in(c, "otherteacher")
     assert c.get(base + "/resources").status_code == 403
     assert c.get(base + "/dashboard").status_code == 403
+
+
+def test_synthetic_history_personalizes_only_related_questions(foundation, monkeypatch):
+    from pydantic import SecretStr
+
+    from app.rag.llm import LLMResult
+    from app.services import tutor
+
+    app, c, _ = foundation
+    app.state.settings.llm_api_key = SecretStr("mock-key")
+    app.state.settings.llm_model = "mock-model"
+    prompts = []
+
+    class FakeLLM:
+        def complete(self, system, user):
+            prompts.append((system, user))
+            return LLMResult(text="功能需求描述系统行为 [1]。", model="mock-model", provider="openai")
+
+    monkeypatch.setattr(tutor, "get_llm", lambda _cfg: FakeLLM())
+    sign_in(c, "student01")
+    cid = course_id(c)
+    base = f"/api/v1/courses/{cid}"
+    first_report = c.get(base + "/report").json()
+    assert first_report["history_source"] == "synthetic"
+    assert first_report["chapter_history"][0]["accuracy"] == 48
+    assert first_report["chapter_history"][0]["high_error"] is True
+    assert len(first_report["chapter_history"][0]["wrong_questions"]) == 2
+
+    question = "功能性需求与非功能性需求有什么区别？"
+    first = c.post(
+        base + "/chat",
+        json={"resource_id": "kb:all", "message": question, "mode": "rag"},
+        headers=sign_in(c, "student01"),
+    )
+    assert first.status_code == 200, first.text
+    assert first.json()["personalization"]["source"] == "synthetic"
+    assert "48%" in prompts[-1][1]
+    assert "两者都是系统要实现的功能" in prompts[-1][1]
+
+    sign_in(c, "student02")
+    second_report = c.get(base + "/report").json()
+    assert second_report["chapter_history"][0]["accuracy"] == 72
+    assert second_report["chapter_history"][1]["high_error"] is True
+    second = c.post(
+        base + "/report/followup", json={"message": question}, headers=sign_in(c, "student02")
+    )
+    assert second.status_code == 200, second.text
+    assert second.json()["personalization"] is not None
+    assert "72%" in prompts[-1][1]
+    assert "系统运行要快" in prompts[-1][1]
+    assert "两者都是系统要实现的功能" not in prompts[-1][1]
+
+    unrelated = c.post(
+        base + "/report/followup",
+        json={"message": "软件危机是什么？"}, headers=sign_in(c, "student02"),
+    )
+    assert unrelated.status_code == 200, unrelated.text
+    assert unrelated.json()["personalization"] is None
+    assert "演示学习记录" not in prompts[-1][1]
+
+    with app.state.sessions() as db:
+        asked = db.scalars(select(LearningEvent).where(LearningEvent.verb == "asked")).all()
+        assert len(asked) == 3
+        assert len({event.actor for event in asked}) == 2
+        assert all(event.context["course"] == cid for event in asked)

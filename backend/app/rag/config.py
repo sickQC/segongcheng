@@ -113,6 +113,8 @@ class LLMConfig:
     embedding_model: str = "text-embedding-3-small"
     timeout_s: float = 60.0
     max_retries: int = 2
+    temperature: float = 0.1
+    max_tokens: int = 900
 
 
 @dataclass
@@ -154,6 +156,8 @@ class RagConfig:
         cfg.llm.base_url = settings.llm_base_url
         cfg.llm.model = settings.llm_model or "gpt-4o-mini"
         cfg.llm.timeout_s = float(settings.llm_timeout_seconds)
+        cfg.llm.temperature = cfg.answer.temperature
+        cfg.llm.max_tokens = cfg.answer.max_tokens
         return cfg
 
     @classmethod
