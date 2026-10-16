@@ -298,7 +298,7 @@ def test_workspace_contracts_do_not_fake_success(foundation):
     base = f"/api/v1/courses/{cid}"
     members = c.get(base + "/members").json()["items"]
     sid = next(m["user"]["id"] for m in members if m["role"] == "student")
-    for path in ["/resources", "/quizzes", "/report", "/dashboard", f"/students/{sid}/report"]:
+    for path in ["/quizzes", "/report", "/dashboard", f"/students/{sid}/report"]:
         r = c.get(base + path)
         assert r.status_code == 501
         assert r.json()["detail"]["code"] == "NOT_IMPLEMENTED"
@@ -309,7 +309,12 @@ def test_workspace_contracts_do_not_fake_success(foundation):
         (f"/students/{sid}/diagnoses", None),
     ]:
         assert c.post(base + path, json=body, headers=h).status_code == 501
-    # /chat 已接入 M7 检索增强：课程答疑返回真实检索结果，5E 仍是明确占位。
+    # /resources 与 /chat 已接入 M7 检索增强。
+    res = c.get(base + "/resources")
+    assert res.status_code == 200
+    resource_ids = {item["id"] for item in res.json()}
+    assert resource_ids, "课程资源不能为空，否则前端答疑按钮不可用"
+
     rag = c.post(
         base + "/chat",
         json={"resource_id": "r", "message": "什么是软件危机？", "mode": "rag"},
@@ -317,6 +322,8 @@ def test_workspace_contracts_do_not_fake_success(foundation):
     )
     assert rag.status_code == 200
     assert rag.json()["citations"]
+    # 引用里的 resource_id 必须能在资源列表里找到，点击引用才能切回讲义。
+    assert {x["resource_id"] for x in rag.json()["citations"]} <= resource_ids
     assert (
         c.post(
             base + "/chat",
@@ -337,7 +344,8 @@ def test_workspace_contracts_do_not_fake_success(foundation):
     sign_in(c, "student01")
     assert c.get(base + "/dashboard").status_code == 403
     assert c.get(base + f"/students/{sid}/report").status_code == 403
-    assert c.get(base + "/resources").status_code == 501
+    # 学生本来就应该能看到课程资源；答疑也对学生开放。
+    assert c.get(base + "/resources").status_code == 200
     sign_in(c, "otherteacher")
     assert c.get(base + "/resources").status_code == 403
     assert c.get(base + "/dashboard").status_code == 403

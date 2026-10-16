@@ -54,10 +54,15 @@ def student_access(db, user, course_id, student_id):
         fail(404, "STUDENT_NOT_FOUND", "该课程中不存在此学生")
 
 
-@router.get("/resources", response_model=list[ResourceOut], summary="[占位] 学习资源列表")
-def resources(course_id: str, db: Db, user: CurrentUser):
+@router.get("/resources", response_model=list[ResourceOut], summary="课程资源（知识库讲义）")
+def resources(course_id: str, db: Db, user: CurrentUser, request: Request):
+    """当前课程资源即 `data/kb/docs` 下的讲义。
+
+    返回的 id 与答疑引用里的 resource_id 一致，点击引用可切回对应讲义。
+    视频与课件的存储、解析尚未实现，url 为空。
+    """
     course_access(db, user, course_id)
-    pending()
+    return tutor_service.list_resources(request.app.state.settings)
 
 
 @router.post("/chat", response_model=ChatOut, summary="课程答疑（M7 检索增强）")

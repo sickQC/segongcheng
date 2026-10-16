@@ -12,6 +12,7 @@ from app.core.config import Settings
 from app.core.database import Base
 from app.main import create_app
 from app.models import LearningEvent, ModelTrace
+from app.services import tutor as tutor_service
 from app.services.seed import seed_data
 
 ORIGIN = {"Origin": "http://testserver"}
@@ -198,3 +199,53 @@ def test_chat_validates_input(chat, payload):
     assert response.status_code == 422
     with app.state.sessions() as session:
         assert session.scalars(select(LearningEvent)).all() == []
+
+
+def test_resources_come_from_knowledge_base(chat):
+    """资源列表来自知识库讲义：前端靠它启用答疑按钮，引用点击靠它跳转。"""
+    app, client = chat
+    sign_in(client)
+    response = client.get(f"/api/v1/courses/{course_id(client)}/resources")
+    assert response.status_code == 200
+    items = response.json()
+    assert len(items) >= 5, "至少覆盖 5 篇讲义"
+    for item in items:
+        assert item["type"] == "doc"
+        assert item["url"] is None, "视频/课件存储尚未实现，不应编造预览地址"
+        assert item["title"] and item["description"]
+        assert item["knowledge_point_ids"], "每篇讲义都应挂接知识点"
+
+
+def test_citation_resource_id_matches_resource_list(chat):
+    """引用里的 resource_id 必须能在资源列表里找到，否则点击引用无法跳转。"""
+    app, client = chat
+    headers = sign_in(client)
+    resources = {
+        item["id"] for item in client.get(f"/api/v1/courses/{course_id(client)}/resources").json()
+    }
+    body = ask(client, headers, "圈复杂度是怎么计算的？").json()
+    assert body["citations"]
+    assert {c["resource_id"] for c in body["citations"]} <= resources
+
+
+@pytest.mark.parametrize(
+    "key,model,expected",
+    [
+        ("sk-test", "deepseek-chat", "live"),
+        ("", "deepseek-chat", "demo"),
+        ("sk-test", "", "demo"),
+        ("", "", "demo"),
+    ],
+)
+def test_resolve_mode_picks_live_only_when_fully_configured(tmp_path, key, model, expected):
+    """密钥与模型名都配齐才走真实调用，否则退回带标注的检索演示。"""
+    settings = Settings(_env_file=None, llm_api_key=key, llm_model=model, enable_demo=True)
+    assert tutor_service.resolve_mode(settings) == expected
+
+
+def test_resolve_mode_fails_loudly_without_fallback(tmp_path):
+    """未配置密钥且关闭演示时必须明确报错，不能静默伪造成功。"""
+    settings = Settings(_env_file=None, llm_api_key="", llm_model="", enable_demo=False)
+    with pytest.raises(tutor_service.TutorError) as excinfo:
+        tutor_service.resolve_mode(settings)
+    assert excinfo.value.code == "MISSING_API_KEY"

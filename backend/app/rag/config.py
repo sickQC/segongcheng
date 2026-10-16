@@ -113,6 +113,10 @@ class LLMConfig:
     embedding_model: str = "text-embedding-3-small"
     timeout_s: float = 60.0
     max_retries: int = 2
+    # 生成参数：OpenAI 兼容客户端从自身 cfg 读取，由 RagConfig.__post_init__ 从
+    # AnswerConfig 同步过来，避免两处各写一份默认值。
+    temperature: float = 0.1
+    max_tokens: int = 900
 
 
 @dataclass
@@ -142,6 +146,11 @@ class RagConfig:
     guardrails: GuardrailConfig = field(default_factory=GuardrailConfig)
     llm: LLMConfig = field(default_factory=LLMConfig)
     embedder: EmbedderConfig = field(default_factory=EmbedderConfig)
+
+    def __post_init__(self) -> None:
+        # 生成参数的唯一来源是 AnswerConfig；LLM 客户端从 LLMConfig 读取，这里同步一次。
+        self.llm.temperature = self.answer.temperature
+        self.llm.max_tokens = self.answer.max_tokens
 
     @classmethod
     def from_settings(cls, settings) -> "RagConfig":

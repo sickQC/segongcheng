@@ -29,8 +29,10 @@ FEATURE_STREAM = "tutor.ask.stream"
 # 课程级答疑（/api/v1/courses/{id}/chat），与 dev 路由共用同一套检索内核。
 FEATURE_COURSE = "tutor.course_chat"
 
-# 每 100 万 token 的参考价（美元）。仅用于成本报表的估算；表里没有的模型返回 null，
-# 不做线性外推，避免出现看似精确的虚构费用。
+# 每 100 万 token 的参考价（美元）。仅用于成本报表估算，**不是权威价目**：
+# 服务商调价频繁（例如 DeepSeek 已切换到 V4 系列，deepseek-chat 成为别名），
+# 使用前请核对官方价目并更新本表。表里没有的模型记为 unpriced，不做线性外推，
+# 避免出现看似精确的虚构费用。
 PRICE_PER_MTOK: dict[str, tuple[float, float]] = {
     "gpt-4o-mini": (0.15, 0.60),
     "gpt-4o": (2.50, 10.00),
@@ -441,7 +443,9 @@ def course_chat(
         if isinstance(result.llm.get(k), int)
     }
     usage["total_tokens"] = usage.get("prompt_tokens", 0) + usage.get("completion_tokens", 0)
-
+    # trace.model 记录**配置的**模型名：它是计费与价格表的对应口径。
+    # 服务商可能把别名解析成别的模型（例如 DeepSeek 把 deepseek-chat 解析为 deepseek-flash），
+    # 实际模型名放 details.served_model，保留可追溯性。
     records = _write_records(
         db,
         actor=actor,
@@ -456,7 +460,7 @@ def course_chat(
         kp_ids=result.kp_ids,
         status=status,
         error_code=error_code,
-        model_name=result.llm.get("model") or settings.llm_model or "unconfigured",
+        model_name=(settings.llm_model or "unconfigured") if mode == "live" else "offline-extractive",
         latency_ms=latency_ms,
         usage=usage,
         input_summary={
@@ -467,6 +471,7 @@ def course_chat(
         },
         details={
             "rag_trace_id": result.trace_id,
+            "served_model": result.llm.get("model"),
             "retrieved": result.retrieved,
             "citation_report": result.citation_report,
             "removed_instruction_lines": result.removed_instruction_lines,
@@ -475,6 +480,42 @@ def course_chat(
         resource_id=resource_id,
     )
     return records
+
+
+def list_resources(settings) -> list[dict]:
+    """把知识库讲义映射成课程资源，供前端资源选择与引用跳转使用。
+
+    当前课程资源就是 data/kb/docs 下的讲义；视频/课件的存储与解析尚未实现，
+    因此 url 为空，前端显示"资源尚未生成预览地址"。引用里的 resource_id
+    就是这里的 id，点击引用即可切回对应讲义。
+    """
+    index = load_index(settings)
+    grouped: dict[str, dict] = {}
+    for chunk in index.chunks:
+        item = grouped.setdefault(
+            chunk.doc_id,
+            {"id": chunk.doc_id, "title": chunk.doc_title, "kp_names": []},
+        )
+        for kp_id in chunk.kp_ids:
+            kp = index.kp_by_id(kp_id)
+            if kp is not None and kp.name not in item["kp_names"]:
+                item["kp_names"].append(kp.name)
+
+    resources = []
+    for item in sorted(grouped.values(), key=lambda x: x["id"]):
+        names = item["kp_names"]
+        preview = "、".join(names[:5]) + ("…" if len(names) > 5 else "")
+        resources.append(
+            {
+                "id": item["id"],
+                "title": item["title"],
+                "type": "doc",
+                "url": None,
+                "description": f"课程讲义，覆盖 {len(names)} 个知识点：{preview}",
+                "knowledge_point_ids": names,
+            }
+        )
+    return resources
 
 
 def kb_overview(settings) -> dict:

@@ -7,6 +7,7 @@
 """
 
 import json
+from dataclasses import replace
 
 import pytest
 from fastapi.testclient import TestClient
@@ -366,3 +367,27 @@ def test_tutor_routes_disabled_in_normal_application(tmp_path):
 def test_demo_disabled_is_rejected(client, app):
     app.state.settings.enable_demo = False
     assert ask(client, "什么是软件危机？").status_code == 403
+
+
+def test_openai_provider_builds_payload_without_network():
+    """接入真实模型时最容易踩的坑：生成参数必须真能从配置读到。
+
+    这条路径在未配置密钥时不会被走到（部署默认走离线兜底），
+    因此必须有独立用例覆盖，否则会在真正接入模型时才暴露。
+    """
+    from app.rag.config import RagConfig
+    from app.rag.llm import OpenAICompatLLM
+
+    cfg = RagConfig()
+    assert cfg.llm.temperature == cfg.answer.temperature
+    assert cfg.llm.max_tokens == cfg.answer.max_tokens
+
+    llm = OpenAICompatLLM(replace(cfg.llm, provider="openai", api_key="sk-test", model="deepseek-chat"))
+    payload = llm._payload("系统提示", "用户问题", stream=False)
+    assert payload["model"] == "deepseek-chat"
+    assert payload["temperature"] == cfg.answer.temperature
+    assert payload["max_tokens"] == cfg.answer.max_tokens
+    assert payload["stream"] is False
+    assert [m["role"] for m in payload["messages"]] == ["system", "user"]
+    assert llm._headers()["Authorization"] == "Bearer sk-test"
+    assert llm._payload("s", "u", stream=True)["stream"] is True
