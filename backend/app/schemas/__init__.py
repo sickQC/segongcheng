@@ -13,7 +13,7 @@ class Submission(BaseModel):
 class DiagnosisOutput(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
     status: Literal["supported", "insufficient"]
-    knowledge_point_id: Literal["KP-VAL-01"]
+    knowledge_point_id: str = Field(min_length=1, max_length=100)
     mastery: float | None = Field(ge=0, le=1)
     confidence: float = Field(ge=0, le=1)
     problem_type: Literal["concept_confusion", "no_obvious_issue", "insufficient_evidence"]

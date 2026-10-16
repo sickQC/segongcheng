@@ -4,7 +4,8 @@ import { useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { api, errorMessage } from '../api/client'
 import { session } from '../composables/useSession'
-import { bloomLabels, type Bloom, type Chapter, type KnowledgePoint, type Member, type Outline, type Page } from '../types/foundation'
+import { bloomLabels, type Bloom, type Chapter, type KnowledgePoint, type Member, type Outline, type Page, type PracticeExercise } from '../types/foundation'
+import PracticePanel from '../components/PracticePanel.vue'
 const route = useRoute(), outline = ref<Outline>(), loading = ref(false), error = ref('')
 const editable = computed(() => session.user?.role === 'teacher' && !!route.meta.teacher)
 const courseId = computed(() => String(route.params.id))
@@ -13,6 +14,9 @@ const active = ref<string[]>([]), chapterDialog = ref(false), kpDialog = ref(fal
 const chapterForm = reactive({ id: '', title: '', sort_order: 0 })
 const kpForm = reactive({ id: '', chapter_id: '', code: '', name: '', definition: '', difficulty: 2, bloom_level: 'understand' as Bloom })
 const members = ref<Member[]>([]), memberName = ref(''), memberBusy = ref(false), memberError = ref(''), memberPage = ref(1), memberTotal = ref(0)
+const practices = ref<PracticeExercise[]>([])
+const practiceFor = (kpId: string) => practices.value.find(p => p.knowledge_point_id === kpId)
+async function loadPractices() { practices.value = await api<PracticeExercise[]>(`/courses/${courseId.value}/practices`) }
 let generation = 0
 async function loadMembers() {
   memberError.value = ''
@@ -26,6 +30,7 @@ async function load() {
     const data = await api<Outline>(`/courses/${courseId.value}/outline`)
     if (run !== generation) return
     outline.value = data; active.value = data.chapters.map(c => c.id)
+    await loadPractices()
     if (editable.value) await loadMembers()
   } catch (e) { if (run === generation) error.value = errorMessage(e) }
   finally { if (run === generation) loading.value = false }
@@ -86,7 +91,7 @@ function closeDialog(done: () => void) { if (!saving.value) done() }
           <template #title><div class="chapter-title"><span class="chapter-order">{{ String(chapter.sort_order).padStart(2, '0') }}</span><strong>{{ chapter.title }}</strong><span class="muted">{{ chapter.knowledge_points.length }} 个知识点</span></div></template>
           <div v-if="editable" class="chapter-actions"><el-button size="small" @click="openChapter(chapter)">编辑章节</el-button><el-button size="small" type="primary" plain @click="openKp(chapter)">＋ 添加知识点</el-button></div>
           <el-empty v-if="!chapter.knowledge_points.length" description="本章节暂无知识点" :image-size="60" />
-          <article v-for="kp in chapter.knowledge_points" :key="kp.id" class="knowledge-card"><div class="panel-meta"><span class="eyebrow">{{ kp.code }}</span><div class="tag-row"><el-tag size="small" effect="plain">{{ bloomLabels[kp.bloom_level] }}</el-tag><el-tag size="small" type="info" effect="plain">难度 {{ kp.difficulty }} / 5</el-tag></div></div><h3>{{ kp.name }}</h3><p>{{ kp.definition }}</p><div v-if="editable" class="knowledge-actions"><el-button size="small" text type="primary" @click="openKp(chapter, kp)">编辑</el-button><el-button size="small" text type="danger" @click="removeKp(kp)">删除</el-button></div></article>
+          <article v-for="kp in chapter.knowledge_points" :key="kp.id" class="knowledge-card"><div class="panel-meta"><span class="eyebrow">{{ kp.code }}</span><div class="tag-row"><el-tag size="small" effect="plain">{{ bloomLabels[kp.bloom_level] }}</el-tag><el-tag size="small" type="info" effect="plain">难度 {{ kp.difficulty }} / 5</el-tag></div></div><h3>{{ kp.name }}</h3><p>{{ kp.definition }}</p><PracticePanel :course-id="courseId" :chapter-id="chapter.id" :knowledge-point-id="kp.id" :exercise="practiceFor(kp.id)" :editable="editable" @created="loadPractices" /><div v-if="editable" class="knowledge-actions"><el-button size="small" text type="primary" @click="openKp(chapter, kp)">编辑</el-button><el-button size="small" text type="danger" @click="removeKp(kp)">删除</el-button></div></article>
         </el-collapse-item>
       </el-collapse>
       <section v-if="editable" class="panel member-panel"><div class="section-bar"><h2>课程成员</h2><span class="muted">{{ memberTotal }} 人</span></div><p class="muted">通过已存在的学生用户名加入课程。演示学生：student01、student02。</p><el-alert v-if="memberError" :title="memberError" type="error" :closable="false" class="alert-space" /><el-form inline @submit.prevent="addMember"><el-form-item label="学生用户名"><el-input v-model="memberName" placeholder="例如 student01" maxlength="100" /></el-form-item><el-form-item><el-button native-type="submit" type="primary" :loading="memberBusy">加入课程</el-button></el-form-item></el-form><el-table :data="members"><el-table-column prop="user.display_name" label="显示名称" /><el-table-column prop="user.username" label="用户名" /><el-table-column label="身份"><template #default="scope">{{ scope.row.role === 'teacher' ? '教师' : '学生' }}</template></el-table-column></el-table><el-pagination v-if="memberTotal > 20" v-model:current-page="memberPage" :page-size="20" :total="memberTotal" layout="prev, pager, next" @current-change="loadMembers" /></section>

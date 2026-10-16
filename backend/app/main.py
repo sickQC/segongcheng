@@ -3,10 +3,10 @@ from contextlib import asynccontextmanager
 from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy import select, text, update
+from sqlalchemy import inspect, select, text, update
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.api.routes import auth, courses, knowledge, workspace
+from app.api.routes import auth, courses, knowledge, practice, workspace
 from app.api.routes.dev import create_dev_router
 from app.core.config import ROOT, Settings
 from app.core.database import database
@@ -22,7 +22,7 @@ def create_app(settings=None):
     @asynccontextmanager
     async def lifespan(_):
         # Single-worker development tasks cannot survive a process restart.
-        if settings.enable_dev_routes:
+        if inspect(engine).has_table("diagnoses"):
             with sessions.begin() as session:
                 session.execute(
                     update(Diagnosis)
@@ -50,6 +50,7 @@ def create_app(settings=None):
     api.include_router(auth.router)
     api.include_router(courses.router)
     api.include_router(knowledge.router)
+    api.include_router(practice.router)
     api.include_router(workspace.router)
     app.include_router(api)
     if settings.enable_dev_routes:

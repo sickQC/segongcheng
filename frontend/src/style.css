@@ -35,4 +35,15 @@
 .timeline-space { margin-top:24px; }
 .knowledge-card .el-radio-group,.knowledge-card .el-checkbox-group { display:flex; flex-direction:column; align-items:flex-start; gap:8px; }
 .knowledge-card .el-radio,.knowledge-card .el-checkbox { white-space:normal; height:auto; min-height:32px; }
+.practice-box { margin:18px 0; padding:16px; border:1px solid #dce8df; border-radius:10px; background:#f8fbf8; }
+.practice-entry { display:flex; align-items:center; justify-content:space-between; gap:14px; }
+.practice-entry p { margin:4px 0 0; color:#5f7567; white-space:pre-wrap; }
+.practice-content { margin-top:16px; border-top:1px solid #e1eae3; padding-top:16px; }
+.practice-content>.el-button { margin-top:12px; }
+.practice-actions { display:flex; gap:10px; align-items:center; margin:12px 0; }
+.practice-result { background:white; border:1px solid #e1eae3; border-radius:8px; padding:14px; margin-top:12px; }
+.practice-result p { margin:8px 0; overflow-wrap:anywhere; }
+.practice-result-head,.practice-stats { display:flex; justify-content:space-between; gap:12px; align-items:center; }
+.practice-stats { justify-content:flex-start; margin-bottom:10px; }
+.practice-table { margin-top:12px; }
 @media(max-width:850px) { .learning-grid { grid-template-columns:1fr; } .metric-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .toolbar { flex-wrap:wrap; gap:10px; } .work-nav { gap:8px; } }

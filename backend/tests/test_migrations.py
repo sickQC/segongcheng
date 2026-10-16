@@ -12,7 +12,9 @@ def test_migration_upgrade_downgrade(tmp_path, monkeypatch):
     config = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
     command.upgrade(config, "head")
     engine = create_engine(url)
-    assert {"learning_events", "diagnoses", "model_traces"} <= set(inspect(engine).get_table_names())
+    assert {
+        "learning_events", "diagnoses", "model_traces", "practice_exercises", "practice_submissions"
+    } <= set(inspect(engine).get_table_names())
     command.downgrade(config, "base")
     assert "learning_events" not in inspect(engine).get_table_names()
     engine.dispose()
@@ -72,7 +74,7 @@ def test_foundation_0002_upgrades_without_losing_accounts(tmp_path, monkeypatch)
     command.upgrade(config, "head")
     with engine.connect() as conn:
         assert conn.execute(text("SELECT username FROM users WHERE id='preserved'")).scalar() == "preserved"
-        assert conn.execute(text("SELECT version_num FROM alembic_version")).scalar() == "0003"
+        assert conn.execute(text("SELECT version_num FROM alembic_version")).scalar() == "0004"
     engine.dispose()
 
 

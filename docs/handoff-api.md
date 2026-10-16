@@ -1,5 +1,7 @@
 # 前后端接口交接文档
 
+> 2026-10-16 新增：第 3.1 节的课程小练习接口已真实实现，使用迁移 `0004`。它与下文正式测验、看板等 501 占位接口相互独立。
+
 > 2026-10-16 状态更新：下文保留最初的接口设计。演示课程中，`GET /resources` 已返回内置 Markdown 讲义目录；学生 `POST /chat` 的 `mode=rag` 已接真实模型和按相关性筛选的模拟学习历史；`GET /report?algorithm=baseline` 已返回分章节模拟历史；`POST /report/followup` 已接同一问答服务。这四条仅覆盖预置课程及 `student01`、`student02`，数据来源在响应和页面标为 `synthetic`。`mode=5e`、`algorithm=enhanced`、正式测验、教师看板等仍返回 501。新增字段和演示步骤见 [个性化演示说明](personalized-demo.md)，运行时契约以 `/openapi.json` 为准。
 
 > 后续整合说明：伙伴的 RAG 演示模块已纳入整合分支，详见 [合并修复与可用性检查](integration-review.md)。正式课程聊天仍为 501 占位；下文“未实现”不代表文件检索内核不存在。
@@ -12,7 +14,7 @@
 - **尚无路由**：上传与解析、题库维护和发布、图谱、行为采集、推荐反馈等。目标设计仍见 `api-design.md`，不能按已上线接口调用。
 - **旧演示**：`/api/dev/*`、`/api/diagnoses*` 由 ENABLE_DEV_ROUTES 开关控制，固定模拟用户，不是正式账号的学习报告。
 
-实际机器可读契约见 [api.yaml](api.yaml)，运行后见 `/docs` 或 `/openapi.json`。OpenAPI 中新接口声明的 200/201/202 是未来成功结构，**现在只返回鉴权/参数错误或 501**。前端预览不会访问这些新接口，也不会回退成假成功。
+实际机器可读契约见 [api.yaml](api.yaml)，运行后见 `/docs` 或 `/openapi.json`。第 3.1 节小练习接口已真实可用；第 4 节仍为 501 的占位接口虽在 OpenAPI 中声明未来成功结构，现在只返回鉴权/参数错误或 501（文首已说明的受限演示分支除外）。前端预览不会访问这些占位接口，也不会回退成假成功。
 
 ## 2. 通用约定
 
@@ -45,6 +47,21 @@
 | POST | /courses/{course_id}/members | username | 201 MemberOut；课程教师；学生账号须已存在 |
 
 AuthOut 为 `{user,csrf_token,expires_at,courses}`，user 为 `{id,username,display_name,role}`。Outline 为 `{course,chapters}`，每个 chapter 含 knowledge_points。知识点难度 1–5，bloom_level 为 remember/understand/apply/analyze/evaluate/create。当前没有注册、重置密码、批量导入学生功能。
+
+### 3.1 课程内小练习（已实现）
+
+所有路径均相对 `/api/v1`，需课程成员会话；写请求遵循 Origin + CSRF。`PracticeOut={id,course_id,chapter_id,knowledge_point_id,question_text,created_at}`。当前每个知识点限一道题，教师创建后不可编辑/删除。
+
+| 方法 | 路径 | 请求 / 响应 | 权限 |
+|---|---|---|---|
+| POST | `/courses/{course_id}/chapters/{chapter_id}/practices` | `{knowledge_point_id,question_text}` → 201 PracticeOut | 本课程教师；知识点须属于本章节 |
+| GET | `/courses/{course_id}/practices` | → 200 PracticeOut[] | 本课程成员 |
+| POST | `/courses/{course_id}/practices/{exercise_id}/submissions` | `{answer}` → 202 SubmissionOut | 本课程学生；先持久化再触发真实诊断 |
+| GET | `/courses/{course_id}/practices/{exercise_id}/submissions/me` | → 200 SubmissionOut[]，最近提交在前 | 本课程学生，仅本人 |
+| POST | `/courses/{course_id}/practices/{exercise_id}/submissions/{submission_id}/retry` | → 202 SubmissionOut | 作答本人或本课程教师；仅失败可重试 |
+| GET | `/courses/{course_id}/practices/{exercise_id}/progress` | → 200 PracticeProgress | 本课程教师 |
+
+`SubmissionOut` 包含 `id,exercise_id,course_id,student_id,original_answer,event_id,diagnosis_id,created_at,status,diagnosis,error_message,needs_attention`。诊断 `status` 为 `pending/supported/insufficient/failed`；完成后 `diagnosis` 含 `problem_description,recommendation,followup_question,mastery` 等现有单题诊断字段。学生页面轮询本人记录；请求失败不会删除原答案。`PracticeProgress` 含 `student_count,submitted_count,attention_count,students[]`，每名课程学生有最近一次提交或 `null`，未提交不算需关注。需关注条件：最近一次诊断失败、证据不足，或 `supported` 且暂定 `mastery < 0.6`。这是演示提醒，不是正式评分。此流程不会更新模拟学习画像，也不实现作业发布。
 
 ## 4. 原预留接口（部分已有受限演示实现）
 
