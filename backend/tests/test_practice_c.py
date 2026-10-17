@@ -260,6 +260,7 @@ def test_teacher_creation_constraints_and_progress(exercise, monkeypatch):
     assert after["submitted_count"] == 1 and after["attention_count"] == 1
     latest = next(row for row in after["students"] if row["username"] == "student01")
     assert latest["latest_submission"]["original_answer"]
+    assert latest["latest_submission"]["diagnosis"]["problem_description"]
 
 
 @pytest.mark.parametrize(

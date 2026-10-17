@@ -126,6 +126,8 @@ onUnmounted(() => { ++generation; clearTimeout(timer) })
           <el-table-column prop="display_name" label="学生" />
           <el-table-column label="最新状态"><template #default="scope">{{ scope.row.latest_submission ? statusLabels[scope.row.latest_submission.status as keyof typeof statusLabels] : '未提交' }}</template></el-table-column>
           <el-table-column label="提醒"><template #default="scope">{{ scope.row.needs_attention ? '需关注' : '—' }}</template></el-table-column>
+          <el-table-column label="最近作答" min-width="180"><template #default="scope"><span class="answer-preview">{{ scope.row.latest_submission?.original_answer || '—' }}</span></template></el-table-column>
+          <el-table-column label="诊断摘要" min-width="180"><template #default="scope">{{ scope.row.latest_submission?.diagnosis?.problem_description || scope.row.latest_submission?.error_message || '—' }}</template></el-table-column>
           <el-table-column label="操作"><template #default="scope"><el-button v-if="scope.row.latest_submission?.status === 'failed'" :loading="busy" @click="retry(scope.row.latest_submission)">重试诊断</el-button></template></el-table-column>
         </el-table>
       </template>
