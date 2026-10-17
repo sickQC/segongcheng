@@ -11,6 +11,7 @@ from app.services.diagnosis import add_trace
 
 def submission_out(db, submission):
     diagnosis = db.get(Diagnosis, submission.diagnosis_id)
+    event = db.get(LearningEvent, submission.event_id)
     output = diagnosis.output
     attention = diagnosis.status in ("failed", "insufficient") or (
         diagnosis.status == "supported" and output is not None and output.get("mastery", 1) < 0.6
@@ -21,6 +22,7 @@ def submission_out(db, submission):
         diagnosis=output,
         error_message=diagnosis.error_message,
         needs_attention=attention,
+        synthetic=bool(event and event.context.get("synthetic")),
     )
 
 

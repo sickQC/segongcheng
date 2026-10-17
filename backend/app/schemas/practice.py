@@ -45,6 +45,7 @@ class SubmissionOut(BaseModel):
     diagnosis: DiagnosisOutput | None
     error_message: str | None
     needs_attention: bool
+    synthetic: bool = False
 
 
 class StudentProgress(BaseModel):

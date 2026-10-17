@@ -127,6 +127,7 @@ onUnmounted(() => { ++generation; clearTimeout(timer) })
           <el-table-column label="最新状态"><template #default="scope">{{ scope.row.latest_submission ? statusLabels[scope.row.latest_submission.status as keyof typeof statusLabels] : '未提交' }}</template></el-table-column>
           <el-table-column label="提醒"><template #default="scope">{{ scope.row.needs_attention ? '需关注' : '—' }}</template></el-table-column>
           <el-table-column label="最近作答" min-width="180"><template #default="scope"><span class="answer-preview">{{ scope.row.latest_submission?.original_answer || '—' }}</span></template></el-table-column>
+          <el-table-column label="来源" min-width="90"><template #default="scope"><el-tag v-if="scope.row.latest_submission?.synthetic" type="warning">模拟</el-tag><span v-else>—</span></template></el-table-column>
           <el-table-column label="诊断摘要" min-width="180"><template #default="scope">{{ scope.row.latest_submission?.diagnosis?.problem_description || scope.row.latest_submission?.error_message || '—' }}</template></el-table-column>
           <el-table-column label="操作"><template #default="scope"><el-button v-if="scope.row.latest_submission?.status === 'failed'" :loading="busy" @click="retry(scope.row.latest_submission)">重试诊断</el-button></template></el-table-column>
         </el-table>
@@ -138,7 +139,7 @@ onUnmounted(() => { ++generation; clearTimeout(timer) })
         <p class="muted">原答案先保存，再请求 AI 诊断。以下最多展示最近 50 次作答和追问回复。</p>
         <el-empty v-if="!submissions.length" description="还没有作答记录" :image-size="50" />
         <article v-for="row in submissions" :key="row.id" class="practice-result">
-          <div class="practice-result-head"><strong>{{ row.parent_submission_id ? '追问回复' : '原题作答' }}</strong><el-tag :type="row.status === 'failed' ? 'danger' : 'info'">{{ statusLabels[row.status] }}</el-tag></div>
+          <div class="practice-result-head"><strong>{{ row.parent_submission_id ? '追问回复' : '原题作答' }}</strong><el-tag v-if="row.synthetic" type="warning">模拟数据</el-tag><el-tag :type="row.status === 'failed' ? 'danger' : 'info'">{{ statusLabels[row.status] }}</el-tag></div>
           <p>{{ row.original_answer }}</p>
           <p v-if="row.parent_submission_id" class="muted">关联上一轮：{{ row.parent_submission_id }}</p>
           <template v-if="row.diagnosis">

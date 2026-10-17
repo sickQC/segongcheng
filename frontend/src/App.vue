@@ -25,8 +25,8 @@ async function signOut() {
       <div class="nav-label">{{ session.user?.role === 'teacher' ? '教师工作台' : '学习工作台' }}</div>
       <nav>
         <RouterLink to="/courses" :class="{ active: $route.path.includes('courses') }"><span>01</span>我的课程</RouterLink>
-        <RouterLink v-if="session.devEnabled" to="/dev/submit" :class="{ active: $route.path === '/dev/submit' }"><span>02</span>单题诊断演示</RouterLink>
-        <RouterLink v-if="session.devEnabled" to="/diagnoses" :class="{ active: $route.path.startsWith('/diagnoses') }"><span>03</span>演示诊断记录</RouterLink>
+        <RouterLink v-if="session.devEnabled && session.user?.role === 'student'" to="/dev/submit" :class="{ active: $route.path === '/dev/submit' }"><span>02</span>单题诊断演示</RouterLink>
+        <RouterLink v-if="session.devEnabled && session.user?.role === 'student'" to="/diagnoses" :class="{ active: $route.path.startsWith('/diagnoses') }"><span>03</span>演示诊断记录</RouterLink>
       </nav>
       <div class="scope-note"><span class="eyebrow">一步一步，建立理解</span><h3>从课程结构开始</h3><p>浏览章节与知识点，让学习目标清晰可见。</p><div class="scope-chip">软件工程课程</div></div>
       <div class="sidebar-footer"><span class="connection-dot"></span>{{ health }}</div>

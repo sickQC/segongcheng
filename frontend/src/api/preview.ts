@@ -1,5 +1,5 @@
 // Only imported for explicit UI preview. Never persisted or used as an error fallback.
-import type { Resource, Quiz, Attempt, Report, Dashboard } from '../types/workspace'
+import type { Resource, Quiz, Attempt, Report, Dashboard, TeacherStudentReport } from '../types/workspace'
 export const resources: Resource[] = [
  { id: 'preview-video', title: '需求分析入门 · 视频布局样例', type: 'video', url: null, description: '此处显示视频播放器、播放速度和学习进度。未加载真实媒体。', knowledge_point_ids: ['preview-kp'] },
  { id: 'preview-doc', title: '需求规格说明 · 文档布局样例', type: 'doc', url: null, description: '此处显示文档预览和引用页码。未加载真实文件。', knowledge_point_ids: ['preview-kp'] },
@@ -20,9 +20,19 @@ export const report: Report = {
  timeline: [{ at: '2026-10-14T07:30:00Z', description: '观看需求分析视频（示例事件）' }],
 }
 export const dashboard: Dashboard = {
- student_count: 2, active_count: 2, completion: 60, average_score: 75,
- knowledge_points: ['需求分类', '用例建模', '需求验证'],
- students: [{ id: 'preview-student-1', name: '样例学生甲', mastery: [65, 80, 50], risk: '需关注' }, { id: 'preview-student-2', name: '样例学生乙', mastery: [85, 90, 75], risk: '低' }],
- questions: [{ stem: '功能需求辨析', correct_rate: 50, average_seconds: 42, option_counts: { A: 1, B: 1, C: 0 } }],
- score_distribution: [{ label: '0–59', count: 0 }, { label: '60–79', count: 1 }, { label: '80–100', count: 1 }],
+ days: 30, include_demo: true, student_count: 2, active_count: 2, quiz_count: 2, practice_count: 1,
+ average_quiz_percent: 75, simulated_record_count: 3,
+ chapters: [{ chapter_id: 'preview-chapter', name: '第一章 需求工程', correct_count: 3, question_count: 4, accuracy_percent: 75 }],
+ points: [{ knowledge_point_id: 'preview-kp', name: '需求分类', chapter: '第一章 需求工程', correct_count: 3, question_count: 4, accuracy_percent: 75 }],
+ students: [
+  { id: 'preview-student-1', name: '样例学生甲', username: 'preview-a', quiz_count: 1, practice_count: 1, correct_count: 1, question_count: 2, accuracy_percent: 50, attention_reasons: ['该知识点需复习'], last_activity_at: '2026-10-14T08:00:00Z', simulated_record_count: 2 },
+  { id: 'preview-student-2', name: '样例学生乙', username: 'preview-b', quiz_count: 1, practice_count: 0, correct_count: 2, question_count: 2, accuracy_percent: 100, attention_reasons: [], last_activity_at: '2026-10-14T08:00:00Z', simulated_record_count: 1 },
+ ],
+}
+export const teacherStudent: TeacherStudentReport = {
+ student_id: 'preview-student-1', name: '样例学生甲', username: 'preview-a', days: 30,
+ correct_count: 1, question_count: 2, accuracy_percent: 50, chapters: dashboard.chapters, points: dashboard.points,
+ activities: [{ kind: 'practice', title: '请解释功能需求与非功能需求', at: '2026-10-14T08:00:00Z', simulated: true, score_percent: null, answer: '两者都是功能。', diagnosis: '混淆了行为与质量约束。', recommendation: '分别写出一个功能与一个性能要求。', evidence_id: 'preview-event' }],
+ mistakes: [{ question: '功能需求描述什么？', original_answer: '系统运行速度', explanation: '功能需求描述系统提供的行为。', at: '2026-10-14T08:00:00Z', simulated: true, evidence_id: 'preview-event-2' }],
+ attention_reasons: ['该知识点需复习'], simulated_record_count: 1, latest_report: null,
 }

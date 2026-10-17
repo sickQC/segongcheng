@@ -1,5 +1,6 @@
 """Course workspace contracts; unimplemented routes still return HTTP 501."""
 
+from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -164,34 +165,87 @@ class ReportOut(BaseModel):
     timeline: list[TimelineItem]
 
 
-class StudentMetric(BaseModel):
+class PointStatOut(BaseModel):
+    knowledge_point_id: str
+    name: str
+    chapter: str
+    correct_count: int
+    question_count: int
+    accuracy_percent: float | None
+
+
+class ChapterStatOut(BaseModel):
+    chapter_id: str
+    name: str
+    correct_count: int
+    question_count: int
+    accuracy_percent: float | None
+
+
+class TeacherStudentSummary(BaseModel):
     id: str
     name: str
-    mastery: list[float]
-    risk: str
+    username: str
+    quiz_count: int
+    practice_count: int
+    correct_count: int
+    question_count: int
+    accuracy_percent: float | None
+    attention_reasons: list[str]
+    last_activity_at: datetime | None
+    simulated_record_count: int
 
 
-class QuestionMetric(BaseModel):
-    stem: str
-    correct_rate: float = Field(ge=0, le=100)
-    average_seconds: float = Field(ge=0)
-    option_counts: dict[str, int]
+class TeacherActivityOut(BaseModel):
+    kind: Literal["quiz", "practice"]
+    title: str
+    at: datetime
+    simulated: bool
+    score_percent: float | None = None
+    answer: str | None = None
+    diagnosis: str | None = None
+    recommendation: str | None = None
+    evidence_id: str | None = None
 
 
-class ScoreBucket(BaseModel):
-    label: str
-    count: int = Field(ge=0)
+class TeacherMistakeOut(BaseModel):
+    question: str
+    original_answer: str
+    explanation: str
+    at: datetime
+    simulated: bool
+    evidence_id: str | None
+
+
+class TeacherStudentOut(BaseModel):
+    student_id: str
+    name: str
+    username: str
+    days: int
+    correct_count: int
+    question_count: int
+    accuracy_percent: float | None
+    chapters: list[ChapterStatOut]
+    points: list[PointStatOut]
+    activities: list[TeacherActivityOut]
+    mistakes: list[TeacherMistakeOut]
+    attention_reasons: list[str]
+    simulated_record_count: int
+    latest_report: dict | None
 
 
 class DashboardOut(BaseModel):
-    student_count: int = Field(ge=0)
-    active_count: int = Field(ge=0)
-    completion: float = Field(ge=0, le=100)
-    average_score: float
-    knowledge_points: list[str]
-    students: list[StudentMetric]
-    questions: list[QuestionMetric]
-    score_distribution: list[ScoreBucket]
+    days: int
+    include_demo: bool
+    student_count: int
+    active_count: int
+    quiz_count: int
+    practice_count: int
+    average_quiz_percent: float | None
+    simulated_record_count: int
+    chapters: list[ChapterStatOut]
+    points: list[PointStatOut]
+    students: list[TeacherStudentSummary]
 
 
 class JobOut(BaseModel):

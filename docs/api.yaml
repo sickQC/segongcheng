@@ -2411,7 +2411,7 @@ paths:
     get:
       tags:
       - Workspace · 演示与占位
-      summary: '[占位] 教师学情汇总'
+      summary: 教师课程学情汇总
       operationId: dashboard_api_v1_courses__course_id__dashboard_get
       parameters:
       - name: course_id
@@ -2420,6 +2420,22 @@ paths:
         schema:
           type: string
           title: Course Id
+      - name: days
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 90
+          minimum: 1
+          default: 30
+          title: Days
+      - name: include_demo
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Demo
       responses:
         '200':
           description: Successful Response
@@ -2467,7 +2483,7 @@ paths:
     get:
       tags:
       - Workspace · 演示与占位
-      summary: '[占位] 学生报告'
+      summary: 教师查看学生学习证据
       operationId: student_report_api_v1_courses__course_id__students__student_id__report_get
       parameters:
       - name: course_id
@@ -2482,13 +2498,29 @@ paths:
         schema:
           type: string
           title: Student Id
+      - name: days
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 90
+          minimum: 1
+          default: 30
+          title: Days
+      - name: include_demo
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Demo
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/app__schemas__workspace__ReportOut'
+                $ref: '#/components/schemas/TeacherStudentOut'
         '401':
           content:
             application/json:
@@ -2587,319 +2619,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/dev/question:
-    get:
-      tags:
-      - Development demo
-      summary: Question
-      operationId: question_api_dev_question_get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-  /api/dev/submissions:
-    post:
-      tags:
-      - Development demo
-      summary: Submit
-      operationId: submit_api_dev_submissions_post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Submission'
-        required: true
-      responses:
-        '202':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /api/diagnoses:
-    get:
-      tags:
-      - Development demo
-      summary: List Diagnoses
-      operationId: list_diagnoses_api_diagnoses_get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-  /api/diagnoses/{diagnosis_id}:
-    get:
-      tags:
-      - Development demo
-      summary: Get Diagnosis
-      operationId: get_diagnosis_api_diagnoses__diagnosis_id__get
-      parameters:
-      - name: diagnosis_id
-        in: path
-        required: true
-        schema:
-          type: string
-          title: Diagnosis Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /api/diagnoses/{diagnosis_id}/retry:
-    post:
-      tags:
-      - Development demo
-      summary: Retry
-      operationId: retry_api_diagnoses__diagnosis_id__retry_post
-      parameters:
-      - name: diagnosis_id
-        in: path
-        required: true
-        schema:
-          type: string
-          title: Diagnosis Id
-      responses:
-        '202':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /api/tutor/kb:
-    get:
-      tags:
-      - M7 AI 助教
-      summary: Kb Overview
-      description: 知识库规模与文档清单。
-      operationId: kb_overview_api_tutor_kb_get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-  /api/tutor/knowledge-points:
-    get:
-      tags:
-      - M7 AI 助教
-      summary: Knowledge Points
-      operationId: knowledge_points_api_tutor_knowledge_points_get
-      parameters:
-      - name: doc_id
-        in: query
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          description: 按文档过滤，如 SE-01
-          title: Doc Id
-        description: 按文档过滤，如 SE-01
-      - name: keyword
-        in: query
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          description: 按名称或定义过滤
-          title: Keyword
-        description: 按名称或定义过滤
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /api/tutor/graph:
-    get:
-      tags:
-      - M7 AI 助教
-      summary: Knowledge Graph
-      description: 知识点先修图（M4 可视化与 M9 路径规划的数据源）。
-      operationId: knowledge_graph_api_tutor_graph_get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-  /api/tutor/retrieve-debug:
-    get:
-      tags:
-      - M7 AI 助教
-      summary: Retrieve Debug
-      description: 检索中间结果：稠密/稀疏排名、RRF、覆盖率、可回答性特征。
-      operationId: retrieve_debug_api_tutor_retrieve_debug_get
-      parameters:
-      - name: q
-        in: query
-        required: true
-        schema:
-          type: string
-          minLength: 1
-          maxLength: 2000
-          title: Q
-      - name: top_n
-        in: query
-        required: false
-        schema:
-          type: integer
-          maximum: 20
-          minimum: 1
-          default: 6
-          title: Top N
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /api/tutor/ask:
-    post:
-      tags:
-      - M7 AI 助教
-      summary: Tutor Ask
-      description: 回答学生问题，并把问题、回答、引用与知识点写入 asked 学习事件（M6-2）。
-      operationId: tutor_ask_api_tutor_ask_post
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TutorAskRequest'
-        required: true
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                additionalProperties: true
-                type: object
-                title: Response Tutor Ask Api Tutor Ask Post
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /api/tutor/ask/stream:
-    get:
-      tags:
-      - M7 AI 助教
-      summary: Tutor Ask Stream
-      description: SSE 流式回答；首字符延迟需真实模型实测，不在接口中承诺。
-      operationId: tutor_ask_stream_api_tutor_ask_stream_get
-      parameters:
-      - name: q
-        in: query
-        required: true
-        schema:
-          type: string
-          minLength: 1
-          maxLength: 2000
-          title: Q
-      - name: mode
-        in: query
-        required: false
-        schema:
-          type: string
-          pattern: ^(live|demo)$
-          default: live
-          title: Mode
-      - name: top_n
-        in: query
-        required: false
-        schema:
-          anyOf:
-          - type: integer
-            maximum: 20
-            minimum: 1
-          - type: 'null'
-          title: Top N
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /api/traces/{trace_id}:
-    get:
-      tags:
-      - M7 AI 助教
-      summary: Trace Detail
-      description: 按 trace ID 回放一次模型调用（NF-14）。
-      operationId: trace_detail_api_traces__trace_id__get
-      parameters:
-      - name: trace_id
-        in: path
-        required: true
-        schema:
-          type: string
-          title: Trace Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-  /api/cost-report:
-    get:
-      tags:
-      - M7 AI 助教
-      summary: Cost Report
-      description: 按功能汇总调用次数、token 与耗时（NF-4）。
-      operationId: cost_report_api_cost_report_get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
   /health:
     get:
       tags:
@@ -3124,6 +2843,33 @@ components:
       additionalProperties: false
       type: object
       title: ChapterPatch
+    ChapterStatOut:
+      properties:
+        chapter_id:
+          type: string
+          title: Chapter Id
+        name:
+          type: string
+          title: Name
+        correct_count:
+          type: integer
+          title: Correct Count
+        question_count:
+          type: integer
+          title: Question Count
+        accuracy_percent:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Accuracy Percent
+      type: object
+      required:
+      - chapter_id
+      - name
+      - correct_count
+      - question_count
+      - accuracy_percent
+      title: ChapterStatOut
     ChatIn:
       properties:
         resource_id:
@@ -3241,52 +2987,60 @@ components:
       title: CourseOut
     DashboardOut:
       properties:
+        days:
+          type: integer
+          title: Days
+        include_demo:
+          type: boolean
+          title: Include Demo
         student_count:
           type: integer
-          minimum: 0.0
           title: Student Count
         active_count:
           type: integer
-          minimum: 0.0
           title: Active Count
-        completion:
-          type: number
-          maximum: 100.0
-          minimum: 0.0
-          title: Completion
-        average_score:
-          type: number
-          title: Average Score
-        knowledge_points:
+        quiz_count:
+          type: integer
+          title: Quiz Count
+        practice_count:
+          type: integer
+          title: Practice Count
+        average_quiz_percent:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Average Quiz Percent
+        simulated_record_count:
+          type: integer
+          title: Simulated Record Count
+        chapters:
           items:
-            type: string
+            $ref: '#/components/schemas/ChapterStatOut'
           type: array
-          title: Knowledge Points
+          title: Chapters
+        points:
+          items:
+            $ref: '#/components/schemas/PointStatOut'
+          type: array
+          title: Points
         students:
           items:
-            $ref: '#/components/schemas/StudentMetric'
+            $ref: '#/components/schemas/TeacherStudentSummary'
           type: array
           title: Students
-        questions:
-          items:
-            $ref: '#/components/schemas/QuestionMetric'
-          type: array
-          title: Questions
-        score_distribution:
-          items:
-            $ref: '#/components/schemas/ScoreBucket'
-          type: array
-          title: Score Distribution
       type: object
       required:
+      - days
+      - include_demo
       - student_count
       - active_count
-      - completion
-      - average_score
-      - knowledge_points
+      - quiz_count
+      - practice_count
+      - average_quiz_percent
+      - simulated_record_count
+      - chapters
+      - points
       - students
-      - questions
-      - score_distribution
       title: DashboardOut
     DiagnosisItem:
       properties:
@@ -3439,15 +3193,6 @@ components:
       required:
       - message
       title: FollowupIn
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     JobOut:
       properties:
         job_id:
@@ -3748,6 +3493,37 @@ components:
       - matched_knowledge_points
       - similarity
       title: PersonalizationOut
+    PointStatOut:
+      properties:
+        knowledge_point_id:
+          type: string
+          title: Knowledge Point Id
+        name:
+          type: string
+          title: Name
+        chapter:
+          type: string
+          title: Chapter
+        correct_count:
+          type: integer
+          title: Correct Count
+        question_count:
+          type: integer
+          title: Question Count
+        accuracy_percent:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Accuracy Percent
+      type: object
+      required:
+      - knowledge_point_id
+      - name
+      - chapter
+      - correct_count
+      - question_count
+      - accuracy_percent
+      title: PointStatOut
     PracticeAnswer:
       properties:
         answer:
@@ -3854,32 +3630,6 @@ components:
       - label
       - value
       title: ProfileItem
-    QuestionMetric:
-      properties:
-        stem:
-          type: string
-          title: Stem
-        correct_rate:
-          type: number
-          maximum: 100.0
-          minimum: 0.0
-          title: Correct Rate
-        average_seconds:
-          type: number
-          minimum: 0.0
-          title: Average Seconds
-        option_counts:
-          additionalProperties:
-            type: integer
-          type: object
-          title: Option Counts
-      type: object
-      required:
-      - stem
-      - correct_rate
-      - average_seconds
-      - option_counts
-      title: QuestionMetric
     QuestionOut:
       properties:
         id:
@@ -4160,20 +3910,6 @@ components:
       - total
       - answers
       title: ResultOut
-    ScoreBucket:
-      properties:
-        label:
-          type: string
-          title: Label
-        count:
-          type: integer
-          minimum: 0.0
-          title: Count
-      type: object
-      required:
-      - label
-      - count
-      title: ScoreBucket
     SessionCreate:
       properties:
         course_id:
@@ -4208,29 +3944,6 @@ components:
       required:
       - quiz_id
       title: StartAttemptIn
-    StudentMetric:
-      properties:
-        id:
-          type: string
-          title: Id
-        name:
-          type: string
-          title: Name
-        mastery:
-          items:
-            type: number
-          type: array
-          title: Mastery
-        risk:
-          type: string
-          title: Risk
-      type: object
-      required:
-      - id
-      - name
-      - mastery
-      - risk
-      title: StudentMetric
     StudentProgress:
       properties:
         student_id:
@@ -4257,31 +3970,6 @@ components:
       - latest_submission
       - needs_attention
       title: StudentProgress
-    Submission:
-      properties:
-        answer:
-          type: string
-          maxLength: 4000
-          minLength: 1
-          title: Answer
-        duration_seconds:
-          type: integer
-          maximum: 86400.0
-          minimum: 0.0
-          title: Duration Seconds
-          default: 0
-        mode:
-          type: string
-          enum:
-          - live
-          - demo
-          title: Mode
-          default: live
-      additionalProperties: false
-      type: object
-      required:
-      - answer
-      title: Submission
     SubmissionOut:
       properties:
         id:
@@ -4334,6 +4022,10 @@ components:
         needs_attention:
           type: boolean
           title: Needs Attention
+        synthetic:
+          type: boolean
+          title: Synthetic
+          default: false
       type: object
       required:
       - id
@@ -4363,6 +4055,220 @@ components:
       required:
       - answers
       title: SubmitIn
+    TeacherActivityOut:
+      properties:
+        kind:
+          type: string
+          enum:
+          - quiz
+          - practice
+          title: Kind
+        title:
+          type: string
+          title: Title
+        at:
+          type: string
+          format: date-time
+          title: At
+        simulated:
+          type: boolean
+          title: Simulated
+        score_percent:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Score Percent
+        answer:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Answer
+        diagnosis:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Diagnosis
+        recommendation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Recommendation
+        evidence_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Evidence Id
+      type: object
+      required:
+      - kind
+      - title
+      - at
+      - simulated
+      title: TeacherActivityOut
+    TeacherMistakeOut:
+      properties:
+        question:
+          type: string
+          title: Question
+        original_answer:
+          type: string
+          title: Original Answer
+        explanation:
+          type: string
+          title: Explanation
+        at:
+          type: string
+          format: date-time
+          title: At
+        simulated:
+          type: boolean
+          title: Simulated
+        evidence_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Evidence Id
+      type: object
+      required:
+      - question
+      - original_answer
+      - explanation
+      - at
+      - simulated
+      - evidence_id
+      title: TeacherMistakeOut
+    TeacherStudentOut:
+      properties:
+        student_id:
+          type: string
+          title: Student Id
+        name:
+          type: string
+          title: Name
+        username:
+          type: string
+          title: Username
+        days:
+          type: integer
+          title: Days
+        correct_count:
+          type: integer
+          title: Correct Count
+        question_count:
+          type: integer
+          title: Question Count
+        accuracy_percent:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Accuracy Percent
+        chapters:
+          items:
+            $ref: '#/components/schemas/ChapterStatOut'
+          type: array
+          title: Chapters
+        points:
+          items:
+            $ref: '#/components/schemas/PointStatOut'
+          type: array
+          title: Points
+        activities:
+          items:
+            $ref: '#/components/schemas/TeacherActivityOut'
+          type: array
+          title: Activities
+        mistakes:
+          items:
+            $ref: '#/components/schemas/TeacherMistakeOut'
+          type: array
+          title: Mistakes
+        attention_reasons:
+          items:
+            type: string
+          type: array
+          title: Attention Reasons
+        simulated_record_count:
+          type: integer
+          title: Simulated Record Count
+        latest_report:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Latest Report
+      type: object
+      required:
+      - student_id
+      - name
+      - username
+      - days
+      - correct_count
+      - question_count
+      - accuracy_percent
+      - chapters
+      - points
+      - activities
+      - mistakes
+      - attention_reasons
+      - simulated_record_count
+      - latest_report
+      title: TeacherStudentOut
+    TeacherStudentSummary:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        username:
+          type: string
+          title: Username
+        quiz_count:
+          type: integer
+          title: Quiz Count
+        practice_count:
+          type: integer
+          title: Practice Count
+        correct_count:
+          type: integer
+          title: Correct Count
+        question_count:
+          type: integer
+          title: Question Count
+        accuracy_percent:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Accuracy Percent
+        attention_reasons:
+          items:
+            type: string
+          type: array
+          title: Attention Reasons
+        last_activity_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Activity At
+        simulated_record_count:
+          type: integer
+          title: Simulated Record Count
+      type: object
+      required:
+      - id
+      - name
+      - username
+      - quiz_count
+      - practice_count
+      - correct_count
+      - question_count
+      - accuracy_percent
+      - attention_reasons
+      - last_activity_at
+      - simulated_record_count
+      title: TeacherStudentSummary
     TimelineItem:
       properties:
         at:
@@ -4376,39 +4282,6 @@ components:
       - at
       - description
       title: TimelineItem
-    TutorAskRequest:
-      properties:
-        question:
-          type: string
-          maxLength: 2000
-          minLength: 1
-          title: Question
-        mode:
-          type: string
-          enum:
-          - live
-          - demo
-          title: Mode
-          default: live
-        top_n:
-          anyOf:
-          - type: integer
-            maximum: 20.0
-            minimum: 1.0
-          - type: 'null'
-          title: Top N
-          description: 进入上下文的片段数
-      additionalProperties: false
-      type: object
-      required:
-      - question
-      title: TutorAskRequest
-      description: 'M7 AI 助教的提问请求。
-
-
-        `mode` 与诊断接口保持同一语义：live 走真实大模型，demo 使用检索证据的演示回答。
-
-        提问者身份由服务端固定（Sprint 0 无登录鉴权），不接受客户端传入，避免越权写入他人事件。'
     UserOut:
       properties:
         id:
@@ -4433,32 +4306,6 @@ components:
       - display_name
       - role
       title: UserOut
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     WeakKnowledgePointOut:
       properties:
         name:

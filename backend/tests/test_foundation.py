@@ -298,10 +298,17 @@ def test_workspace_contracts_do_not_fake_success(foundation):
     sid = next(m["user"]["id"] for m in members if m["role"] == "student")
     assert c.get(base + "/resources").status_code == 200
     assert c.get(base + "/quizzes").json() == []
-    for path in ["/report", "/dashboard", f"/students/{sid}/report"]:
+    for path in ["/report"]:
         r = c.get(base + path)
         assert r.status_code == 501
         assert r.json()["detail"]["code"] == "NOT_IMPLEMENTED"
+    dashboard = c.get(base + "/dashboard").json()
+    assert dashboard["student_count"] == 2
+    assert dashboard["average_quiz_percent"] is None
+    assert all(student["accuracy_percent"] is None for student in dashboard["students"])
+    detail = c.get(base + f"/students/{sid}/report").json()
+    assert detail["student_id"] == sid and detail["question_count"] == 0
+    assert c.get(base + "/dashboard?days=0").status_code == 422
     for path, body in [
         ("/report/followup", {"message": "question"}),
         (f"/students/{sid}/diagnoses", None),

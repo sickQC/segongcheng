@@ -1,5 +1,7 @@
 # 前后端接口交接文档
 
+> 2026-10-17 更新：`GET /api/v1/courses/{course_id}/dashboard` 和 `GET /api/v1/courses/{course_id}/students/{student_id}/report` 已接真实数据库聚合，支持 `days=1..90` 与 `include_demo`（默认 `false`）。教师看板通过已实现的 `POST /api/v1/courses/{course_id}/students/{student_id}/diagnosis-reports` 生成综合诊断。运行时字段与权限以 [当前 OpenAPI](api.yaml) 为准；下方旧接口表是历史规划。
+
 > 2026-10-16 新增：第 3.1 节的课程小练习接口已真实实现，使用迁移 `0004`。它与下文正式测验、看板等 501 占位接口相互独立。
 
 > 2026-10-16 状态更新：下文保留最初的接口设计。演示课程中，`GET /resources` 已返回内置 Markdown 讲义目录；学生 `POST /chat` 的 `mode=rag` 已接真实模型和按相关性筛选的模拟学习历史；`GET /report?algorithm=baseline` 已返回分章节模拟历史；`POST /report/followup` 已接同一问答服务。这四条仅覆盖预置课程及 `student01`、`student02`，数据来源在响应和页面标为 `synthetic`。`mode=5e`、`algorithm=enhanced`、正式测验、教师看板等仍返回 501。新增字段和演示步骤见 [个性化演示说明](personalized-demo.md)，运行时契约以 `/openapi.json` 为准。

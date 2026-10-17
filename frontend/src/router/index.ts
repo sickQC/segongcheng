@@ -22,8 +22,8 @@ export const router = createRouter({
     { path: '/courses/:id/quiz', component: QuizView, meta: { auth: true } },
     { path: '/courses/:id/report', component: LearningReportView, meta: { auth: true } },
     { path: '/teacher/courses/:id/dashboard', component: TeacherDashboardView, meta: { auth: true, teacher: true } },
-    { path: '/dev/submit', component: SubmitView, meta: { dev: true } },
-    { path: '/diagnoses/:id?', component: DiagnosisView, meta: { dev: true } },
+    { path: '/dev/submit', component: SubmitView, meta: { dev: true, auth: true, student: true } },
+    { path: '/diagnoses/:id?', component: DiagnosisView, meta: { dev: true, auth: true, student: true } },
     { path: '/:pathMatch(.*)*', component: NotFoundView },
   ],
 })
@@ -36,6 +36,7 @@ router.beforeEach(async to => {
     try { await loadSession() } catch { return { path: '/login', query: { unavailable: '1' } } }
     if (!session.user) return { path: '/login', query: { redirect: to.fullPath } }
     if (to.meta.teacher && session.user.role !== 'teacher') return '/courses'
+    if (to.meta.student && session.user.role !== 'student') return '/courses'
   }
 })
 window.addEventListener('session-expired', () => {

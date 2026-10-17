@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from fastapi import APIRouter, BackgroundTasks, Request
+from fastapi import APIRouter, BackgroundTasks, Query, Request
 from sqlalchemy import select
 
 from app.api.deps import CurrentUser, Db, Teacher, course_access
@@ -24,10 +24,12 @@ from app.schemas.workspace import (
     ResultOut,
     StartAttemptIn,
     SubmitIn,
+    TeacherStudentOut,
 )
 from app.services import assessment, tutor
 from app.services.diagnosis import run_diagnosis
 from app.services.personalization import DEMO_COURSE_ID, demo_history
+from app.services.teacher_dashboard import dashboard as build_dashboard, student_report as build_student_report
 from app.services.tutor import TutorError
 
 router = APIRouter(
@@ -215,16 +217,18 @@ def followup(course_id: str, body: FollowupIn, db: Db, user: CurrentUser, reques
     return demo_answer(request, user, course_id, body.message, "kb:all")
 
 
-@router.get("/dashboard", response_model=DashboardOut, summary="[占位] 教师学情汇总")
-def dashboard(course_id: str, db: Db, user: Teacher):
+@router.get("/dashboard", response_model=DashboardOut, summary="教师课程学情汇总")
+def dashboard(course_id: str, db: Db, user: Teacher, days: int = Query(30, ge=1, le=90),
+              include_demo: bool = False):
     course_access(db, user, course_id, edit=True)
-    pending()
+    return build_dashboard(db, course_id, days, include_demo)
 
 
-@router.get("/students/{student_id}/report", response_model=ReportOut, summary="[占位] 学生报告")
-def student_report(course_id: str, student_id: str, db: Db, user: Teacher):
+@router.get("/students/{student_id}/report", response_model=TeacherStudentOut, summary="教师查看学生学习证据")
+def student_report(course_id: str, student_id: str, db: Db, user: Teacher,
+                   days: int = Query(30, ge=1, le=90), include_demo: bool = False):
     student_access(db, user, course_id, student_id)
-    pending()
+    return build_student_report(db, course_id, student_id, days, include_demo)
 
 
 @router.post(
