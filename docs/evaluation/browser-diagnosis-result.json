@@ -1,0 +1,153 @@
+{
+  "report_id": "d20508f5-b81f-43ad-ab48-dbaca305bcb9",
+  "student": "local-test-student",
+  "cutoff": "2026-10-17T03:44:15.998116+00:00",
+  "status": "supported",
+  "points": [
+    {
+      "name": "等价类划分",
+      "event_count": 0,
+      "baseline": {
+        "graded_count": 0,
+        "wrong_count": 0,
+        "accuracy": null,
+        "latest_correct": null,
+        "dialogue_count": 0,
+        "behavior_available": false,
+        "behavior_observations": [],
+        "prerequisite_errors": []
+      }
+    },
+    {
+      "name": "功能需求与非功能需求",
+      "event_count": 5,
+      "baseline": {
+        "graded_count": 1,
+        "wrong_count": 1,
+        "accuracy": 0.0,
+        "latest_correct": false,
+        "dialogue_count": 4,
+        "behavior_available": false,
+        "behavior_observations": [],
+        "prerequisite_errors": []
+      }
+    },
+    {
+      "name": "用例与参与者",
+      "event_count": 0,
+      "baseline": {
+        "graded_count": 0,
+        "wrong_count": 0,
+        "accuracy": null,
+        "latest_correct": null,
+        "dialogue_count": 0,
+        "behavior_available": false,
+        "behavior_observations": [],
+        "prerequisite_errors": []
+      }
+    },
+    {
+      "name": "软件验证与确认",
+      "event_count": 4,
+      "baseline": {
+        "graded_count": 0,
+        "wrong_count": 0,
+        "accuracy": null,
+        "latest_correct": null,
+        "dialogue_count": 4,
+        "behavior_available": false,
+        "behavior_observations": [],
+        "prerequisite_errors": []
+      }
+    }
+  ],
+  "output": {
+    "points": [
+      {
+        "knowledge_point_id": "ba37743a-8ac0-5d98-b222-5eb37111f1fc",
+        "status": "insufficient",
+        "mastery": null,
+        "confidence": 0.0,
+        "problem_type": "insufficient_evidence",
+        "explanation": "可用证据不足两条，暂不推断掌握度。",
+        "recommendation": "补充该知识点的作答和判断依据后再分析。",
+        "followup_question": "你会用什么例子说明自己的理解？",
+        "evidence_event_ids": [],
+        "citations": []
+      },
+      {
+        "knowledge_point_id": "d19be8c7-8f23-5472-813f-a20e1d04a99a",
+        "status": "supported",
+        "mastery": 0.55,
+        "confidence": 0.76,
+        "problem_type": "concept_confusion",
+        "explanation": "客观答题将“支持导出报告”选为可量化的非功能需求，说明对需求类型或可量化性的辨析存在困难；随后提到高峰期仍能及时响应，体现了对性能约束的具体理解。对话证据与答题结果不一致，不能仅凭一次错答断定整体掌握情况。",
+        "recommendation": "练习区分系统功能与运行质量约束，并把性能约束改写成可测量的指标。",
+        "followup_question": "你会怎样把“高峰时仍能及时响应”写成可验证的需求？",
+        "evidence_event_ids": [
+          "6f9730d1-f94b-4dc7-933a-556f707bc4f1",
+          "1b03be8b-980c-4518-86a7-352f78aa5869"
+        ],
+        "citations": []
+      },
+      {
+        "knowledge_point_id": "ee4e5577-3fcc-5f25-be95-acc6f2b4c2c2",
+        "status": "insufficient",
+        "mastery": null,
+        "confidence": 0.0,
+        "problem_type": "insufficient_evidence",
+        "explanation": "可用证据不足两条，暂不推断掌握度。",
+        "recommendation": "补充该知识点的作答和判断依据后再分析。",
+        "followup_question": "你会用什么例子说明自己的理解？",
+        "evidence_event_ids": [],
+        "citations": []
+      },
+      {
+        "knowledge_point_id": "f1637125-c44f-5dd5-ad01-f86b61e8d725",
+        "status": "insufficient",
+        "mastery": null,
+        "confidence": 0.96,
+        "problem_type": "insufficient_evidence",
+        "explanation": "学生曾正确表述验证与确认的核心区别，但后续多次表示不知道或不能；这些是未能作答的表现，并非客观判定的错误。现有证据不足以判断学生当前能否稳定区分两者或举例。",
+        "recommendation": "用一个软件案例分别练习识别“符合规定要求”和“满足用户实际需要”的检查目标。",
+        "followup_question": "对于购物软件，你会分别检查什么来判断它符合规定要求、满足用户实际需要？",
+        "evidence_event_ids": [
+          "b02bba7f-b041-4701-97cb-970af453dd2f",
+          "7badac5b-7d28-41ce-8800-6016a4db9560",
+          "0408527c-66f8-4d88-b819-c8f8db97c3d1",
+          "b0f8b0b6-54e1-4e4e-96c0-11cb8a95be79"
+        ],
+        "citations": []
+      }
+    ],
+    "excluded_instruction_events": [],
+    "model_called": true,
+    "guardrail_actions": []
+  },
+  "traces": [
+    {
+      "trace_id": "2da2220a-3a9a-4a10-a310-7a12c210a216",
+      "status": "succeeded",
+      "error_code": null,
+      "model": "gpt-6-luna",
+      "prompt_version": "evidence-diagnosis-v3",
+      "usage": {
+        "prompt_tokens": 11490,
+        "completion_tokens": 541,
+        "total_tokens": 12031
+      },
+      "latency_ms": 10421,
+      "guardrail_actions": []
+    },
+    {
+      "trace_id": "3e230517-6209-43ef-966f-9947838ac383",
+      "status": "failed",
+      "error_code": "UNSUPPORTED_BEHAVIOR",
+      "model": "gpt-6-luna",
+      "prompt_version": "evidence-diagnosis-v1",
+      "usage": null,
+      "latency_ms": 25782,
+      "guardrail_actions": []
+    }
+  ]
+}

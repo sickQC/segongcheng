@@ -1,0 +1,8 @@
+{
+  "dataset_version": "learning-diagnosis-v2",
+  "files": {
+    "dev.jsonl": "218b7c167aa2b93eff7fbc133a0e15bb2873fa06687527fba7661c080f5c3e87",
+    "test.jsonl": "e2b640a5c0551a02706301581eef014dbcfe27e8391e2b9726aa9a8e4ec475df"
+  },
+  "candidate_label_rows": 300
+}

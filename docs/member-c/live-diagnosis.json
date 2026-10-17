@@ -1,0 +1,23 @@
+{
+  "model": "gpt-6-luna",
+  "backend": "codex",
+  "output": {
+    "status": "supported",
+    "knowledge_point_id": "KP-VAL-01",
+    "mastery": 0.35,
+    "confidence": 0.98,
+    "problem_type": "concept_confusion",
+    "problem_description": "把验证与确认的关注点对调了：验证检查是否符合规定要求，确认检查是否满足预期用途和用户需要。",
+    "evidence_event_ids": [
+      "8e1d6746-e34a-473e-b0a4-f66df37fa071"
+    ],
+    "citations": [],
+    "recommendation": "用两个问题区分概念：验证时核对规定要求，确认时判断软件是否适合预期用途和用户需要；分别为两者各举一个检查例子。",
+    "followup_question": "如果软件通过了所有设计规格检查，但用户仍无法用它完成预期任务，这说明哪一方面可能出了问题？"
+  },
+  "usage": {
+    "prompt_tokens": 10018,
+    "completion_tokens": 187,
+    "total_tokens": 10205
+  }
+}

@@ -1,0 +1,298 @@
+{
+  "prompt_version": "direct-explanation-v1",
+  "model": "gpt-6-luna",
+  "backend": "codex",
+  "input_source": "scripted_simulated_students",
+  "comparison_scope": "single direct explanation versus complete 5E workflow; unequal turns; no learning gain claim",
+  "cases": [
+    {
+      "knowledge_point": "KP-REQ-01",
+      "student_kind": "ready",
+      "student_input": "可以导出报告描述系统提供什么功能，两秒内生成则限制这个功能在特定场景下的性能。两者的验收方式不同。",
+      "five_e_completed": true,
+      "five_e_turns": 5,
+      "status": "succeeded",
+      "output": {
+        "reply": "你的理解基本正确。**“可以导出报告”是功能需求**，说明系统要提供什么能力；**“报告在两秒内生成”是性能类非功能需求**，说明系统在特定条件下要达到什么性能水平。两者也可用不同方式验收：功能需求可检查是否成功导出指定格式、内容完整的报告；性能需求可在约定的负载和环境下测量生成时间是否不超过两秒。例如：“用户点击导出后，系统应生成 PDF 报告”描述功能；“在 100 个并发用户时，95% 的 PDF 报告应在两秒内生成”描述可测量的性能要求。"
+      },
+      "usage": {
+        "prompt_tokens": 9572,
+        "completion_tokens": 166,
+        "total_tokens": 9738
+      },
+      "latency_ms": 7557,
+      "five_e_total_latency_ms": 56547,
+      "five_e_total_tokens": 53306
+    },
+    {
+      "knowledge_point": "KP-REQ-01",
+      "student_kind": "confused",
+      "student_input": "导出报告和两秒内生成都是同一种功能需求，不需要分别验收，系统能运行就足够了。",
+      "five_e_completed": true,
+      "five_e_turns": 6,
+      "status": "succeeded",
+      "output": {
+        "reply": "“导出报告”是功能需求，描述系统要提供的操作；“两秒内生成”是非功能需求，描述该操作的性能标准。两者应分别验收：检查报告能否正确导出，并测量生成时间是否不超过两秒。系统能运行不代表这两项需求都已满足。"
+      },
+      "usage": {
+        "prompt_tokens": 9563,
+        "completion_tokens": 86,
+        "total_tokens": 9649
+      },
+      "latency_ms": 7091,
+      "five_e_total_latency_ms": 55589,
+      "five_e_total_tokens": 64363
+    },
+    {
+      "knowledge_point": "KP-REQ-01",
+      "student_kind": "insufficient",
+      "student_input": "不知道。",
+      "five_e_completed": true,
+      "five_e_turns": 6,
+      "status": "succeeded",
+      "output": {
+        "reply": "功能需求描述软件“要做什么”，即系统提供的功能或服务；非功能需求描述软件“做得怎么样”，例如性能、安全性、可靠性和易用性。\n\n例子：\n- 功能需求：用户可以用手机号和密码登录。\n- 非功能需求：登录请求在 2 秒内完成；密码需要加密保存。\n\n区分时可以问：这条要求是在说明一个具体操作或服务，还是在说明质量标准或约束？前者通常是功能需求，后者通常是非功能需求。"
+      },
+      "usage": {
+        "prompt_tokens": 9540,
+        "completion_tokens": 137,
+        "total_tokens": 9677
+      },
+      "latency_ms": 10223,
+      "five_e_total_latency_ms": 52196,
+      "five_e_total_tokens": 64352
+    },
+    {
+      "knowledge_point": "KP-REQ-02",
+      "student_kind": "ready",
+      "student_input": "学生在系统外发起选课，外部支付平台可能在系统外完成交互，它们可以是参与者；系统自身在边界内，不是自己的外部参与者。",
+      "five_e_completed": true,
+      "five_e_turns": 5,
+      "status": "succeeded",
+      "output": {
+        "reply": "用例图中的参与者是系统边界外与系统交互的角色或外部系统，不限于人。学生在系统外发起选课，因此是参与者；若支付平台与选课系统交换支付请求或结果，它也是参与者。系统自身位于边界内，不能作为自己的外部参与者。例：学生发起“选课”用例，系统调用支付平台完成缴费。"
+      },
+      "usage": {
+        "prompt_tokens": 9576,
+        "completion_tokens": 106,
+        "total_tokens": 9682
+      },
+      "latency_ms": 6961,
+      "five_e_total_latency_ms": 59975,
+      "five_e_total_tokens": 53245
+    },
+    {
+      "knowledge_point": "KP-REQ-02",
+      "student_kind": "confused",
+      "student_input": "选课系统自己和系统内部数据库表都是它自己的外部参与者，学生不是参与者。",
+      "five_e_completed": true,
+      "five_e_turns": 7,
+      "status": "succeeded",
+      "output": {
+        "reply": "在用例图中，参与者是与系统交互的外部角色或外部系统。选课系统是被描述的系统本身，数据库表是系统内部的数据结构，因此二者都不是该系统的外部参与者。学生会通过系统查询课程、选课或退选，是参与者。若选课系统调用校外身份认证平台，该平台可以作为外部参与者。"
+      },
+      "usage": {
+        "prompt_tokens": 9561,
+        "completion_tokens": 102,
+        "total_tokens": 9663
+      },
+      "latency_ms": 10196,
+      "five_e_total_latency_ms": 61580,
+      "five_e_total_tokens": 76180
+    },
+    {
+      "knowledge_point": "KP-REQ-02",
+      "student_kind": "insufficient",
+      "student_input": "不知道。",
+      "five_e_completed": true,
+      "five_e_turns": 7,
+      "status": "succeeded",
+      "output": {
+        "reply": "用例描述系统为参与者提供的功能，回答“系统做什么”；参与者是与系统交互的外部角色，可以是人，也可以是其他系统。参与者不一定是某个具体的人，而是按其与系统的关系来定义的角色。\n\n例如，在图书借阅系统中，“读者”是参与者，“借阅图书”是用例。读者发起借阅，系统完成身份核验、检查图书是否可借并登记借阅记录。"
+      },
+      "usage": {
+        "prompt_tokens": 9537,
+        "completion_tokens": 125,
+        "total_tokens": 9662
+      },
+      "latency_ms": 12206,
+      "five_e_total_latency_ms": 60879,
+      "five_e_total_tokens": 75685
+    },
+    {
+      "knowledge_point": "KP-VAL-01",
+      "student_kind": "ready",
+      "student_input": "我会先假设规格本身遗漏了真实场景，一方面检查实现是否符合规格，另一方面向用户核实实际用途和需要，这两种检查对象不同。",
+      "five_e_completed": true,
+      "five_e_turns": 5,
+      "status": "succeeded",
+      "output": {
+        "reply": "你的理解是正确的。验证（Verification）检查“是否按照规格把产品做对了”，例如用测试确认登录功能符合规格中关于密码长度和错误提示的要求。确认（Validation）检查“是否做了用户真正需要的产品”，例如向用户演示登录流程，核实它是否适合实际使用场景。规格可能遗漏真实需求，因此验证和确认需要分别进行。"
+      },
+      "usage": {
+        "prompt_tokens": 9575,
+        "completion_tokens": 100,
+        "total_tokens": 9675
+      },
+      "latency_ms": 11997,
+      "five_e_total_latency_ms": 49568,
+      "five_e_total_tokens": 53201
+    },
+    {
+      "knowledge_point": "KP-VAL-01",
+      "student_kind": "confused",
+      "student_input": "验证检查用户是否满意，确认检查代码是否符合设计规格，符合规格就一定满足实际需要。",
+      "five_e_completed": true,
+      "five_e_turns": 5,
+      "status": "succeeded",
+      "output": {
+        "reply": "这两者的检查重点说反了：**验证（Verification）**检查产品是否符合规定的需求、设计和规格，常概括为“是否正确地构建了产品”；**确认（Validation）**检查产品是否满足用户的实际需要，常概括为“是否构建了正确的产品”。\n\n例如，规格要求登录页面密码少于 8 位时提示错误。测试发现程序按此规格提示，说明通过了验证；但如果用户需要用密码管理器粘贴长密码，规格本身就不合适，那么产品仍未满足实际需要，确认未通过。因此，符合规格不一定代表满足用户需要。"
+      },
+      "usage": {
+        "prompt_tokens": 9556,
+        "completion_tokens": 158,
+        "total_tokens": 9714
+      },
+      "latency_ms": 13242,
+      "five_e_total_latency_ms": 41362,
+      "five_e_total_tokens": 53281
+    },
+    {
+      "knowledge_point": "KP-VAL-01",
+      "student_kind": "insufficient",
+      "student_input": "不知道。",
+      "five_e_completed": true,
+      "five_e_turns": 6,
+      "status": "succeeded",
+      "output": {
+        "reply": "软件验证与确认（V&V）是检查软件是否正确、是否满足用户需求的过程。\n\n- **验证（Verification）**：检查“我们是否正确地构建了软件？”依据需求规格、设计和代码，确认各阶段的产物彼此一致。常见方法有代码审查、静态分析和单元测试。\n- **确认（Validation）**：检查“我们是否构建了正确的软件？”通过运行软件或原型，判断它是否解决用户的实际问题。常见方法有系统测试和用户验收测试。\n\n**例子：**需求规定购物车满 100 元免运费。验证会检查代码是否按规格正确计算运费；确认会让用户试用结账流程，检查免运费功能是否符合他们的预期。"
+      },
+      "usage": {
+        "prompt_tokens": 9536,
+        "completion_tokens": 191,
+        "total_tokens": 9727
+      },
+      "latency_ms": 7726,
+      "five_e_total_latency_ms": 48512,
+      "five_e_total_tokens": 64247
+    },
+    {
+      "knowledge_point": "KP-TEST-01",
+      "student_kind": "ready",
+      "student_input": "十八到六十岁是有效类，低于十八和高于六十分别是无效类；我选择三十、十七、六十一来检查各组预期接受或拒绝的行为。",
+      "five_e_completed": true,
+      "five_e_turns": 5,
+      "status": "succeeded",
+      "output": {
+        "reply": "你的划分和测试值正确。若年龄输入范围为18到60岁（含端点），有效等价类是18至60岁，无效等价类是小于18岁和大于60岁。30代表有效类，17和61分别代表两个无效类；预期结果依次是接受、拒绝、拒绝。还可以用18和60检查边界是否包含在有效范围内。"
+      },
+      "usage": {
+        "prompt_tokens": 9581,
+        "completion_tokens": 106,
+        "total_tokens": 9687
+      },
+      "latency_ms": 8805,
+      "five_e_total_latency_ms": 51408,
+      "five_e_total_tokens": 53469
+    },
+    {
+      "knowledge_point": "KP-TEST-01",
+      "student_kind": "confused",
+      "student_input": "只选二十、三十、四十这些正常年龄即可覆盖全部等价类，不必检查小于十八或大于六十。",
+      "five_e_completed": true,
+      "five_e_turns": 6,
+      "status": "succeeded",
+      "output": {
+        "reply": "等价类划分是把输入划分为若干组，同一组中的输入预期有相同的处理结果，再从每组中选代表值测试。若年龄有效范围是 18～60 岁，至少应考虑三个等价类：小于 18 岁（无效）、18～60 岁（有效）、大于 60 岁（无效）。20、30、40 都属于有效类，只覆盖了一个等价类；还需测试有效范围两侧的无效类，例如 17、61。"
+      },
+      "usage": {
+        "prompt_tokens": 9566,
+        "completion_tokens": 133,
+        "total_tokens": 9699
+      },
+      "latency_ms": 8048,
+      "five_e_total_latency_ms": 54998,
+      "five_e_total_tokens": 64773
+    },
+    {
+      "knowledge_point": "KP-TEST-01",
+      "student_kind": "insufficient",
+      "student_input": "不知道。",
+      "five_e_completed": true,
+      "five_e_turns": 6,
+      "status": "succeeded",
+      "output": {
+        "reply": "等价类划分是一种黑盒测试方法：把输入数据按预期行为分成若干组，同一组里的数据被程序以相同方式处理。测试时从每组挑一个或少数几个代表值，减少重复测试。\n\n例如，注册年龄要求为 18～60 岁，可划分为三类：小于 18 岁（无效）、18～60 岁（有效）、大于 60 岁（无效）。可以分别选 17、30、61 作为测试数据。"
+      },
+      "usage": {
+        "prompt_tokens": 9535,
+        "completion_tokens": 132,
+        "total_tokens": 9667
+      },
+      "latency_ms": 9097,
+      "five_e_total_latency_ms": 58523,
+      "five_e_total_tokens": 64480
+    },
+    {
+      "knowledge_point": "KP-BOUND-01",
+      "student_kind": "ready",
+      "student_input": "对于整数一到一百，我优先考虑零、一、二、九十九、一百、一百零一，覆盖边界、紧邻内侧与外侧，并检查接受或拒绝行为。",
+      "five_e_completed": true,
+      "five_e_turns": 5,
+      "status": "succeeded",
+      "output": {
+        "reply": "你的理解基本正确。对有效范围为 1 到 100 的整数，边界值及其紧邻值是 0、1、2、99、100、101：0 和 101 在范围外，1 和 100 是边界，2 和 99 是紧邻边界的范围内值。测试时应确认 1 至 100 被接受，0 和 101 被拒绝。"
+      },
+      "usage": {
+        "prompt_tokens": 9577,
+        "completion_tokens": 103,
+        "total_tokens": 9680
+      },
+      "latency_ms": 18044,
+      "five_e_total_latency_ms": 46351,
+      "five_e_total_tokens": 53142
+    },
+    {
+      "knowledge_point": "KP-BOUND-01",
+      "student_kind": "confused",
+      "student_input": "一到一百只测二十、五十和八十即可发现所有边界错误，边界值和紧邻外侧的值没有区别。",
+      "five_e_completed": true,
+      "five_e_turns": 6,
+      "status": "succeeded",
+      "output": {
+        "reply": "边界值分析关注输入范围的端点及其附近，因为错误常出现在边界判断处。若有效范围是 1 到 100，通常应测 1、2、99、100；也可加入范围外紧邻值 0 和 101，检查系统是否正确拒绝非法输入。20、50、80 都是范围内部值，不能替代边界测试。边界值与紧邻外侧值也不同：例如 100 是有效上界，101 是越界值，分别检验不同的判断行为。"
+      },
+      "usage": {
+        "prompt_tokens": 9570,
+        "completion_tokens": 134,
+        "total_tokens": 9704
+      },
+      "latency_ms": 9347,
+      "five_e_total_latency_ms": 52664,
+      "five_e_total_tokens": 64697
+    },
+    {
+      "knowledge_point": "KP-BOUND-01",
+      "student_kind": "insufficient",
+      "student_input": "不知道。",
+      "five_e_completed": true,
+      "five_e_turns": 6,
+      "status": "succeeded",
+      "output": {
+        "reply": "边界值分析是一种黑盒测试方法：重点测试输入范围的边缘，因为错误常出现在边界附近。通常测试最小值、最大值，以及它们内外紧邻的值。\n\n例如，年龄输入范围规定为 18～60 岁，可测试 17、18、19、59、60、61，检查系统是否正确拒绝范围外的值，并接受范围内的值。"
+      },
+      "usage": {
+        "prompt_tokens": 9538,
+        "completion_tokens": 106,
+        "total_tokens": 9644
+      },
+      "latency_ms": 12894,
+      "five_e_total_latency_ms": 54027,
+      "five_e_total_tokens": 64365
+    }
+  ],
+  "successful": 15,
+  "total": 15,
+  "median_direct_latency_ms": 9347,
+  "median_five_e_total_latency_ms": 54027
+}

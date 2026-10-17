@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Literal
 
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -13,6 +14,11 @@ class Settings(BaseSettings):
     llm_base_url: str = "https://api.openai.com/v1"
     llm_model: str = ""
     llm_timeout_seconds: float = Field(default=30, ge=1, le=120)
+    # Diagnosis and 5E can use an inference channel separate from course RAG.
+    c_llm_backend: Literal["api", "codex"] = "api"
+    c_llm_model: str = ""
+    c_codex_timeout_seconds: float = Field(default=120, ge=10, le=300)
+    c_codex_binary: str = ""
     enable_demo: bool = True
 
     enable_dev_routes: bool = False

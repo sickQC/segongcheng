@@ -1,78 +1,58 @@
 # 知序 · 软件工程课程智能学习辅助系统
 
-> 2026-10-16 新增课程内小练习：教师在知识点下创建一道简答题，学生提交后在原处查看原答案、真实模型诊断、建议和思考追问；教师查看谁已提交、谁需关注。此功能不属于正式测验或布置作业。
+面向软件工程课程的学习辅助平台，提供课程管理、练习与测验、AI 错误诊断和五阶段学习引导。
 
-> 2026-10-16 更新：演示课程中的 `student01`、`student02` 现有**明确标记为模拟**的分章节学习历史（正确率、错题、薄弱知识点）。学生学习报告会展示各自的历史；资源学习页的内置 Markdown 讲义可用于真实模型答疑，报告页也可提问。只有当课程检索结果与该学生的薄弱点匹配且相关性达到 0.55 时，历史才会加入本次模型提示词，并显示“参考模拟历史”标记。它不是真实测验、正式画像、5E 或推荐算法。详情见 [个性化演示说明](docs/personalized-demo.md)。
+前端使用 Vue 3、TypeScript、Vite、Element Plus；后端使用 FastAPI、SQLAlchemy、Alembic，支持 SQLite 和 PostgreSQL。
 
-> 伙伴的 RAG 演示模块已整合，背景见 [合并修复与可用性检查](docs/integration-review.md)。目前只有预置课程的学生答疑接入了它；其他课程及完整学习业务仍按 501 占位。
-当前为 **P1 真实业务 + 四类业务页面与接口框架版本**。前端 Vue 3 + TypeScript + Vite + Element Plus，后端 FastAPI + SQLAlchemy + Alembic。已连接本机 PostgreSQL 18；数据库账号与密码仅保存在被 Git 忽略的 `.env`。初版规划的 PostgreSQL 16 不再是本机版本限制。
+## 功能状态
 
-## 已实现
+| 功能 | 当前状态 |
+| --- | --- |
+| 账号与课程 | 支持教师/学生登录、课程成员管理、章节和知识点维护，按身份与课程控制访问。 |
+| 知识点小练习 | 支持教师创建、学生作答、AI 诊断、回复追问及教师查看提交情况。每个知识点限一道练习。 |
+| 课程测验 | 支持单选、多选、判断、填空，包含时限、次数限制、服务端判分、错题自动诊断和历史恢复。 |
+| 5E 学习 | 支持引入、探究、解释、迁移、评价五阶段，依据回答质量切换阶段，保存反馈并恢复会话。 |
+| 综合学习诊断 | 汇总同一学生、课程和知识点的近期记录，区分客观正确率、AI 暂估掌握度与行为观察，支持证据核对、历史记录和失败重试。 |
+| 课程答疑 | 预置课程支持内置讲义检索答疑；相关模拟历史可作为上下文，页面明确标记。 |
+| 学习报告与教师看板 | 部分页面提供样例或模拟历史；正式画像、推荐和教师总看板仍待实现。 |
 
-- 学生/教师登录、退出、会话过期，Argon2 密码哈希、HttpOnly Cookie、来源与 CSRF 校验。
-- 我的课程、课程目录；教师创建课程、新建/编辑章节、新建/编辑/删除知识点。
-- 教师按已存在学生用户名添加课程成员；学生仅可浏览本人课程。
-- 知识点包含编号、定义、难度、学习目标，同课程编号唯一。
-- 章节知识点下的小练习：作答关联真实账号、课程、练习与学习事件，并保存原答案；教师可查看未提交、已提交及需关注学生。
-- 增量数据库迁移至 `0004`，可重复初始化的演示数据，保留旧迁移和原诊断回归。
-- 独立 `/api/v1` 业务接口；旧无鉴权演示由 `ENABLE_DEV_ROUTES` 显式控制。
+课件/视频上传解析、真实播放/阅读行为采集、独立题库组卷、知识图谱及个性化路径推荐尚未完成。测验不包含主观题 AI 评分；题目可额外标记前置检查目标。
 
-新增页面：资源学习（答疑/5E 侧栏）、课程测验（四种题型/结果布局）、个人学习报告（诊断/画像/推荐/记录/错题）、教师看板（热力图/学生详情）。它们有类型化请求层和权限检查；预置课程的学生报告与课程答疑现提供受限演示，其余业务仍明确返回 501。
+综合诊断的计数和时间顺序由程序核对，建议与追问使用已检查的迁移任务，AI 原稿保留供复核。行为模式有依据时，知识掌握度仍可为“未知”；未采集行为数据时不推断学习投入。
 
-**页面已做不等于业务已做。** 视频/课件存储解析、正式题库测验判分、多用户诊断、正式画像推荐、统计、5E 和推荐增强均待实现。资源管理、题库组卷和图谱的前端界面也待开发。已接入独立 RAG 内核与演示课程的个性化问答，但尚未完成正式课程资源及完整多轮会话。单题诊断和个性化问答均已在本机验证真实模型调用。pgvector 在本机尚未安装，本阶段没有向量字段。
+## 安装与启动
 
-## 本机直接运行
+以下命令在 Windows PowerShell 中执行，需要 Git、Python 3.11+ 和 Node.js/npm。
 
-此电脑的数据库、迁移、依赖和前端构建已经准备完成。在项目根目录运行：
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1
-```
-
-打开 [课程平台](http://127.0.0.1:8000)。如已有本项目服务占用 8000，直接访问或先结束旧服务再启动。脚本会先迁移数据库，但不会重置账号、删除数据或重跑种子。
-
-演示账号：`teacher`（教师）、`student01` / `student02`（学生）。本机初始密码由根目录 `.env` 中 `SEED_PASSWORD` 配置，初始化后只以 Argon2 哈希存入数据库。修改这个配置不会修改已存在账号的密码。请勿把 PostgreSQL 管理员密码当成平台账号密码。
-
-演示顺序：教师登录 → 打开“软件工程基础” → 新建章节和知识点 → 退出 → student01 登录 → 打开同一课程并刷新查看。新建课程默认只有创建教师，需在课程底部“课程成员”加入 student01 后该学生才可见。
-
-小练习演示：教师进入课程章节，在某知识点下点击“添加小练习”并写入简答题；学生阅读知识点后点“完成小练习”提交；原答案先入库，诊断完成后在同一位置显示结论、学习建议和思考追问；教师点“查看提交情况”看到每位课程学生的状态。模型不可用时答案仍保留，可点击“重试诊断”。“需关注”表示最近一次诊断失败、证据不足或暂定掌握度低于 0.6，并非正式成绩。每个知识点当前限一道小练习；尚无题目编辑/删除、作业发布、截止时间和批量分发。
-
-## 查看新页面
-
-登录 → 我的课程 → 打开课程 → 点击“资源学习 / 课程测验 / 学习报告”；教师课程页另有“教师看板”。
-
-- 默认“真实接口”：演示课程的学生学习报告显示明确标记的模拟历史，资源学习页可选择内置 Markdown 讲义进行真实模型问答；其余业务仍会明确提示尚未实现。
-- 手动打开“界面预览（样例）”：可检查资源布局、提问/引用、四题型、结果布局、报告标签页及教师学生详情。
-- 样例不入库、不调用模型、不提交真实作答；“查看结果布局样例”与判分区分。切换模式/页面会清空交互。
-- 真实视频/文档未导入，所以样例显示媒体占位区域。新页面仍需登录，教师看板有角色守卫。
-- 更新代码后先在 frontend 运行 `npm run build`，再重启后端；旧服务不会自动加载新增 Python 路由。
-
-| 页面地址（`/#` 后） | 组件 |
-|---|---|
-| /courses/:id/learn | LearningView.vue |
-| /courses/:id/quiz | QuizView.vue |
-| /courses/:id/report | LearningReportView.vue |
-| /teacher/courses/:id/dashboard | TeacherDashboardView.vue |
-
-## 新环境初始化
-
-需要 Python 3.11+、Node.js/npm、本地 PostgreSQL（本机验证版本 18）。依赖固定在两个 lock 文件；不用 Docker 也可运行步骤 1。
-
-1. 安装依赖并构建：
+### 1. 获取代码并安装依赖
 
 ```powershell
+git clone https://github.com/sickQC/segongcheng.git
+cd segongcheng
 powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1
 ```
 
-2. 在 PostgreSQL 中创建独立项目角色和数据库（在 SQL Shell 或 pgAdmin 中执行，替换示例密码，不改已有数据库）：
+已有克隆先保存自己的修改，再拉取要体验的分支的最新提交。依赖或前端有更新时，重新运行安装脚本。
 
-```sql
-CREATE ROLE se_learning_app LOGIN PASSWORD '在本机设置的专用密码' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-CREATE DATABASE se_learning OWNER se_learning_app;
+### 2. 配置环境
+
+在项目根目录执行，已有 `.env` 时保留原配置：
+
+```powershell
+if (-not (Test-Path -LiteralPath .env)) { Copy-Item -LiteralPath .env.example -Destination .env }
 ```
 
-3. 只有没有 `.env` 时才复制 `.env.example`，设置 DATABASE_URL 和 SEED_PASSWORD（至少 8 位）。连接密码的 URL 特殊字符需要编码。不要覆盖已有本机配置。
-4. 在根目录初始化：
+编辑 `.env`：
+
+- `SEED_PASSWORD`：设置至少 8 位的本地测试密码，用于首次创建演示账号。
+- 数据库：快速体验可删除 `DATABASE_URL=...` 整行，使用默认的 `backend/learning.db` SQLite 文件；不要设为空值。使用 PostgreSQL 时，先创建数据库和角色，再填写自己的连接地址。
+- 模型：按下方“模型配置”填写。未配置模型也能使用课程、作答、判分和历史记录。
+
+本机配置、数据库、登录状态、虚拟环境和前端构建产物不会随 Git 克隆。
+
+### 3. 初始化并启动
+
+在项目根目录执行：
 
 ```powershell
 .\.venv\Scripts\python.exe -m alembic -c backend/alembic.ini upgrade head
@@ -80,69 +60,89 @@ CREATE DATABASE se_learning OWNER se_learning_app;
 powershell -ExecutionPolicy Bypass -File .\scripts\start.ps1
 ```
 
-种子创建一名教师、两名学生、一门课程、两章四个知识点。重复执行不重置密码、不覆盖现有编辑；缺失的内置演示记录会补建。遇到同名非种子账号会报冲突，绝不覆盖。
+打开 <http://127.0.0.1:8000>。以后启动只需运行 `scripts/start.ps1`；该脚本自动迁移数据库，不重置账号或重新生成种子。
 
-SQLite 旧库保留在原位置，没有自动复制到 PostgreSQL。切换数据库只改变连接目标；迁移会保留目标数据库已有 Sprint 0 数据。
+初始化创建 `teacher`、`student01`、`student02`，以及一门课程、两章四个知识点。初始密码为自己设置的 `SEED_PASSWORD`；重复初始化不会修改已有账号密码。小练习和测验需由教师创建。
 
-## 开发与验证
+若 8000 无法绑定，完成初始化后可在根目录改用以下命令，访问 <http://127.0.0.1:8765>：
 
-后端（根目录）：
+```powershell
+$env:ALLOWED_ORIGINS='["http://127.0.0.1:8765","http://localhost:8765"]'
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8765
+```
+
+使用相对 SQLite 地址时，迁移、初始化和服务须保持一致的工作目录；默认绝对路径不受此影响。切换到 PostgreSQL 不会自动导入 SQLite 数据。
+
+## 模型配置
+
+在 `.env` 中填写，修改后重启后端：
+
+```dotenv
+LLM_API_KEY=填写自己的APIKey
+LLM_BASE_URL=填写兼容API基础地址
+LLM_MODEL=填写模型名称
+C_LLM_BACKEND=api
+C_LLM_MODEL=
+```
+
+`LLM_*` 用于课程答疑等模型调用；`C_LLM_*` 配置练习诊断、测验诊断、综合诊断和 5E。使用 API 时，`C_LLM_MODEL` 留空则沿用 `LLM_MODEL`。模型服务须支持 `/chat/completions` 和 JSON 输出，基础地址不要重复包含该后缀。
+
+模型不可用时，答案与客观分数仍保存，失败诊断可重试；5E 的真实反馈与阶段推进需要可用模型。共享部署使用 API，各自的密钥填写在被 Git 忽略的 `.env` 中。
+
+本机个人演示可将 `C_LLM_BACKEND` 改为 `codex`，并在 `C_LLM_MODEL` 填写本机登录可用的模型名。Windows 上 `C_CODEX_BINARY` 留空会优先查找桌面应用自带的 CLI；手动指定路径时，程序必须存在并已登录。此方式只切换诊断与 5E，课程答疑仍使用 `LLM_*` API 配置。
+
+## 基本使用
+
+登录后打开“软件工程基础”，保持“真实接口”模式。
+
+| 入口 | 使用流程 |
+| --- | --- |
+| 课程目录 | 教师维护章节、知识点和课程成员；学生浏览已加入的课程。新建课程需先添加学生成员。 |
+| 知识点小练习 | 教师添加简答题 → 学生提交 → 查看诊断并回复追问；教师可查看提交情况。 |
+| 课程测验 | 教师录入题目、标准答案与解析后发布 → 学生开始、交卷 → 查看成绩及错题诊断。标准答案填写完整选项文本，多选每行一条。 |
+| 资源学习 → 课程答疑 | 选择内置讲义后提问，查看回答与引用。 |
+| 资源学习 → 5E 引导 | 学生选择知识点并开始会话，按当前任务回答，最后完成小测并解释依据。刷新后可恢复历史。 |
+| 个人学习报告 → 综合学习诊断 | 先完成练习、测验或 5E，再选择知识点分析最近 30 天的记录；可核对证据、查看历史并重试失败任务。可用证据不足时掌握度显示“未知”。 |
+
+5E 和综合诊断的迁移任务已配置五个知识点模板，种子课程默认包含其中四个；体验边界值模板时，教师需新增编号为 `KP-BOUND-01` 的“边界值分析”知识点。更新后的诊断规则用于新生成的报告，已有历史报告保留原样。
+
+“界面预览”使用样例数据，不保存作答、不调用模型。学习报告中的模拟历史有明确标记。
+
+## 开发与测试
+
+前后端分别开发时，后端在根目录启动，前端在另一个终端启动：
 
 ```powershell
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
 ```
 
-前端另开终端在 `frontend` 下运行 `npm run dev`。Vite 代理 `/api` 与 `/health`；受信任来源在 ALLOWED_ORIGINS 配置，增加端口或域名时同步修改。开发者工具不要向控制台打印 `.env` 或数据库连接密码。
+```powershell
+cd frontend
+npm run dev
+```
+
+Vite 默认代理后端 8000；修改端口时同步修改代理与 `ALLOWED_ORIGINS`。使用后端提供的完整页面时，前端修改后需重新构建，后端代码修改后需重启服务。
+
+在项目根目录执行回归测试和前端类型检查/构建：
 
 ```powershell
-# SQLite 回归 + 前端类型检查/构建
 powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1
-# 另加本机 PostgreSQL 测试（独立随机 schema，测试后清理）
-powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1 -Postgres
-.\.venv\Scripts\python.exe -m ruff check backend/app backend/tests backend/alembic scripts/seed_data.py
-.\.venv\Scripts\python.exe -m alembic -c backend/alembic.ini check
 ```
 
-导出接口（在 backend 目录）：`..\.venv\Scripts\python.exe ..\scripts\export_openapi.py`。
-实际契约：[api.yaml](docs/api.yaml)，浏览器 [Swagger](http://127.0.0.1:8000/docs)，JSON [OpenAPI](http://127.0.0.1:8000/openapi.json)。Swagger UI 依赖外部静态资源；Cookie 写接口还需发送正确 Origin 和 X-CSRF-Token，普通页面已处理。
+普通回归使用模拟模型响应，不需要 API Key。另测 PostgreSQL 时，配置独立测试库及可创建/删除测试 schema 的角色，再运行 `scripts/test.ps1 -Postgres`。
 
-## 旧课堂演示
+手动验证重点：漏答提示、错题判分与诊断、次数限制、跨用户访问、模型失败保留、刷新恢复。真实模型评测命令、测试结果和截图见下方功能验证记录。
 
-本机 `.env` 显式启用了 ENABLE_DEV_ROUTES，可从侧栏打开旧的固定题诊断和记录；该旧入口仍使用独立模拟学生数据。课程章节里的新增小练习则使用正式登录学生账号，即使关闭开发路由仍可使用。`ENABLE_DEMO` 仅控制旧入口的固定模拟答案。
+最近一轮验证（2026-10-17）：SQLite/PostgreSQL 联合回归 **289 项通过**，前端类型检查与构建通过。综合诊断的完整多轮及消融验收仍待完成；开发集验证、旧输出回放和人工/AI 复核记录见下方“综合诊断与评测”。
 
-原版启动和真实模型配置说明保留在 [Sprint 0 历史说明](docs/sprint/sprint-0-readme.md)。真实模型失败不自动变成模拟成功；当前保留了这套回归逻辑。
+## 相关文档
 
-## 文档与后续
-
-- [需求规划](需求规划.md)：完整功能和技术栈。
-- [实施路线](docs/implementation-plan.md)：目录与分步执行。
-- [接口草案](docs/api-design.md)：未来模块设计；P1 已实现部分见实际 OpenAPI。
-- [P1 验证记录](docs/sprint/p1-foundation.md)：本轮验证与边界。
-
-## 交接入口与目录
-
-请接手者优先阅读：
-
-1. [接口交接文档](docs/handoff-api.md)：真实接口、10 个占位接口、字段定义、权限、与旧草案的差异。
-2. [剩余开发清单](docs/handoff-todo.md)：尚未实现的后端业务及前端功能、开发顺序和验证边界。
-3. [完整需求规划](需求规划.md)：老师要求与最终验收目标。
-
-```text
-frontend/src/
-  views/                  登录、课程、四类新页面与旧演示
-  components/             WorkspaceHeader、ReportPanels
-  api/client.ts           Cookie / CSRF / 错误处理
-  api/workspace.ts         新页面的真实请求函数
-  api/preview.ts           仅手动预览使用的内存样例
-  types/workspace.ts       前端业务契约
-backend/app/
-  api/routes/workspace.py  演示课程个性化答疑与其余占位接口，复用现有权限
-  schemas/workspace.py     请求和未来成功响应的字段模型
-  services/               当前真实 P1 / 旧演示服务；待增加业务服务
-backend/alembic/           现有迁移，本轮无新表
-```
-
-本轮验证：103 项后端测试（SQLite 和 PostgreSQL）、前端类型检查与构建、Ruff；`tests/browser-practice.cjs` 已在 Edge 中走通教师创建、学生真实作答诊断、教师查看提交。旧页面回归脚本为 `tests/browser-workspace.cjs`。下一步可继续资源管理、正式题库测验和学习画像联动。不要把前端样例作为数据库种子或正式接口结果。
-
-
-浏览器实测通过（Edge）：内置讲义与学生模拟历史可显示，其余真实业务保留 501 提示；样例交互、四题型、报告标签页、学生详情和学生教师路由隔离正常，390px 手机无横向溢出，预览无业务 POST。
+- [更新记录](CHANGELOG.md)：新增功能、修复及更新后的体验入口。
+- [需求规划](需求规划.md)：项目目标、范围与验收要求。
+- [实施路线](docs/implementation-plan.md)：模块与开发顺序。
+- [接口契约](docs/api.yaml)：当前 OpenAPI；运行后可访问 <http://127.0.0.1:8000/docs>。
+- [测验与 5E 验证记录](docs/member-c/second-round.md)：测验、错题诊断和五阶段学习的实现与验证。
+- [综合诊断与评测](docs/diagnosis-evaluation.md)：证据规则、接口、评测数据、人工复核和消融运行方法。
+- [个性化演示说明](docs/personalized-demo.md)：内置讲义与模拟历史的使用范围。
+- [历史交接文档](docs/handoff-api.md)：部分旧占位状态以当前代码和接口契约为准。
+- [早期演示说明](docs/sprint/sprint-0-readme.md)：开发演示入口由 `ENABLE_DEV_ROUTES` 控制，默认关闭。

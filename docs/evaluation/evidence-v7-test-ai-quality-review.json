@@ -1,0 +1,1013 @@
+{
+  "reviewed_at": "2026-10-17T06:07:53.304221+00:00",
+  "reviewer_type": "ai",
+  "reviewer": "Codex current assistant",
+  "reviewer_model": null,
+  "rubric_version": "output-quality-ai-review-v1",
+  "rubric": {
+    "explanation": "核对事实、计数、时间顺序、跨来源冲突及类型/状态一致性；场景名称不当作应用实例。",
+    "recommendation": "知识正确、与需求有关、可执行；避免泛化人格判断及提前给追问答案。",
+    "followup": "能继续检验理解；具体数值题条件足够；结合整份回复检查是否提前给答案。"
+  },
+  "scope_note": "当前助手的AI复核，非人工或独立外部专家验收。没有重新请求模型，没有修改原始输出、提示、标签或95%分类指标。",
+  "source_sha256": {
+    "docs/evaluation/evidence-v7-test-full-reviewed.json": "2ce9c0774d2a866306b6d35ae4c9a0ed4f739de2e9124e7b79effd304d258d50",
+    "data/eval/learning_diagnosis/v2/test.jsonl": "e2b640a5c0551a02706301581eef014dbcfe27e8391e2b9726aa9a8e4ec475df",
+    "data/eval/learning_diagnosis/v2/label-review.csv": "9433ef449dae6ea917cb7261c0cdf98b9a91d323fd4b35fb37bb453951c6f3ea"
+  },
+  "previous_review_csv_sha256": "e48af0f93a85def3b12569dd93ad2ab74750c821c140b89a9eb3a81e178dd899",
+  "summary": {
+    "cases": 40,
+    "overall": {
+      "pass": 23,
+      "revise": 13,
+      "fail": 4
+    },
+    "by_dimension": {
+      "explanation": {
+        "pass": 30,
+        "revise": 7,
+        "fail": 3
+      },
+      "recommendation": {
+        "pass": 39,
+        "revise": 1
+      },
+      "followup": {
+        "pass": 32,
+        "revise": 7,
+        "fail": 1
+      }
+    },
+    "finding_codes": {
+      "SCENARIO_NAME_NOT_APPLICATION": 2,
+      "PARAMETER_AND_BOUNDARY_AMBIGUOUS": 1,
+      "LATEST_DIALOGUE_CONFLICT_OMITTED": 5,
+      "BOUNDARY_TEST_PRECONDITIONS_MISSING": 6,
+      "BEHAVIOR_AND_MASTERY_CONFLATED": 2,
+      "SUGGESTION_PREANSWERS_FOLLOWUP": 1,
+      "CROSS_FIELD_ANSWER_LEAK": 1,
+      "OBJECTIVE_COUNT_ERROR": 1,
+      "UNOBSERVED_BEHAVIOR_CLAIM": 1
+    },
+    "type_accuracy_unchanged": 0.95
+  },
+  "records": [
+    {
+      "id": "test-learner-060",
+      "variant": "full",
+      "expected_type": "practice_only",
+      "predicted_type": "practice_only",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-061",
+      "variant": "full",
+      "expected_type": "no_obvious_issue",
+      "predicted_type": "no_obvious_issue",
+      "verdicts": {
+        "explanation": "revise",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "学生只写了‘我给出的例子是医院预约’，没有给出角色、输入类别或判断过程；解释把场景名称称为例子，容易夸大应用证据。定义复述及客观正确率仍有依据。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": [
+        {
+          "dimension": "explanation",
+          "verdict": "revise",
+          "code": "SCENARIO_NAME_NOT_APPLICATION",
+          "reason": "学生只写了‘我给出的例子是医院预约’，没有给出角色、输入类别或判断过程；解释把场景名称称为例子，容易夸大应用证据。定义复述及客观正确率仍有依据。",
+          "evidence_event_ids": [
+            "test-learner-061-event-20",
+            "test-learner-061-event-21"
+          ],
+          "suggested_revision": "改为‘能陈述相关定义，提及医院预约场景但未展开应用实例；迁移能力需要新任务核实’，不要据场景名称断言已会应用。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-062",
+      "variant": "full",
+      "expected_type": "insufficient_evidence",
+      "predicted_type": "insufficient_evidence",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-063",
+      "variant": "full",
+      "expected_type": "concept_confusion",
+      "predicted_type": "concept_confusion",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-064",
+      "variant": "full",
+      "expected_type": "prerequisite_gap",
+      "predicted_type": "prerequisite_gap",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "revise"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "追问‘选择哪个输入作为边界’混合了输入参数与边界值；也没有给定规则或要求学生先定义取值范围，难以形成可核对答案。"
+      },
+      "findings": [
+        {
+          "dimension": "followup",
+          "verdict": "revise",
+          "code": "PARAMETER_AND_BOUNDARY_AMBIGUOUS",
+          "reason": "追问‘选择哪个输入作为边界’混合了输入参数与边界值；也没有给定规则或要求学生先定义取值范围，难以形成可核对答案。",
+          "evidence_event_ids": [],
+          "suggested_revision": "改为‘某预约系统规定每次预约人数必须是1到5的整数，包含端点。你会怎样选择测试人数并说明接受或拒绝的预期？’"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-065",
+      "variant": "full",
+      "expected_type": "repeated_error",
+      "predicted_type": "repeated_error",
+      "verdicts": {
+        "explanation": "revise",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "最新客观题 event-48 错误，但随后 event-49 的学生对话表述正确。原解释将正确理解主要写成较早/此前证据，漏掉最近的跨来源冲突；这影响对是否纠正的解释。三次客观错答标签本身仍符合当前规则。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": [
+        {
+          "dimension": "explanation",
+          "verdict": "revise",
+          "code": "LATEST_DIALOGUE_CONFLICT_OMITTED",
+          "reason": "最新客观题 event-48 错误，但随后 event-49 的学生对话表述正确。原解释将正确理解主要写成较早/此前证据，漏掉最近的跨来源冲突；这影响对是否纠正的解释。三次客观错答标签本身仍符合当前规则。",
+          "evidence_event_ids": [
+            "test-learner-065-event-42",
+            "test-learner-065-event-45",
+            "test-learner-065-event-48",
+            "test-learner-065-event-49"
+          ],
+          "suggested_revision": "同时说明最近三次客观错答与 event-49 正确对话并存；保留反复客观错误观察，用新的应用题核实能否稳定纠正，不宣称最新语义理解始终错误。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-066",
+      "variant": "full",
+      "expected_type": "low_engagement",
+      "predicted_type": "low_engagement",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-067",
+      "variant": "full",
+      "expected_type": "practice_only",
+      "predicted_type": "practice_only",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-068",
+      "variant": "full",
+      "expected_type": "no_obvious_issue",
+      "predicted_type": "no_obvious_issue",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-069",
+      "variant": "full",
+      "expected_type": "insufficient_evidence",
+      "predicted_type": "insufficient_evidence",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "revise"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长；端点是否包含也不明确。这是题目条件完整性问题，没有发现直接列出答案。"
+      },
+      "findings": [
+        {
+          "dimension": "followup",
+          "verdict": "revise",
+          "code": "BOUNDARY_TEST_PRECONDITIONS_MISSING",
+          "reason": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长；端点是否包含也不明确。这是题目条件完整性问题，没有发现直接列出答案。",
+          "evidence_event_ids": [],
+          "suggested_revision": "明确‘输入必须是1到10的整数，包含两端’，再要求学生自行选择测试值并解释预期结果；不要列出测试值清单。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-070",
+      "variant": "full",
+      "expected_type": "concept_confusion",
+      "predicted_type": "concept_confusion",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-071",
+      "variant": "full",
+      "expected_type": "prerequisite_gap",
+      "predicted_type": "prerequisite_gap",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-072",
+      "variant": "full",
+      "expected_type": "repeated_error",
+      "predicted_type": "repeated_error",
+      "verdicts": {
+        "explanation": "revise",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "最新客观题 event-48 错误，但随后 event-49 的学生对话表述正确。原解释将正确理解主要写成较早/此前证据，漏掉最近的跨来源冲突；这影响对是否纠正的解释。三次客观错答标签本身仍符合当前规则。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": [
+        {
+          "dimension": "explanation",
+          "verdict": "revise",
+          "code": "LATEST_DIALOGUE_CONFLICT_OMITTED",
+          "reason": "最新客观题 event-48 错误，但随后 event-49 的学生对话表述正确。原解释将正确理解主要写成较早/此前证据，漏掉最近的跨来源冲突；这影响对是否纠正的解释。三次客观错答标签本身仍符合当前规则。",
+          "evidence_event_ids": [
+            "test-learner-072-event-42",
+            "test-learner-072-event-45",
+            "test-learner-072-event-48",
+            "test-learner-072-event-49"
+          ],
+          "suggested_revision": "同时说明最近三次客观错答与 event-49 正确对话并存；保留反复客观错误观察，用新的应用题核实能否稳定纠正，不宣称最新语义理解始终错误。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-073",
+      "variant": "full",
+      "expected_type": "low_engagement",
+      "predicted_type": "insufficient_evidence",
+      "verdicts": {
+        "explanation": "fail",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "fail",
+      "rationale": {
+        "explanation": "解释承认完整窗口、资源可用、覆盖率0.05、有效时长8秒满足低投入条件，输出却因无法估计掌握度而整体归为证据不足，与 v7 规则和已审标签冲突。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": [
+        {
+          "dimension": "explanation",
+          "verdict": "fail",
+          "code": "BEHAVIOR_AND_MASTERY_CONFLATED",
+          "reason": "解释承认完整窗口、资源可用、覆盖率0.05、有效时长8秒满足低投入条件，输出却因无法估计掌握度而整体归为证据不足，与 v7 规则和已审标签冲突。",
+          "evidence_event_ids": [
+            "test-learner-073-event-48",
+            "test-learner-073-event-49"
+          ],
+          "suggested_revision": "区分两个结论：行为观察为 low_engagement、status=supported；知识掌握度仍为 null。解释保留单次错答不足以定位知识误解的事实。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-074",
+      "variant": "full",
+      "expected_type": "practice_only",
+      "predicted_type": "practice_only",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "revise"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长；端点是否包含也不明确。这是题目条件完整性问题，没有发现直接列出答案。"
+      },
+      "findings": [
+        {
+          "dimension": "followup",
+          "verdict": "revise",
+          "code": "BOUNDARY_TEST_PRECONDITIONS_MISSING",
+          "reason": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长；端点是否包含也不明确。这是题目条件完整性问题，没有发现直接列出答案。",
+          "evidence_event_ids": [],
+          "suggested_revision": "明确‘输入必须是10到20的整数，包含两端’，再要求学生自行选择测试值并解释预期结果；不要列出测试值清单。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-075",
+      "variant": "full",
+      "expected_type": "no_obvious_issue",
+      "predicted_type": "no_obvious_issue",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-076",
+      "variant": "full",
+      "expected_type": "insufficient_evidence",
+      "predicted_type": "insufficient_evidence",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-077",
+      "variant": "full",
+      "expected_type": "concept_confusion",
+      "predicted_type": "concept_confusion",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-078",
+      "variant": "full",
+      "expected_type": "prerequisite_gap",
+      "predicted_type": "prerequisite_gap",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-079",
+      "variant": "full",
+      "expected_type": "repeated_error",
+      "predicted_type": "repeated_error",
+      "verdicts": {
+        "explanation": "revise",
+        "recommendation": "pass",
+        "followup": "revise"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "最新客观题 event-48 错误，但随后 event-49 的学生对话表述正确。原解释将正确理解主要写成较早/此前证据，漏掉最近的跨来源冲突；这影响对是否纠正的解释。三次客观错答标签本身仍符合当前规则。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长。虽然声明包含端点，紧邻值的粒度仍不明确。这是题目条件完整性问题，没有发现直接列出答案。"
+      },
+      "findings": [
+        {
+          "dimension": "explanation",
+          "verdict": "revise",
+          "code": "LATEST_DIALOGUE_CONFLICT_OMITTED",
+          "reason": "最新客观题 event-48 错误，但随后 event-49 的学生对话表述正确。原解释将正确理解主要写成较早/此前证据，漏掉最近的跨来源冲突；这影响对是否纠正的解释。三次客观错答标签本身仍符合当前规则。",
+          "evidence_event_ids": [
+            "test-learner-079-event-42",
+            "test-learner-079-event-45",
+            "test-learner-079-event-48",
+            "test-learner-079-event-49"
+          ],
+          "suggested_revision": "同时说明最近三次客观错答与 event-49 正确对话并存；保留反复客观错误观察，用新的应用题核实能否稳定纠正，不宣称最新语义理解始终错误。"
+        },
+        {
+          "dimension": "followup",
+          "verdict": "revise",
+          "code": "BOUNDARY_TEST_PRECONDITIONS_MISSING",
+          "reason": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长。虽然声明包含端点，紧邻值的粒度仍不明确。这是题目条件完整性问题，没有发现直接列出答案。",
+          "evidence_event_ids": [],
+          "suggested_revision": "明确‘输入必须是10到50的整数，包含两端’，再要求学生自行选择测试值并解释预期结果；不要列出测试值清单。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-080",
+      "variant": "full",
+      "expected_type": "low_engagement",
+      "predicted_type": "low_engagement",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-081",
+      "variant": "full",
+      "expected_type": "practice_only",
+      "predicted_type": "practice_only",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-082",
+      "variant": "full",
+      "expected_type": "no_obvious_issue",
+      "predicted_type": "no_obvious_issue",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-083",
+      "variant": "full",
+      "expected_type": "insufficient_evidence",
+      "predicted_type": "insufficient_evidence",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-084",
+      "variant": "full",
+      "expected_type": "concept_confusion",
+      "predicted_type": "concept_confusion",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "revise"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长。虽然声明包含端点，紧邻值的粒度仍不明确。这是题目条件完整性问题，没有发现直接列出答案。"
+      },
+      "findings": [
+        {
+          "dimension": "followup",
+          "verdict": "revise",
+          "code": "BOUNDARY_TEST_PRECONDITIONS_MISSING",
+          "reason": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长。虽然声明包含端点，紧邻值的粒度仍不明确。这是题目条件完整性问题，没有发现直接列出答案。",
+          "evidence_event_ids": [],
+          "suggested_revision": "明确‘输入必须是20到50的整数，包含两端’，再要求学生自行选择测试值并解释预期结果；不要列出测试值清单。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-085",
+      "variant": "full",
+      "expected_type": "prerequisite_gap",
+      "predicted_type": "prerequisite_gap",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-086",
+      "variant": "full",
+      "expected_type": "repeated_error",
+      "predicted_type": "repeated_error",
+      "verdicts": {
+        "explanation": "revise",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "最新客观题 event-48 错误，但随后 event-49 的学生对话表述正确。原解释将正确理解主要写成较早/此前证据，漏掉最近的跨来源冲突；这影响对是否纠正的解释。三次客观错答标签本身仍符合当前规则。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": [
+        {
+          "dimension": "explanation",
+          "verdict": "revise",
+          "code": "LATEST_DIALOGUE_CONFLICT_OMITTED",
+          "reason": "最新客观题 event-48 错误，但随后 event-49 的学生对话表述正确。原解释将正确理解主要写成较早/此前证据，漏掉最近的跨来源冲突；这影响对是否纠正的解释。三次客观错答标签本身仍符合当前规则。",
+          "evidence_event_ids": [
+            "test-learner-086-event-42",
+            "test-learner-086-event-45",
+            "test-learner-086-event-48",
+            "test-learner-086-event-49"
+          ],
+          "suggested_revision": "同时说明最近三次客观错答与 event-49 正确对话并存；保留反复客观错误观察，用新的应用题核实能否稳定纠正，不宣称最新语义理解始终错误。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-087",
+      "variant": "full",
+      "expected_type": "low_engagement",
+      "predicted_type": "insufficient_evidence",
+      "verdicts": {
+        "explanation": "fail",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "fail",
+      "rationale": {
+        "explanation": "解释承认完整窗口、资源可用、覆盖率0.05、有效时长8秒满足低投入条件，输出却因无法估计掌握度而整体归为证据不足，与 v7 规则和已审标签冲突。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": [
+        {
+          "dimension": "explanation",
+          "verdict": "fail",
+          "code": "BEHAVIOR_AND_MASTERY_CONFLATED",
+          "reason": "解释承认完整窗口、资源可用、覆盖率0.05、有效时长8秒满足低投入条件，输出却因无法估计掌握度而整体归为证据不足，与 v7 规则和已审标签冲突。",
+          "evidence_event_ids": [
+            "test-learner-087-event-48",
+            "test-learner-087-event-49"
+          ],
+          "suggested_revision": "区分两个结论：行为观察为 low_engagement、status=supported；知识掌握度仍为 null。解释保留单次错答不足以定位知识误解的事实。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-088",
+      "variant": "full",
+      "expected_type": "practice_only",
+      "predicted_type": "practice_only",
+      "verdicts": {
+        "explanation": "revise",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "学生只写了‘我给出的例子是医院预约’，没有给出角色、输入类别或判断过程；解释把场景名称称为例子，容易夸大应用证据。定义复述及客观正确率仍有依据。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": [
+        {
+          "dimension": "explanation",
+          "verdict": "revise",
+          "code": "SCENARIO_NAME_NOT_APPLICATION",
+          "reason": "学生只写了‘我给出的例子是医院预约’，没有给出角色、输入类别或判断过程；解释把场景名称称为例子，容易夸大应用证据。定义复述及客观正确率仍有依据。",
+          "evidence_event_ids": [
+            "test-learner-088-event-20",
+            "test-learner-088-event-21"
+          ],
+          "suggested_revision": "改为‘能陈述相关定义，提及医院预约场景但未展开应用实例；迁移能力需要新任务核实’，不要据场景名称断言已会应用。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-089",
+      "variant": "full",
+      "expected_type": "no_obvious_issue",
+      "predicted_type": "no_obvious_issue",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "revise"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长；端点是否包含也不明确。这是题目条件完整性问题，没有发现直接列出答案。"
+      },
+      "findings": [
+        {
+          "dimension": "followup",
+          "verdict": "revise",
+          "code": "BOUNDARY_TEST_PRECONDITIONS_MISSING",
+          "reason": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长；端点是否包含也不明确。这是题目条件完整性问题，没有发现直接列出答案。",
+          "evidence_event_ids": [],
+          "suggested_revision": "明确‘输入必须是1到100的整数，包含两端’，再要求学生自行选择测试值并解释预期结果；不要列出测试值清单。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-090",
+      "variant": "full",
+      "expected_type": "insufficient_evidence",
+      "predicted_type": "insufficient_evidence",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-091",
+      "variant": "full",
+      "expected_type": "concept_confusion",
+      "predicted_type": "concept_confusion",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "revise",
+        "followup": "fail"
+      },
+      "overall": "fail",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "建议已将支付平台划为系统边界外，紧接着追问同一支付平台是否为参与者，提前给出了分类线索和主要答案。系统边界也应先定义，而不是把某对象永远固定为内部或外部。",
+        "followup": "追问单独阅读没有列标准答案，但与前一段建议连读时，支付平台的边界归属已被给出。应按整份回复检查答案泄露，不能仅检查追问字段。"
+      },
+      "findings": [
+        {
+          "dimension": "recommendation",
+          "verdict": "revise",
+          "code": "SUGGESTION_PREANSWERS_FOLLOWUP",
+          "reason": "建议已将支付平台划为系统边界外，紧接着追问同一支付平台是否为参与者，提前给出了分类线索和主要答案。系统边界也应先定义，而不是把某对象永远固定为内部或外部。",
+          "evidence_event_ids": [],
+          "suggested_revision": "建议只要求先定义系统边界并比较待判断对象，不预先给对象分类；解释概念后，追问换用独立场景和新对象。"
+        },
+        {
+          "dimension": "followup",
+          "verdict": "fail",
+          "code": "CROSS_FIELD_ANSWER_LEAK",
+          "reason": "追问单独阅读没有列标准答案，但与前一段建议连读时，支付平台的边界归属已被给出。应按整份回复检查答案泄露，不能仅检查追问字段。",
+          "evidence_event_ids": [],
+          "suggested_revision": "改用新对象：‘某系统只负责预约登记，短信由独立供应商提供。短信平台是否可能是参与者？请说明系统边界和交互依据。’不在前文替这个对象分类。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-092",
+      "variant": "full",
+      "expected_type": "prerequisite_gap",
+      "predicted_type": "prerequisite_gap",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-093",
+      "variant": "full",
+      "expected_type": "repeated_error",
+      "predicted_type": "repeated_error",
+      "verdicts": {
+        "explanation": "fail",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "fail",
+      "rationale": {
+        "explanation": "最新客观题 event-48 错误，但随后 event-49 的学生对话表述正确。原解释将正确理解主要写成较早/此前证据，漏掉最近的跨来源冲突；这影响对是否纠正的解释。三次客观错答标签本身仍符合当前规则。；原解释写‘前八次客观答题均正确，之后连续三次错误’，合计11次；冻结窗口实际10次答题，其中7次正确、3次错误。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": [
+        {
+          "dimension": "explanation",
+          "verdict": "revise",
+          "code": "LATEST_DIALOGUE_CONFLICT_OMITTED",
+          "reason": "最新客观题 event-48 错误，但随后 event-49 的学生对话表述正确。原解释将正确理解主要写成较早/此前证据，漏掉最近的跨来源冲突；这影响对是否纠正的解释。三次客观错答标签本身仍符合当前规则。",
+          "evidence_event_ids": [
+            "test-learner-093-event-42",
+            "test-learner-093-event-45",
+            "test-learner-093-event-48",
+            "test-learner-093-event-49"
+          ],
+          "suggested_revision": "同时说明最近三次客观错答与 event-49 正确对话并存；保留反复客观错误观察，用新的应用题核实能否稳定纠正，不宣称最新语义理解始终错误。"
+        },
+        {
+          "dimension": "explanation",
+          "verdict": "fail",
+          "code": "OBJECTIVE_COUNT_ERROR",
+          "reason": "原解释写‘前八次客观答题均正确，之后连续三次错误’，合计11次；冻结窗口实际10次答题，其中7次正确、3次错误。",
+          "evidence_event_ids": [
+            "test-learner-093-event-21",
+            "test-learner-093-event-24",
+            "test-learner-093-event-27",
+            "test-learner-093-event-30",
+            "test-learner-093-event-33",
+            "test-learner-093-event-36",
+            "test-learner-093-event-39",
+            "test-learner-093-event-42",
+            "test-learner-093-event-45",
+            "test-learner-093-event-48"
+          ],
+          "suggested_revision": "将‘前八次’改为‘前七次’，并核对总数10、错数3、正确率0.7；同时保留最新正确对话造成的冲突。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-094",
+      "variant": "full",
+      "expected_type": "low_engagement",
+      "predicted_type": "low_engagement",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "revise"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长；端点是否包含也不明确。这是题目条件完整性问题，没有发现直接列出答案。"
+      },
+      "findings": [
+        {
+          "dimension": "followup",
+          "verdict": "revise",
+          "code": "BOUNDARY_TEST_PRECONDITIONS_MISSING",
+          "reason": "追问要求给出边界/紧邻测试值，但未声明整数或最小步长；端点是否包含也不明确。这是题目条件完整性问题，没有发现直接列出答案。",
+          "evidence_event_ids": [],
+          "suggested_revision": "明确‘输入必须是1到10的整数，包含两端’，再要求学生自行选择测试值并解释预期结果；不要列出测试值清单。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-095",
+      "variant": "full",
+      "expected_type": "practice_only",
+      "predicted_type": "practice_only",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-096",
+      "variant": "full",
+      "expected_type": "no_obvious_issue",
+      "predicted_type": "no_obvious_issue",
+      "verdicts": {
+        "explanation": "revise",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "revise",
+      "rationale": {
+        "explanation": "冻结快照没有行为测量，原解释却概括为‘未见明显错误或行为问题’。知识理解的正面证据不能用于判断未采集的行为。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": [
+        {
+          "dimension": "explanation",
+          "verdict": "revise",
+          "code": "UNOBSERVED_BEHAVIOR_CLAIM",
+          "reason": "冻结快照没有行为测量，原解释却概括为‘未见明显错误或行为问题’。知识理解的正面证据不能用于判断未采集的行为。",
+          "evidence_event_ids": [
+            "test-learner-096-event-20",
+            "test-learner-096-event-48",
+            "test-learner-096-event-49"
+          ],
+          "suggested_revision": "改为‘本次答题与对话未见明显概念问题；行为数据未采集，暂不评价行为模式’。"
+        }
+      ]
+    },
+    {
+      "id": "test-learner-097",
+      "variant": "full",
+      "expected_type": "insufficient_evidence",
+      "predicted_type": "insufficient_evidence",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-098",
+      "variant": "full",
+      "expected_type": "concept_confusion",
+      "predicted_type": "concept_confusion",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    },
+    {
+      "id": "test-learner-099",
+      "variant": "full",
+      "expected_type": "prerequisite_gap",
+      "predicted_type": "prerequisite_gap",
+      "verdicts": {
+        "explanation": "pass",
+        "recommendation": "pass",
+        "followup": "pass"
+      },
+      "overall": "pass",
+      "rationale": {
+        "explanation": "事实与快照统计、学生原文及当前类型规则相符，未发现实质性的无依据结论。",
+        "recommendation": "与该知识点有关，包含可执行的说明、举例、分类或测试设计任务；未发现无依据的人格或态度评价。",
+        "followup": "需要学生继续判断、举例或说明依据；结合整份回复未发现直接给出该追问答案。"
+      },
+      "findings": []
+    }
+  ],
+  "general_notes": [
+    "掌握度和置信度没有独立人工量表或校准真值，本轮不判定某个小数的数值准确性，也不把类型95%等同为解释质量95%。",
+    "这些合成事件大量重复同一表述，支持检查流程、冲突和规则；不能把重复次数当作跨任务迁移能力的验证。",
+    "正确概念提醒、要求说明依据本身不算答案泄露；091的问题是建议已替同一追问对象作出分类。",
+    "缺少整数/端点条件的追问标为建议修改，未与明确的事实错误同列为不通过。",
+    "只刷题情形下正确答题可能支持较高掌握，不要求为增加访问次数强制阅读；资源建议应服务于理解或迁移检查。"
+  ]
+}

@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, BackgroundTasks, Request
 from sqlalchemy import select
 
 from app.api.deps import CurrentUser, Db, Teacher, course_access
@@ -25,7 +25,8 @@ from app.schemas.workspace import (
     StartAttemptIn,
     SubmitIn,
 )
-from app.services import tutor
+from app.services import assessment, tutor
+from app.services.diagnosis import run_diagnosis
 from app.services.personalization import DEMO_COURSE_ID, demo_history
 from app.services.tutor import TutorError
 
@@ -146,22 +147,34 @@ def chat(course_id: str, body: ChatIn, db: Db, user: CurrentUser, request: Reque
     return demo_answer(request, user, course_id, body.message, body.resource_id)
 
 
-@router.get("/quizzes", response_model=list[QuizOut], summary="[占位] 可参加测验列表")
+@router.get("/quizzes", response_model=list[QuizOut], summary="可参加测验列表")
 def quizzes(course_id: str, db: Db, user: CurrentUser):
     course_access(db, user, course_id)
-    pending()
+    return assessment.list_quizzes(db, user, course_id)
 
 
-@router.post("/attempts", response_model=AttemptOut, status_code=201, summary="[占位] 开始测验")
-def start_attempt(course_id: str, body: StartAttemptIn, db: Db, user: CurrentUser):
+@router.post("/attempts", response_model=AttemptOut, status_code=201, summary="开始或恢复测验")
+def start_attempt(course_id: str, body: StartAttemptIn, db: Db, user: CurrentUser, request: Request):
     course_access(db, user, course_id)
-    pending()
+    if user.role != "student":
+        fail(403, "STUDENT_REQUIRED", "测验作答仅限学生")
+    return assessment.start_attempt(request.app.state.sessions, course_id, user.id, body.quiz_id)
 
 
-@router.post("/attempts/{attempt_id}/submit", response_model=ResultOut, summary="[占位] 交卷与判分")
-def submit(course_id: str, attempt_id: str, body: SubmitIn, db: Db, user: CurrentUser):
+@router.post("/attempts/{attempt_id}/submit", response_model=ResultOut, summary="交卷、判分与自动诊断")
+def submit(course_id: str, attempt_id: str, body: SubmitIn, db: Db, user: CurrentUser,
+           request: Request, tasks: BackgroundTasks):
     course_access(db, user, course_id)
-    pending()
+    if user.role != "student":
+        fail(403, "STUDENT_REQUIRED", "测验作答仅限学生")
+    result, jobs = assessment.submit_attempt(
+        request.app.state.sessions, request.app.state.settings, course_id, user.id, attempt_id, body
+    )
+    for diagnosis_id, trace_id in jobs:
+        tasks.add_task(
+            run_diagnosis, request.app.state.sessions, request.app.state.settings, diagnosis_id, trace_id
+        )
+    return result
 
 
 @router.get("/report", response_model=ReportOut, summary="演示学生学习历史；正式报告尚未实现")

@@ -1,9 +1,8 @@
 from pathlib import Path
 
+from alembic import command
 from alembic.config import Config
 from sqlalchemy import create_engine, inspect, text
-
-from alembic import command
 
 
 def test_migration_upgrade_downgrade(tmp_path, monkeypatch):
@@ -74,7 +73,7 @@ def test_foundation_0002_upgrades_without_losing_accounts(tmp_path, monkeypatch)
     command.upgrade(config, "head")
     with engine.connect() as conn:
         assert conn.execute(text("SELECT username FROM users WHERE id='preserved'")).scalar() == "preserved"
-        assert conn.execute(text("SELECT version_num FROM alembic_version")).scalar() == "0004"
+        assert conn.execute(text("SELECT version_num FROM alembic_version")).scalar() == "0006"
     engine.dispose()
 
 

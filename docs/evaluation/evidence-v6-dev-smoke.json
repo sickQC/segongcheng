@@ -1,0 +1,1175 @@
+{
+  "created_at": "2026-10-17T05:20:39.993634+00:00",
+  "mode": "live",
+  "dataset_split": "dev",
+  "dataset_version": "learning-diagnosis-v2",
+  "sample_count": 7,
+  "repeat": 1,
+  "labels_human_reviewed": false,
+  "acceptance_status": "provisional_not_formal_acceptance",
+  "model": "gpt-6-luna",
+  "backend": "codex",
+  "prompt_version": "evidence-diagnosis-v6",
+  "dataset_sha256": "218b7c167aa2b93eff7fbc133a0e15bb2873fa06687527fba7661c080f5c3e87",
+  "label_review_sha256": "0dc65baf43edcfbcd70d06d2d3e58f3c8f5d4755c8587659f7c26a46227f642a",
+  "prompt_sha256": "cf0b351a06c2794da85025d5d315a02fe35df2f925e86b700573fb6ce96c388b",
+  "records": [
+    {
+      "id": "dev-learner-002",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "repeated_error",
+      "full_expected_type": "repeated_error",
+      "snapshot_sha256": "c1c264fcaae628079918ea078155773d840b1c8f615eaf2144af93527689f1b1",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 0.7,
+      "latency_ms": 7277,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": 0.7,
+            "confidence": 0.91,
+            "problem_type": "repeated_error",
+            "explanation": "按时间顺序，较早有7次客观答对，随后最近3次客观答题均把验证与确认的含义对调，且最新答题仍错。对话中能正确表述二者区别，形成与客观答题相冲突的证据；行为数据未采集。",
+            "recommendation": "用一个新案例分别判断其检查的是规定要求，还是预期用途与用户需要，并写出判断依据。",
+            "followup_question": "设想系统完全符合规格，但用户无法用它完成预期任务：这说明验证还是确认存在问题？你的判断依据是什么？",
+            "evidence_event_ids": [
+              "dev-learner-002-event-20",
+              "dev-learner-002-event-21",
+              "dev-learner-002-event-24",
+              "dev-learner-002-event-27",
+              "dev-learner-002-event-30",
+              "dev-learner-002-event-33",
+              "dev-learner-002-event-36",
+              "dev-learner-002-event-39",
+              "dev-learner-002-event-42",
+              "dev-learner-002-event-45",
+              "dev-learner-002-event-48"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13504,
+        "completion_tokens": 307,
+        "total_tokens": 13811
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "repeated_error",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.7,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-002",
+      "variant": "no_dialogue",
+      "repeat": 1,
+      "expected_type": "repeated_error",
+      "full_expected_type": "repeated_error",
+      "snapshot_sha256": "65918506329c95f136ac221ba4ed7148d7eb137015760a17d923fdf745333302",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 0.7,
+      "latency_ms": 6695,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": 0.7,
+            "confidence": 0.99,
+            "problem_type": "repeated_error",
+            "explanation": "时间顺序显示先连续 7 次答对，随后最近 3 次都把验证与确认的判断标准对调。最新答题仍错，满足反复错误证据；基线正确率 0.7 描述客观答题表现，不等同于语义掌握度。",
+            "recommendation": "对照一个具体需求和对应规格，分别写出验证与确认要回答的问题，再用新例子检验区分。",
+            "followup_question": "如果系统完全符合规格，但用户无法用它完成预期任务，你会如何判断验证和确认的结果？",
+            "evidence_event_ids": [
+              "dev-learner-002-event-42",
+              "dev-learner-002-event-45",
+              "dev-learner-002-event-48"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 11638,
+        "completion_tokens": 220,
+        "total_tokens": 11858
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "repeated_error",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.7,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-002",
+      "variant": "no_behavior",
+      "repeat": 1,
+      "expected_type": "repeated_error",
+      "full_expected_type": "repeated_error",
+      "snapshot_sha256": "c1c264fcaae628079918ea078155773d840b1c8f615eaf2144af93527689f1b1",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 0.7,
+      "latency_ms": 7347,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": 0.7,
+            "confidence": 0.98,
+            "problem_type": "repeated_error",
+            "explanation": "客观答题中前七次均正确，随后最新三次连续把验证与确认的含义对调（event-42、event-45、event-48），最新客观答题仍错误。对话中仍能正确区分两者（如 event-49），与客观答题表现存在冲突。accuracy 0.7 是答题基线，不直接等同于语义掌握度。",
+            "recommendation": "复习验证与确认的判别标准，并逐题说明场景是在检查规定规格，还是在判断产品是否满足预期用途和用户需要。",
+            "followup_question": "如果软件完全符合书面规格，但用户仍无法完成预期任务，你会如何分别判断验证和确认？",
+            "evidence_event_ids": [
+              "dev-learner-002-event-42",
+              "dev-learner-002-event-45",
+              "dev-learner-002-event-48",
+              "dev-learner-002-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13500,
+        "completion_tokens": 262,
+        "total_tokens": 13762
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "repeated_error",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.7,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-006",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "insufficient_evidence",
+      "full_expected_type": "insufficient_evidence",
+      "snapshot_sha256": "90986ac59b8983c5aedc53fa8a4eb5bf81ed21123a4d8782f0a5658a28cabe30",
+      "expected_status": "insufficient",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 6842,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.99,
+            "problem_type": "insufficient_evidence",
+            "explanation": "按时间顺序，29条对话回答均为“不知道”，最新客观答题也错误（1次，正确率0）。这些证据表明当前无法作答，但没有说明具体错误概念；对话数量不构成重复客观错答。",
+            "recommendation": "先复习参与者与用例的定义，再用一个具体系统练习区分外部交互角色和角色要达成的目标。",
+            "followup_question": "以图书馆借书为例，谁可能是参与者？他希望完成的目标是什么？",
+            "evidence_event_ids": [
+              "dev-learner-006-event-20",
+              "dev-learner-006-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13112,
+        "completion_tokens": 205,
+        "total_tokens": 13317
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-006",
+      "variant": "no_dialogue",
+      "repeat": 1,
+      "expected_type": "insufficient_evidence",
+      "full_expected_type": "insufficient_evidence",
+      "snapshot_sha256": "26e9b3b3332b2ccfa9b158e834258ef0f91c5586a9910089fd5a0a49a2366368",
+      "expected_status": "insufficient",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 0,
+      "model_succeeded": true,
+      "model_called": false,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.0,
+            "problem_type": "insufficient_evidence",
+            "explanation": "可用证据不足两条，暂不推断掌握度。",
+            "recommendation": "补充该知识点的作答和判断依据后再分析。",
+            "followup_question": "你会用什么例子说明自己的理解？",
+            "evidence_event_ids": [
+              "dev-learner-006-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": false,
+        "guardrail_actions": []
+      },
+      "usage": null,
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-006",
+      "variant": "no_behavior",
+      "repeat": 1,
+      "expected_type": "insufficient_evidence",
+      "full_expected_type": "insufficient_evidence",
+      "snapshot_sha256": "90986ac59b8983c5aedc53fa8a4eb5bf81ed21123a4d8782f0a5658a28cabe30",
+      "expected_status": "insufficient",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 8183,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.97,
+            "problem_type": "insufficient_evidence",
+            "explanation": "按时间顺序，29条对话均为“不知道”，最后一条客观答题也错误。对话没有说明具体判断依据或概念误解；客观错答仅1次，且没有前置检查错误或行为测量，无法定位主要问题或估计掌握度。",
+            "recommendation": "先复习参与者与用例的定义，再尝试区分系统外部角色和角色目标，并为各举一个例子。",
+            "followup_question": "在借书系统中，读者和“借阅图书”分别属于什么？请说明你的判断依据。",
+            "evidence_event_ids": [
+              "dev-learner-006-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13108,
+        "completion_tokens": 204,
+        "total_tokens": 13312
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-005",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "no_obvious_issue",
+      "snapshot_sha256": "b7f5218a0e4608a3be115fdd68bddf82d009e595737e2818a8af4ef5da9e7995",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 6649,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.9,
+            "confidence": 0.98,
+            "problem_type": "no_obvious_issue",
+            "explanation": "时间顺序上，10次客观答题均正确，最新一次也正确；对话中学生准确说明功能需求描述系统做什么，并识别响应时间为可测量的质量要求，支持对核心区分的理解。未发现明确错误或行为问题。",
+            "recommendation": "继续用新的场景区分功能需求与非功能需求，并检查描述是否分别回答系统做什么、系统需达到何种质量。",
+            "followup_question": "请举一个你熟悉的软件例子，分别写出一条功能需求和一条非功能需求，并说明你的判断依据。",
+            "evidence_event_ids": [
+              "dev-learner-005-event-20",
+              "dev-learner-005-event-21",
+              "dev-learner-005-event-48"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13488,
+        "completion_tokens": 222,
+        "total_tokens": 13710
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.9,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-005",
+      "variant": "no_dialogue",
+      "repeat": 1,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "no_obvious_issue",
+      "snapshot_sha256": "65b859e226a76cc5bb5f1fe1c1fc5d2dd7dcc56875ca425f88ae9dd28e8f8d4a",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 6684,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.85,
+            "confidence": 0.95,
+            "problem_type": "no_obvious_issue",
+            "explanation": "按时间顺序，10次客观答题均正确，最新答题也正确。学生能区分功能需求描述系统做什么与响应时间这类质量要求；没有对话或前置检查错误证据。",
+            "recommendation": "用一个新的系统场景分别写出一条功能需求和一条非功能需求，并说明判断依据。",
+            "followup_question": "如果系统需要支持高峰时段的用户请求，你会怎样把这项要求写成非功能需求？",
+            "evidence_event_ids": [
+              "dev-learner-005-event-21",
+              "dev-learner-005-event-48"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 11652,
+        "completion_tokens": 190,
+        "total_tokens": 11842
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.85,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-005",
+      "variant": "no_behavior",
+      "repeat": 1,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "no_obvious_issue",
+      "snapshot_sha256": "b7f5218a0e4608a3be115fdd68bddf82d009e595737e2818a8af4ef5da9e7995",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 7223,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.9,
+            "confidence": 0.94,
+            "problem_type": "no_obvious_issue",
+            "explanation": "按时间顺序，客观答题基线为10次全对，且最新答题正确。学生对话也准确区分了功能需求与质量约束，明确指出响应时间属于可测量的质量要求；没有发现错误概念或前置检查错误。",
+            "recommendation": "继续用新的需求例子练习分类，并把每个例子归类的依据说清楚。",
+            "followup_question": "举一个与响应时间不同的非功能需求例子，并说明它约束系统的哪方面？",
+            "evidence_event_ids": [
+              "dev-learner-005-event-20",
+              "dev-learner-005-event-21",
+              "dev-learner-005-event-48"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13486,
+        "completion_tokens": 209,
+        "total_tokens": 13695
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.9,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-004",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "practice_only",
+      "full_expected_type": "practice_only",
+      "snapshot_sha256": "ad267495be052f42b35a442595578e4f9534ee97bfc440a270997d2d3ca0a97a",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 8059,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "supported",
+            "mastery": 1.0,
+            "confidence": 0.92,
+            "problem_type": "practice_only",
+            "explanation": "完整行为测量显示观察窗口内有效学习时长为0秒、覆盖率为0且学习访问数为0，资源可用；同时有10次客观答题且均正确，最新答题也正确，学生表述了边界及其紧邻内外侧的测试思路，支持其正确理解。行为数据支持只答题未访问学习资源的学习方式观察，但掌握度不能仅由这些正确答题精确估计。",
+            "recommendation": "继续保持答题表现，并安排一次学习资源访问，之后用新情境说明如何选取边界值及判断预期结果。",
+            "followup_question": "对一个有效输入范围为10到20的字段，你会选哪些边界及邻近值进行测试？请说明每个值预期验证什么。",
+            "evidence_event_ids": [
+              "dev-learner-004-event-20",
+              "dev-learner-004-event-48",
+              "dev-learner-004-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13658,
+        "completion_tokens": 265,
+        "total_tokens": 13923
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "practice_only",
+      "predicted_status": "supported",
+      "predicted_mastery": 1.0,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-004",
+      "variant": "no_dialogue",
+      "repeat": 1,
+      "expected_type": "practice_only",
+      "full_expected_type": "practice_only",
+      "snapshot_sha256": "8c53b1f537980f9fe6a96b0730aeb2a337edb5d326c460b01e0d3a03bfd5c55f",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 7581,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "supported",
+            "mastery": 1.0,
+            "confidence": 0.99,
+            "problem_type": "practice_only",
+            "explanation": "完整行为测量显示学习访问数为0，答题10次，符合只刷题的学习方式观察；同时10次客观答题均正确，支持其能识别边界及紧邻内外侧并判断接受或拒绝。该行为模式不表示知识不会。",
+            "recommendation": "答题之外，安排一次学习访问，阅读边界值分析材料后用自己的例子说明上下界及紧邻值如何取值。",
+            "followup_question": "请构造一个有明确上下界的输入范围，并说明哪些边界及紧邻值需要测试，以及每个值预期被接受还是拒绝。",
+            "evidence_event_ids": [
+              "dev-learner-004-event-21",
+              "dev-learner-004-event-48",
+              "dev-learner-004-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 11815,
+        "completion_tokens": 229,
+        "total_tokens": 12044
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "practice_only",
+      "predicted_status": "supported",
+      "predicted_mastery": 1.0,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-004",
+      "variant": "no_behavior",
+      "repeat": 1,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "practice_only",
+      "snapshot_sha256": "92d969ca71ae922eb87bbc9e39b196fb7ad6eac509aca6234b04345287bc4fd9",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 7189,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "supported",
+            "mastery": 0.95,
+            "confidence": 0.98,
+            "problem_type": "no_obvious_issue",
+            "explanation": "客观答题共10次且全部正确，最新答题也正确；对话中能说明测试上下边界及紧邻内外侧，并核对接受或拒绝，显示出对边界值分析核心做法的正确理解。未见明确错误或前置检查错误。",
+            "recommendation": "继续用新的输入范围练习，分别列出上下界及其内外紧邻值，并说明每个测试值预期接受还是拒绝。",
+            "followup_question": "若某字段允许值为 10 到 20（含端点），你会选择哪些边界及紧邻值进行测试？请逐一说明预期结果。",
+            "evidence_event_ids": [
+              "dev-learner-004-event-20",
+              "dev-learner-004-event-21",
+              "dev-learner-004-event-48"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13543,
+        "completion_tokens": 237,
+        "total_tokens": 13780
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.95,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-003",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "low_engagement",
+      "full_expected_type": "low_engagement",
+      "snapshot_sha256": "8d7058ee16122597800d9a077d2378a0d9ac9f122e679b25accd2acc2cee7475",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7900,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.98,
+            "problem_type": "insufficient_evidence",
+            "explanation": "按时间顺序，28条对话都只回答“不知道”，最后一条客观答题也错误；这些对话没有说明具体误解。完整行为测量显示覆盖率0.05、有效时长8秒，但有1次学习访问，因此不满足 low_engagement 所要求的零学习访问条件，也不满足 practice_only 条件。客观答题基线仅有1题，无法据此估计掌握度或定位问题类型。",
+            "recommendation": "先用自己的话说明等价类如何按预期处理行为划分，再为一个输入条件举出两个预期处理不同的类别，并各选一个代表值。",
+            "followup_question": "以年龄输入为例，你会怎样划分有效和无效等价类？每一类的代表值是什么，为什么？",
+            "evidence_event_ids": [
+              "dev-learner-003-event-20",
+              "dev-learner-003-event-48",
+              "dev-learner-003-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13149,
+        "completion_tokens": 268,
+        "total_tokens": 13417
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-003",
+      "variant": "no_dialogue",
+      "repeat": 1,
+      "expected_type": "low_engagement",
+      "full_expected_type": "low_engagement",
+      "snapshot_sha256": "2d84921b7e2ce09b629a94b75a8122d856cbe41b0feb22cc764c676bfd541a25",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 9942,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.98,
+            "problem_type": "low_engagement",
+            "explanation": "完整行为测量显示有效学习时长为8秒、覆盖率为0.05，资源可用，符合低投入行为观察条件。仅有一次客观错答且回答“不知道”，无法据此定位具体错误类型或估计掌握度。",
+            "recommendation": "安排一次短时学习活动，要求学生阅读等价类划分示例并记录有效类、无效类及各自代表值。",
+            "followup_question": "请你为一个输入范围明确的功能划分有效类和无效类，并说明每类的代表值及选择依据。",
+            "evidence_event_ids": [
+              "dev-learner-003-event-48",
+              "dev-learner-003-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 10937,
+        "completion_tokens": 206,
+        "total_tokens": 11143
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "low_engagement",
+      "predicted_status": "supported",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-003",
+      "variant": "no_behavior",
+      "repeat": 1,
+      "expected_type": "insufficient_evidence",
+      "full_expected_type": "low_engagement",
+      "snapshot_sha256": "308fe6455bccf3b8d504a0faca0bcc55922b1e15ed678854c1571717885ccc16",
+      "expected_status": "insufficient",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 6743,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.97,
+            "problem_type": "insufficient_evidence",
+            "explanation": "按时间顺序，28条对话中学生都只回答“不知道”，随后唯一一次客观答题也错误。对话没有说明错误概念，单次客观错答不足以定位具体问题；没有前置检查错误或行为测量可供判断。",
+            "recommendation": "先复习等价类如何按预期处理行为区分有效与无效输入，再练习为每类选择代表值，并说明分类依据。",
+            "followup_question": "给定一个只接受1到100整数的输入字段，你会怎样划分有效与无效等价类，并各选一个代表值？",
+            "evidence_event_ids": [
+              "dev-learner-003-event-20",
+              "dev-learner-003-event-48"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13028,
+        "completion_tokens": 216,
+        "total_tokens": 13244
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-001",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "prerequisite_gap",
+      "full_expected_type": "prerequisite_gap",
+      "snapshot_sha256": "c9955b848d856c3841fb7c3ea862164f410ab2b819433e0b8b40782656f00bd9",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7168,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.0,
+            "confidence": 0.99,
+            "problem_type": "prerequisite_gap",
+            "explanation": "按时间顺序，10次客观答题均错误，最新答题仍错误；其中多次前置检查明确答错（事件21、24、27、30、33、36、39、42、45、48）。学生反复表示无法解释基础术语或判断对象，支持基础概念准备不足的判断。客观正确率为0.0，是答题基线而非独立的语义掌握度估计。",
+            "recommendation": "先复习参与者与用例的基本定义，再练习区分系统外部角色、系统功能和角色目标。",
+            "followup_question": "以“顾客在线下单”为例，谁是参与者？用例描述的目标是什么？请说明判断依据。",
+            "evidence_event_ids": [
+              "dev-learner-001-event-21",
+              "dev-learner-001-event-24",
+              "dev-learner-001-event-27",
+              "dev-learner-001-event-30",
+              "dev-learner-001-event-33",
+              "dev-learner-001-event-36",
+              "dev-learner-001-event-39",
+              "dev-learner-001-event-42",
+              "dev-learner-001-event-45",
+              "dev-learner-001-event-48",
+              "dev-learner-001-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13720,
+        "completion_tokens": 334,
+        "total_tokens": 14054
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "prerequisite_gap",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.0,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-001",
+      "variant": "no_dialogue",
+      "repeat": 1,
+      "expected_type": "prerequisite_gap",
+      "full_expected_type": "prerequisite_gap",
+      "snapshot_sha256": "a6e603d7a7bf996972acf4e58f9cdbd565f4ebe9eb68a93f03a39a859662f929",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7113,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.0,
+            "confidence": 0.99,
+            "problem_type": "prerequisite_gap",
+            "explanation": "按时间顺序，10 次客观答题均错误；最新回答仍无法解释基础术语或判断对象，且这些事件均标记为前置检查错误。前置知识不足证据明确，优先于反复错误标签；accuracy 0.0 是答题基线，不等同于语义掌握度。",
+            "recommendation": "先复习题目所涉及的基础术语，再练习区分系统外部角色与系统功能目标，并为每个判断写出依据。",
+            "followup_question": "在一个在线购物场景中，谁可能是参与者？请说明该角色想通过系统完成什么目标。",
+            "evidence_event_ids": [
+              "dev-learner-001-event-21",
+              "dev-learner-001-event-24",
+              "dev-learner-001-event-27",
+              "dev-learner-001-event-30",
+              "dev-learner-001-event-33",
+              "dev-learner-001-event-36",
+              "dev-learner-001-event-39",
+              "dev-learner-001-event-42",
+              "dev-learner-001-event-45",
+              "dev-learner-001-event-48"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 11804,
+        "completion_tokens": 303,
+        "total_tokens": 12107
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "prerequisite_gap",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.0,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-001",
+      "variant": "no_behavior",
+      "repeat": 1,
+      "expected_type": "prerequisite_gap",
+      "full_expected_type": "prerequisite_gap",
+      "snapshot_sha256": "c9955b848d856c3841fb7c3ea862164f410ab2b819433e0b8b40782656f00bd9",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7792,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.0,
+            "confidence": 0.99,
+            "problem_type": "prerequisite_gap",
+            "explanation": "按时间顺序，10次客观答题均错误，最新答题仍错误（event-21、event-24、event-27、event-30、event-33、event-36、event-39、event-42、event-45、event-48）；这些答题均标记为前置检查错误。学生反复表示不能解释基础术语或判断对象，支持其用例与参与者相关前置概念不足。",
+            "recommendation": "先复习“系统外部角色”和“角色目标”的含义，再用一个新场景分别指出参与者及其目标，并说明判断理由。",
+            "followup_question": "在一个网上购票场景中，谁可能是参与者？他希望通过系统完成什么目标？",
+            "evidence_event_ids": [
+              "dev-learner-001-event-21",
+              "dev-learner-001-event-24",
+              "dev-learner-001-event-27",
+              "dev-learner-001-event-30",
+              "dev-learner-001-event-33",
+              "dev-learner-001-event-36",
+              "dev-learner-001-event-39",
+              "dev-learner-001-event-42",
+              "dev-learner-001-event-45",
+              "dev-learner-001-event-48",
+              "dev-learner-001-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13718,
+        "completion_tokens": 338,
+        "total_tokens": 14056
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "prerequisite_gap",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.0,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-000",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "concept_confusion",
+      "full_expected_type": "concept_confusion",
+      "snapshot_sha256": "c6a37a5c8da8bf04827b3aa45568fd85a87b75240218fc5a3deb4512198cc7d1",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 7202,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.5,
+            "confidence": 0.99,
+            "problem_type": "concept_confusion",
+            "explanation": "客观答题10次全部正确（wrong_count=0，latest_correct=true），答案正确地区分了功能需求与响应时间这一质量要求；但最近的学生对话反复明确表示两者都是功能需求、无需区分，显示概念理解与答题表现冲突。对话不能作为客观错答计入 repeated_error。",
+            "recommendation": "用自己的话分别说明“系统做什么”和“系统运行质量”的区别，并将“导出报告”和“响应时间不超过两秒”各自归类，再解释判断依据。",
+            "followup_question": "如果系统必须支持导出报告，且报告应在两秒内生成，你会怎样分别描述这两项要求？为什么？",
+            "evidence_event_ids": [
+              "dev-learner-000-event-20",
+              "dev-learner-000-event-21",
+              "dev-learner-000-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13490,
+        "completion_tokens": 246,
+        "total_tokens": 13736
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "concept_confusion",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.5,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-000",
+      "variant": "no_dialogue",
+      "repeat": 1,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "concept_confusion",
+      "snapshot_sha256": "edc7d0a56dfd95455f5cbaf1ed2be15719b4be073ad171c40af723021885a92f",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 7497,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.85,
+            "confidence": 0.9,
+            "problem_type": "no_obvious_issue",
+            "explanation": "时间顺序上的10次客观答题均正确，最新答题也正确；学生能区分功能描述与质量约束，并将响应时间归为可测量的质量要求。没有对话或行为数据提示其他问题。",
+            "recommendation": "用一个新的系统场景分别举出一项功能需求和一项非功能需求，并说明判断依据。",
+            "followup_question": "在在线商店中，“订单提交后发送确认邮件”和“页面在2秒内加载完成”分别属于哪类需求？请解释你的判断。",
+            "evidence_event_ids": [
+              "dev-learner-000-event-21",
+              "dev-learner-000-event-48"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 11650,
+        "completion_tokens": 202,
+        "total_tokens": 11852
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.85,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-000",
+      "variant": "no_behavior",
+      "repeat": 1,
+      "expected_type": "concept_confusion",
+      "full_expected_type": "concept_confusion",
+      "snapshot_sha256": "c6a37a5c8da8bf04827b3aa45568fd85a87b75240218fc5a3deb4512198cc7d1",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 6970,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.5,
+            "confidence": 0.98,
+            "problem_type": "concept_confusion",
+            "explanation": "时间顺序显示，学生在多次对话中持续把“导出报告”和“响应两秒”都归为功能需求，明确表现出对功能需求与质量约束的混淆；但10次客观答题均正确，最新答题也正确。对话错误与答题基线存在冲突，不能据此认定客观答题反复错误，掌握度暂估为中等。",
+            "recommendation": "用“系统做什么”和“系统需满足什么质量约束”两类标准重新分类需求，并为每类各写一个新例子。",
+            "followup_question": "若系统要求“搜索结果在两秒内显示”，你会如何分类？请说明你使用的判断标准。",
+            "evidence_event_ids": [
+              "dev-learner-000-event-20",
+              "dev-learner-000-event-21",
+              "dev-learner-000-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13492,
+        "completion_tokens": 254,
+        "total_tokens": 13746
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "concept_confusion",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.5,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    }
+  ],
+  "summaries": {
+    "full": {
+      "samples": 7,
+      "pipeline_successes": 7,
+      "model_calls": 7,
+      "local_insufficient_results": 0,
+      "model_successes": 7,
+      "model_failures": 0,
+      "guardrail_downgrades": 0,
+      "model_first_pass_valid_rate": 1.0,
+      "type_accuracy_including_failures": 0.8571428571428571,
+      "problem_type_macro_f1_including_failures": 0.8095238095238095,
+      "full_label_retention_rate": 0.8571428571428571,
+      "label_basis": "variant-specific candidate/reviewed labels; full label retention is not accuracy",
+      "evidence_valid_rate_including_failures": 1.0,
+      "baseline_binary_accuracy": 0.5,
+      "knowledge_binary_eligible_samples": 4,
+      "binary_target_note": "knowledge support only; behavior and insufficient labels are unscored",
+      "baseline_coverage": 0.5714285714285714,
+      "model_binary_accuracy": 0.75,
+      "model_binary_coverage": 0.5714285714285714,
+      "mean_type_accuracy_across_repeats": 0.8571428571428571,
+      "accuracy_run_range": [
+        0.8571428571428571,
+        0.8571428571428571
+      ],
+      "accuracy_approx_95_interval": null,
+      "interval_note": "normal approximation over run means; few repeats give unreliable intervals",
+      "mean_latency_ms": 7299.571428571428,
+      "total_tokens_known": 95968,
+      "token_usage_coverage": 1.0,
+      "cost": "unknown: no verified unit price configured"
+    },
+    "no_dialogue": {
+      "samples": 7,
+      "pipeline_successes": 7,
+      "model_calls": 6,
+      "local_insufficient_results": 1,
+      "model_successes": 6,
+      "model_failures": 0,
+      "guardrail_downgrades": 0,
+      "model_first_pass_valid_rate": 1.0,
+      "type_accuracy_including_failures": 1.0,
+      "problem_type_macro_f1_including_failures": 1.0,
+      "full_label_retention_rate": 0.8571428571428571,
+      "label_basis": "variant-specific candidate/reviewed labels; full label retention is not accuracy",
+      "evidence_valid_rate_including_failures": 1.0,
+      "baseline_binary_accuracy": 0.75,
+      "knowledge_binary_eligible_samples": 4,
+      "binary_target_note": "knowledge support only; behavior and insufficient labels are unscored",
+      "baseline_coverage": 0.5714285714285714,
+      "model_binary_accuracy": 0.75,
+      "model_binary_coverage": 0.5714285714285714,
+      "mean_type_accuracy_across_repeats": 1.0,
+      "accuracy_run_range": [
+        1.0,
+        1.0
+      ],
+      "accuracy_approx_95_interval": null,
+      "interval_note": "normal approximation over run means; few repeats give unreliable intervals",
+      "mean_latency_ms": 6501.714285714285,
+      "total_tokens_known": 70846,
+      "token_usage_coverage": 1.0,
+      "cost": "unknown: no verified unit price configured"
+    },
+    "no_behavior": {
+      "samples": 7,
+      "pipeline_successes": 7,
+      "model_calls": 7,
+      "local_insufficient_results": 0,
+      "model_successes": 7,
+      "model_failures": 0,
+      "guardrail_downgrades": 0,
+      "model_first_pass_valid_rate": 1.0,
+      "type_accuracy_including_failures": 1.0,
+      "problem_type_macro_f1_including_failures": 1.0,
+      "full_label_retention_rate": 0.7142857142857143,
+      "label_basis": "variant-specific candidate/reviewed labels; full label retention is not accuracy",
+      "evidence_valid_rate_including_failures": 1.0,
+      "baseline_binary_accuracy": 0.6,
+      "knowledge_binary_eligible_samples": 5,
+      "binary_target_note": "knowledge support only; behavior and insufficient labels are unscored",
+      "baseline_coverage": 0.7142857142857143,
+      "model_binary_accuracy": 0.8,
+      "model_binary_coverage": 0.7142857142857143,
+      "mean_type_accuracy_across_repeats": 1.0,
+      "accuracy_run_range": [
+        1.0,
+        1.0
+      ],
+      "accuracy_approx_95_interval": null,
+      "interval_note": "normal approximation over run means; few repeats give unreliable intervals",
+      "mean_latency_ms": 7349.571428571428,
+      "total_tokens_known": 95595,
+      "token_usage_coverage": 1.0,
+      "cost": "unknown: no verified unit price configured"
+    }
+  },
+  "planned_records": 21,
+  "run_complete": true,
+  "baseline_summary": {
+    "samples": 21,
+    "knowledge_binary_eligible_samples": 13,
+    "binary_target_note": "knowledge support only; behavior and insufficient labels are unscored",
+    "measured": 13,
+    "unknown": 8,
+    "binary_accuracy": 0.6153846153846154,
+    "coverage": 0.6190476190476191
+  }
+}

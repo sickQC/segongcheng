@@ -6,13 +6,24 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy import inspect, select, text, update
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.api.routes import auth, courses, knowledge, practice, workspace
+from app.api.routes import (
+    assessment,
+    auth,
+    courses,
+    diagnosis_report,
+    knowledge,
+    learning_session,
+    practice,
+    workspace,
+)
 from app.api.routes.dev import create_dev_router
 from app.core.config import ROOT, Settings
 from app.core.database import database
 from app.core.errors import install_errors
 from app.models import Diagnosis, LearningEvent, ModelTrace, User
 from app.schemas.foundation import ErrorResponse
+from app.services.evidence_diagnosis import recover_reports
+from app.services.learning_session import recover_interrupted
 
 
 def create_app(settings=None):
@@ -38,6 +49,12 @@ def create_app(settings=None):
                     .where(ModelTrace.status == "pending")
                     .values(status="failed", error_code="PROCESS_INTERRUPTED")
                 )
+        if inspect(engine).has_table("learning_sessions"):
+            with sessions.begin() as session:
+                recover_interrupted(session)
+        if inspect(engine).has_table("diagnosis_reports"):
+            with sessions.begin() as session:
+                recover_reports(session)
         yield
         engine.dispose()
 
@@ -51,6 +68,9 @@ def create_app(settings=None):
     api.include_router(courses.router)
     api.include_router(knowledge.router)
     api.include_router(practice.router)
+    api.include_router(assessment.router)
+    api.include_router(learning_session.router)
+    api.include_router(diagnosis_report.router)
     api.include_router(workspace.router)
     app.include_router(api)
     if settings.enable_dev_routes:
@@ -76,7 +96,7 @@ def create_app(settings=None):
         return {"dev_routes_enabled": settings.enable_dev_routes}
 
     dist = ROOT / "frontend" / "dist"
-    if dist.is_dir():
+    if (dist / "assets").is_dir() and (dist / "index.html").is_file():
         app.mount("/assets", StaticFiles(directory=dist / "assets"), name="assets")
 
         @app.get("/", include_in_schema=False)

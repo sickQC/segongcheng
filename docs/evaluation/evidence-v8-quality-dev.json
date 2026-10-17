@@ -1,0 +1,2176 @@
+{
+  "created_at": "2026-10-17T06:25:03.793909+00:00",
+  "mode": "live",
+  "dataset_split": "dev",
+  "dataset_version": "learning-diagnosis-v2",
+  "sample_count": 13,
+  "repeat": 2,
+  "labels_human_reviewed": false,
+  "acceptance_status": "provisional_not_formal_acceptance",
+  "model": "gpt-6-luna",
+  "backend": "codex",
+  "prompt_version": "evidence-diagnosis-v8",
+  "dataset_sha256": "ce55d2fe260f6d183ed700838a1da3766de54a2b6434bd3a49c0c84e45adfd54",
+  "label_review_sha256": "a52cef235c806a8cbc648af3577050a439354bc06a0ce1e2292f53952fdee9f3",
+  "prompt_sha256": "d51102df931044e60ae6e5a5f59b509689396f0bd2d6e714b540c518d8849abe",
+  "records": [
+    {
+      "id": "quality-insufficient",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "insufficient_evidence",
+      "full_expected_type": "insufficient_evidence",
+      "snapshot_sha256": "8ad53cca974fd09ce271bd155d6f9ce80c01e385918350994230fea10d230dd8",
+      "expected_status": "insufficient",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 10016,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.96,
+            "problem_type": "insufficient_evidence",
+            "explanation": "本次窗口内有1次客观答题，正确0次，错误1次，客观正确率为0%。最近客观答题（quality-insufficient-1）判为错误。最近自主回答（quality-insufficient-2，节选）为：“需要再学一下才知道怎么做。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。现有可用证据不足以确定主要知识问题或估计掌握度，需要补充带判断依据的新作答。",
+            "recommendation": "先阅读当前知识点定义，再完成下面的新任务并说明依据，以补充可判断的学习证据。",
+            "followup_question": "某表单只接受6到14的整数，包含两端，整数最小步长为1；范围外整数一律拒绝。请自行选择检查上下边界及紧邻位置的测试值，并说明每个值的预期结果。",
+            "evidence_event_ids": [
+              "quality-insufficient-1",
+              "quality-insufficient-2"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.96,
+            "problem_type": "insufficient_evidence",
+            "explanation": "最新客观答题（quality-insufficient-1）错误，学生表示暂时无法作答；最新自主对话（quality-insufficient-2）表示需要再学习。对话没有解释具体判断过程或暴露明确概念混淆，也没有前置检查错误。仅有一次客观错答，无法据此估计掌握度或定位错误原因。",
+            "recommendation": "复习边界值分析时，练习先写明输入域、端点是否包含及精度，再检查边界两侧的取值。",
+            "followup_question": "某输入域规定为 1 到 10 的整数且包含两个端点。请列出边界值及边界两侧的测试输入，并说明各自为何纳入或排除。",
+            "evidence_event_ids": [
+              "quality-insufficient-1",
+              "quality-insufficient-2"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11217,
+        "completion_tokens": 242,
+        "total_tokens": 11459
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "insufficient_evidence",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-practice",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "practice_only",
+      "full_expected_type": "practice_only",
+      "snapshot_sha256": "93f986ac368f8640c6b8a0b13bbc5d6ea18fd1fd4c4b2cba0d69be08d3aad844",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 8247,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.95,
+            "confidence": 0.94,
+            "problem_type": "practice_only",
+            "explanation": "本次窗口内有4次客观答题，正确4次，错误0次，客观正确率为100%。最近客观答题（quality-practice-3）判为正确。最近自主回答（quality-practice-4，节选）为：“在停车登记服务中，用户希望登记车牌以进入场馆。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-practice-observation-0）：资源可用，窗口完整，覆盖率0%，有效时长0秒，学习访问0次。完整行为汇总满足资源访问为零且至少三次答题的学习方式条件。行为观察与知识掌握度分开判断，不能据此直接推断知识不会或学习态度。",
+            "recommendation": "先用下面的新场景检验独立应用；如解释不完整，再回看定义或教师案例并重新作答。",
+            "followup_question": "某软件只负责场馆预约登记，门禁由独立系统控制，两者交换预约资格结果。门禁系统是否可能是预约软件的参与者？请说明边界、交互及其目标。",
+            "evidence_event_ids": [
+              "quality-practice-3",
+              "quality-practice-4",
+              "quality-practice-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.95,
+            "confidence": 0.94,
+            "problem_type": "practice_only",
+            "explanation": "完整观察窗口显示资源可用、学习访问为零且有4次答题，符合 practice_only 行为条件。客观答题基线为4次全对，最新客观答题也正确；随后学生在停车登记服务场景中说明用户登记车牌以进入场馆，体现了对角色目标的理解。",
+            "recommendation": "在一个新的系统场景中，分别写出系统边界外的参与者角色及其目标，并说明两者如何通过系统交互关联。",
+            "followup_question": "针对你选择的新场景，哪个具体角色位于系统边界之外？请描述该角色希望通过系统完成的目标，以及可观察到的交互。",
+            "evidence_event_ids": [
+              "quality-practice-3",
+              "quality-practice-4",
+              "quality-practice-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "problem_type": "practice_only",
+            "evidence_event_id": "quality-practice-observation-0",
+            "measurement": {
+              "coverage": 0,
+              "effective_seconds": 0,
+              "study_visits": 0,
+              "resource_available": true,
+              "observation_complete": true
+            },
+            "source": "server_rule"
+          }
+        ],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11556,
+        "completion_tokens": 232,
+        "total_tokens": 11788
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "practice_only",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.95,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "practice_only",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-named-scene",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "no_obvious_issue",
+      "snapshot_sha256": "8cba8ac1f647ab233bcc2a31fb0dfafc7f3580106a605e7a3d474bdfd6c5e53b",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 9813,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.8,
+            "confidence": 0.72,
+            "problem_type": "no_obvious_issue",
+            "explanation": "本次窗口内有1次客观答题，正确1次，错误0次，客观正确率为100%。最近客观答题（quality-named-scene-0）判为正确。最近自主回答（quality-named-scene-1，节选）为：“参与者位于边界外。我想到的场景名称是停车缴费。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。模型在本次答题与自主回答中暂未定位明显知识问题，迁移应用仍需新任务检验。",
+            "recommendation": "完成下面的新场景任务并说明判断依据，检查能否把当前理解迁移到不同情境。",
+            "followup_question": "某软件只负责场馆预约登记，门禁由独立系统控制，两者交换预约资格结果。门禁系统是否可能是预约软件的参与者？请说明边界、交互及其目标。",
+            "evidence_event_ids": [
+              "quality-named-scene-0",
+              "quality-named-scene-1"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.8,
+            "confidence": 0.72,
+            "problem_type": "no_obvious_issue",
+            "explanation": "最新客观答题正确，学生能说明参与者位于系统边界外；最新自主对话再次表述边界外这一点，但只给出“停车缴费”场景名称，未举出可检验的参与者与目标实例。现有证据支持基本理解，未见明确错误或行为问题。",
+            "recommendation": "练习用具体场景指出一个边界外角色、该角色与系统的交互，以及其对应目标。",
+            "followup_question": "以停车缴费为例，谁是系统边界外的参与者？该角色通过什么交互实现什么目标？",
+            "evidence_event_ids": [
+              "quality-named-scene-0",
+              "quality-named-scene-1"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11159,
+        "completion_tokens": 214,
+        "total_tokens": 11373
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.8,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "no_obvious_issue",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-recent-conflict",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "repeated_error",
+      "full_expected_type": "repeated_error",
+      "snapshot_sha256": "04f767f4c4de3e44da68bcaf2d2d0dc4d5f1190ce70362cf82c99019643ba03e",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.4,
+      "latency_ms": 7594,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": 0.4,
+            "confidence": 0.84,
+            "problem_type": "repeated_error",
+            "explanation": "本次窗口内有5次客观答题，正确2次，错误3次，客观正确率为40%。最近客观答题（quality-recent-conflict-4）判为错误。最近自主回答（quality-recent-conflict-5，节选）为：“我现在认为核对规格应是验证，检查用户用途应是确认。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。至少三次客观错答且最新客观答题仍错，支持反复客观错误观察；对话与答题是否一致需进一步检查。",
+            "recommendation": "把最近客观错答与最近自主回答并排比较，写出不一致之处，再完成下面的新场景任务并解释依据。",
+            "followup_question": "为一个食堂订餐功能分别设计一项验证活动和一项确认活动，说明各自需要什么证据，以及两项活动为何不能互相替代。",
+            "evidence_event_ids": [
+              "quality-recent-conflict-2",
+              "quality-recent-conflict-3",
+              "quality-recent-conflict-4",
+              "quality-recent-conflict-5"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": 0.4,
+            "confidence": 0.84,
+            "problem_type": "repeated_error",
+            "explanation": "最新客观答题（quality-recent-conflict-4）仍把验证与确认颠倒，且此前也有两次相同错答，符合反复错误证据。之后的自主对话（quality-recent-conflict-5）正确区分了核对规格与检查用户用途，显示较新的理解有所修正；但这尚未改变客观答题仍错误的事实。客观准确率为0.4，可作为答题基线，不能直接等同于语义掌握度。",
+            "recommendation": "用一个新的软件需求例子分别写出要核对的规定要求和预期用途，并说明两者各自对应验证还是确认。",
+            "followup_question": "以“课程选课系统”为例，给出一项可核对的规定要求和一项可检验的用户用途，并分别说明如何判断它们得到满足。",
+            "evidence_event_ids": [
+              "quality-recent-conflict-2",
+              "quality-recent-conflict-3",
+              "quality-recent-conflict-4",
+              "quality-recent-conflict-5"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11470,
+        "completion_tokens": 288,
+        "total_tokens": 11758
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "repeated_error",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.4,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "repeated_error",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-complete-active",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "no_obvious_issue",
+      "snapshot_sha256": "a6e80eb139afac93b19734d13ba4e41dca417f4c4efc16991d9e077e58726c85",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 7572,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.9,
+            "confidence": 0.86,
+            "problem_type": "no_obvious_issue",
+            "explanation": "本次窗口内有1次客观答题，正确1次，错误0次，客观正确率为100%。最近客观答题（quality-complete-active-0）判为正确。最近自主回答（quality-complete-active-1，节选）为：“我会用响应耗时的分位数检查该质量要求。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-complete-active-observation-0）：资源可用，窗口完整，覆盖率82%，有效时长720秒，学习访问4次。模型在本次答题与自主回答中暂未定位明显知识问题，迁移应用仍需新任务检验。",
+            "recommendation": "完成下面的新场景任务并说明判断依据，检查能否把当前理解迁移到不同情境。",
+            "followup_question": "校园失物平台有两条要求：‘用户能够登记遗失物品’和‘95%的检索请求在800毫秒内返回’。请分别分类并说明判断依据，再自拟一条不同的需求。",
+            "evidence_event_ids": [
+              "quality-complete-active-0",
+              "quality-complete-active-1",
+              "quality-complete-active-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.9,
+            "confidence": 0.86,
+            "problem_type": "no_obvious_issue",
+            "explanation": "最新客观答题正确地区分了系统行为与质量约束；随后自主说明可用响应耗时分位数检查质量要求，进一步体现了可检验性。完整行为测量显示覆盖率0.82、有效学习720秒、访问4次，未显示低投入或只刷题模式。",
+            "recommendation": "在另一个需求场景中，分别写出一项系统行为和一项可测量的质量约束，并说明如何检查后者。",
+            "followup_question": "针对“用户提交订单后收到确认”，请提出一项非功能需求，并说明用什么指标、在什么输入条件下检查它？",
+            "evidence_event_ids": [
+              "quality-complete-active-0",
+              "quality-complete-active-1",
+              "quality-complete-active-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11271,
+        "completion_tokens": 227,
+        "total_tokens": 11498
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.9,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "no_obvious_issue",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-concept-boundary",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "concept_confusion",
+      "full_expected_type": "concept_confusion",
+      "snapshot_sha256": "93ca7b214a2523cd6782a99e4e744e813f34d6d69dcc6c26ed6a72fb62eddcb8",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 7705,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "supported",
+            "mastery": 0.75,
+            "confidence": 0.8,
+            "problem_type": "concept_confusion",
+            "explanation": "本次窗口内有3次客观答题，正确3次，错误0次，客观正确率为100%。最近客观答题（quality-concept-boundary-2）判为正确。最近自主回答（quality-concept-boundary-3，节选）为：“只要测试9到15之间的中间值就能保证边界没有问题。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。模型暂判存在概念混淆，请将所引回答与定义“按取值域、端点包含性和精度检查边界及相邻位置。”对照。答题判分与学生自己的概念说明分别作为证据，正确率不直接等于语义掌握度。",
+            "recommendation": "对照当前定义检查原回答中的判断，再用下面的新场景检验，说明修改前后的依据。",
+            "followup_question": "某表单只接受6到14的整数，包含两端，整数最小步长为1；范围外整数一律拒绝。请自行选择检查上下边界及紧邻位置的测试值，并说明每个值的预期结果。",
+            "evidence_event_ids": [
+              "quality-concept-boundary-2",
+              "quality-concept-boundary-3"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "supported",
+            "mastery": 0.75,
+            "confidence": 0.8,
+            "problem_type": "concept_confusion",
+            "explanation": "最新客观答题正确，三次答题均正确（wrong_count=0，accuracy=1.0），体现了按取值域、精度检查边界及附近位置的理解。但最新自主对话称只测中间值即可保证边界无问题，明确忽略了边界检查，和答题证据冲突。",
+            "recommendation": "用一个明确给出取值域、端点是否包含和输入精度的场景，列出边界及相邻输入，并说明各自要检查什么。",
+            "followup_question": "若允许输入为闭区间 [9,15] 内的一位小数，请写出你会检查的端点值和紧邻端点的有效输入，并说明这些值如何覆盖边界风险。",
+            "evidence_event_ids": [
+              "quality-concept-boundary-2",
+              "quality-concept-boundary-3"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11336,
+        "completion_tokens": 246,
+        "total_tokens": 11582
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "concept_confusion",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.75,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "concept_confusion",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-prerequisite",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "prerequisite_gap",
+      "full_expected_type": "prerequisite_gap",
+      "snapshot_sha256": "cbe63bbbcbc83fcda493dd8da0e81bc1ccd21664158bae1dc1b6a72ddf9ced28",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 6875,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "supported",
+            "mastery": 0.2,
+            "confidence": 0.9,
+            "problem_type": "prerequisite_gap",
+            "explanation": "本次窗口内有2次客观答题，正确0次，错误2次，客观正确率为0%。最近客观答题（quality-prerequisite-1）判为错误。最近自主回答（quality-prerequisite-2，节选）为：“还不懂什么是输入的预期处理行为。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。其中2次错误被教师标记为前置检查，支持存在前置知识缺口的假设；尚不能仅凭这些记录确定缺失的是哪项具体基础技能。",
+            "recommendation": "先用自己的话说明输入条件、预期处理行为和类别代表值，对不清楚的术语回看当前定义，再完成下面的新场景任务。",
+            "followup_question": "某接口只接受2到7的整数，包含两端；本题仅考虑整数输入，范围外输入统一拒绝。请按范围内、下限外和上限外的处理划分类别，自选代表值并说明依据。",
+            "evidence_event_ids": [
+              "quality-prerequisite-0",
+              "quality-prerequisite-1",
+              "quality-prerequisite-2"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "supported",
+            "mastery": 0.2,
+            "confidence": 0.9,
+            "problem_type": "prerequisite_gap",
+            "explanation": "两次最新客观答题均错误，且明确的前置检查错误显示学生无法说出输入条件和处理结果。较晚的自主对话进一步表明学生还不理解“输入的预期处理行为”。",
+            "recommendation": "先用一个具体输入演示如何写出输入条件及系统预期处理结果，再让学生分别为有效和无效输入写出这两项。",
+            "followup_question": "对于一个只接受 1 到 10 的整数的函数，请写出一个输入条件和对应的预期处理结果，并说明你会如何据此划分有效或无效等价类。",
+            "evidence_event_ids": [
+              "quality-prerequisite-0",
+              "quality-prerequisite-1",
+              "quality-prerequisite-2"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11240,
+        "completion_tokens": 220,
+        "total_tokens": 11460
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "prerequisite_gap",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.2,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "prerequisite_gap",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-newer-active",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "no_obvious_issue",
+      "snapshot_sha256": "e367d5be21da8b33101d0d709dc994bd612b7438c235acab5e00b66cf57d99df",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 7660,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.9,
+            "confidence": 0.91,
+            "problem_type": "no_obvious_issue",
+            "explanation": "本次窗口内有1次客观答题，正确1次，错误0次，客观正确率为100%。最近客观答题（quality-newer-active-0）判为正确。最近自主回答（quality-newer-active-1，节选）为：“我会用响应耗时的分位数检查该质量要求。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-newer-active-observation-1）：资源可用，窗口完整，覆盖率80%，有效时长600秒，学习访问2次。模型在本次答题与自主回答中暂未定位明显知识问题，迁移应用仍需新任务检验。",
+            "recommendation": "完成下面的新场景任务并说明判断依据，检查能否把当前理解迁移到不同情境。",
+            "followup_question": "校园失物平台有两条要求：‘用户能够登记遗失物品’和‘95%的检索请求在800毫秒内返回’。请分别分类并说明判断依据，再自拟一条不同的需求。",
+            "evidence_event_ids": [
+              "quality-newer-active-0",
+              "quality-newer-active-1",
+              "quality-newer-active-observation-1"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.9,
+            "confidence": 0.91,
+            "problem_type": "no_obvious_issue",
+            "explanation": "最新客观答题正确地区分了系统行为与质量约束；随后自主对话提出用响应耗时分位数检查质量要求，补充了可检验的测量方式。行为记录包含一条低覆盖短时测量和一条高覆盖长时测量，trusted_summary 未将其汇总为已验证行为，因此不据此判定学习投入模式。",
+            "recommendation": "练习把另一项质量要求写成可测量的指标，并说明测量条件。",
+            "followup_question": "某系统要求“高峰期提交订单后，95%的请求在2秒内得到响应”。你会如何设计检查来判断该要求是否满足？",
+            "evidence_event_ids": [
+              "quality-newer-active-0",
+              "quality-newer-active-1"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11387,
+        "completion_tokens": 225,
+        "total_tokens": 11612
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.9,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "no_obvious_issue",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-unavailable",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "insufficient_evidence",
+      "full_expected_type": "insufficient_evidence",
+      "snapshot_sha256": "5b46f34a8e93a5727ea99ea13ee313b8bc943e742da755b91307bc83fb9b2f24",
+      "expected_status": "insufficient",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 6674,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.96,
+            "problem_type": "insufficient_evidence",
+            "explanation": "本次窗口内有1次客观答题，正确0次，错误1次，客观正确率为0%。最近客观答题（quality-unavailable-1）判为错误。最近自主回答（quality-unavailable-2，节选）为：“需要再学一下才知道怎么做。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-unavailable-observation-0）：资源不可用，窗口完整，覆盖率12%，有效时长53秒，学习访问2次。现有可用证据不足以确定主要知识问题或估计掌握度，需要补充带判断依据的新作答。",
+            "recommendation": "先阅读当前知识点定义，再完成下面的新任务并说明依据，以补充可判断的学习证据。",
+            "followup_question": "某接口只接受2到7的整数，包含两端；本题仅考虑整数输入，范围外输入统一拒绝。请按范围内、下限外和上限外的处理划分类别，自选代表值并说明依据。",
+            "evidence_event_ids": [
+              "quality-unavailable-1",
+              "quality-unavailable-2",
+              "quality-unavailable-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.96,
+            "problem_type": "insufficient_evidence",
+            "explanation": "最新客观答题（quality-unavailable-1）错误，学生表示暂时无法作答；最新自主对话（quality-unavailable-2）仍表示需要再学习，未说明具体判断过程或概念错误。可用证据不足以定位错误类型或估计掌握度。行为汇总显示资源不可用，因此不能据此认定低投入或只刷题。",
+            "recommendation": "复习等价类划分的步骤，并尝试为一个输入条件分别找出有效类、无效类及代表值。",
+            "followup_question": "对一个要求输入 1 至 100 的整数的字段，你会怎样划分等价类？请说明每类的代表值和预期处理行为。",
+            "evidence_event_ids": [
+              "quality-unavailable-1",
+              "quality-unavailable-2",
+              "quality-unavailable-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11335,
+        "completion_tokens": 241,
+        "total_tokens": 11576
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "insufficient_evidence",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-low-threshold",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "low_engagement",
+      "full_expected_type": "low_engagement",
+      "snapshot_sha256": "1179b0f0bf62ad7fcb0884cfcc4aaeb50ed993c3f2259c4e2e87b8a42ad044e2",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7921,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.98,
+            "problem_type": "low_engagement",
+            "explanation": "本次窗口内有1次客观答题，正确0次，错误1次，客观正确率为0%。最近客观答题（quality-low-threshold-1）判为错误。最近自主回答（quality-low-threshold-2，节选）为：“需要再学一下才知道怎么做。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-low-threshold-observation-0）：资源可用，窗口完整，覆盖率20%，有效时长119秒，学习访问3次。完整行为汇总满足低覆盖率、短有效学习时长的观察条件，学习访问不要求为零。行为观察与知识掌握度分开判断，不能据此直接推断知识不会或学习态度。",
+            "recommendation": "先安排一次聚焦规定要求、预期用途和用户需要的短时阅读或案例学习，再完成下面任务并说明依据。",
+            "followup_question": "为一个食堂订餐功能分别设计一项验证活动和一项确认活动，说明各自需要什么证据，以及两项活动为何不能互相替代。",
+            "evidence_event_ids": [
+              "quality-low-threshold-0",
+              "quality-low-threshold-1",
+              "quality-low-threshold-2",
+              "quality-low-threshold-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.98,
+            "problem_type": "low_engagement",
+            "explanation": "完整行为测量显示覆盖率为0.2、有效学习时长119秒且资源可用，符合低投入观察条件。最新客观答题错误；两次自主对话均未解释验证与确认的区别，因此无法估计掌握度。",
+            "recommendation": "安排一次短时学习活动，要求学生分别说明某项检查如何核对规定要求、如何检验预期用途和用户需要。",
+            "followup_question": "设想一个软件功能通过了需求文档中的规定检查，但试用用户仍无法顺利完成目标任务。你会怎样分别判断验证与确认的结果？",
+            "evidence_event_ids": [
+              "quality-low-threshold-0",
+              "quality-low-threshold-1",
+              "quality-low-threshold-2",
+              "quality-low-threshold-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "problem_type": "low_engagement",
+            "evidence_event_id": "quality-low-threshold-observation-0",
+            "measurement": {
+              "coverage": 0.2,
+              "effective_seconds": 119,
+              "study_visits": 3,
+              "resource_available": true,
+              "observation_complete": true
+            },
+            "source": "server_rule"
+          }
+        ],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11392,
+        "completion_tokens": 223,
+        "total_tokens": 11615
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "low_engagement",
+      "predicted_status": "supported",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "low_engagement",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-concept-actor",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "concept_confusion",
+      "full_expected_type": "concept_confusion",
+      "snapshot_sha256": "a0207e73a140a8091cd4961acec65291d467a05e6caabd1f938b15c78385196e",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 7566,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.55,
+            "confidence": 0.92,
+            "problem_type": "concept_confusion",
+            "explanation": "本次窗口内有2次客观答题，正确2次，错误0次，客观正确率为100%。最近客观答题（quality-concept-actor-1）判为正确。最近自主回答（quality-concept-actor-2，节选）为：“任何内部缓存键都是这个系统自己的外部参与者。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。模型暂判存在概念混淆，请将所引回答与定义“参与者是边界外与系统交互的角色，用例对应角色的目标。”对照。答题判分与学生自己的概念说明分别作为证据，正确率不直接等于语义掌握度。",
+            "recommendation": "对照当前定义检查原回答中的判断，再用下面的新场景检验，说明修改前后的依据。",
+            "followup_question": "某软件只负责场馆预约登记，门禁由独立系统控制，两者交换预约资格结果。门禁系统是否可能是预约软件的参与者？请说明边界、交互及其目标。",
+            "evidence_event_ids": [
+              "quality-concept-actor-1",
+              "quality-concept-actor-2"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.55,
+            "confidence": 0.92,
+            "problem_type": "concept_confusion",
+            "explanation": "最新客观答题（quality-concept-actor-1）正确指出参与者是系统外部交互角色；但较晚的自主对话（quality-concept-actor-2）把系统内部缓存键说成外部参与者，明确混淆了系统边界与参与者定义。客观答题全对与对话中的错误表述存在冲突，不能仅按准确率判断掌握情况。",
+            "recommendation": "复习系统边界和参与者定义，分析一个具体系统中的交互对象，并说明每个对象是否位于系统边界外、是否以角色身份与系统交互。",
+            "followup_question": "选择一个你熟悉的软件系统，指出一个可能被误认为参与者的内部技术对象，并说明还需要哪些信息才能判断它是否位于系统边界之外并以角色身份与系统交互？",
+            "evidence_event_ids": [
+              "quality-concept-actor-1",
+              "quality-concept-actor-2"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11236,
+        "completion_tokens": 267,
+        "total_tokens": 11503
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "concept_confusion",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.55,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "concept_confusion",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-incomplete",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "insufficient_evidence",
+      "full_expected_type": "insufficient_evidence",
+      "snapshot_sha256": "7db253bfe25981eb163f104fbab14897dcbb8c987cc06ec47c55451c7488648a",
+      "expected_status": "insufficient",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 8068,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": null,
+            "problem_type": "insufficient_evidence",
+            "explanation": "本次窗口内有1次客观答题，正确0次，错误1次，客观正确率为0%。最近客观答题（quality-incomplete-1）判为错误。最近自主回答（quality-incomplete-2，节选）为：“需要再学一下才知道怎么做。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-incomplete-observation-0）：资源可用，窗口不完整，覆盖率12%，有效时长53秒，学习访问2次。现有可用证据不足以确定主要知识问题或估计掌握度，需要补充带判断依据的新作答。",
+            "recommendation": "先阅读当前知识点定义，再完成下面的新任务并说明依据，以补充可判断的学习证据。",
+            "followup_question": "某软件只负责场馆预约登记，门禁由独立系统控制，两者交换预约资格结果。门禁系统是否可能是预约软件的参与者？请说明边界、交互及其目标。",
+            "evidence_event_ids": [
+              "quality-incomplete-0",
+              "quality-incomplete-1",
+              "quality-incomplete-2",
+              "quality-incomplete-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": null,
+            "problem_type": "insufficient_evidence",
+            "explanation": "最新客观答题（quality-incomplete-1）错误，学生表示暂时无法作答；最新自主对话（quality-incomplete-2）也只表示需要再学习，未解释概念或判断过程。行为测量窗口不完整，不能据此判断学习投入。现有证据不足以定位错误类型或估计掌握度。",
+            "recommendation": "复习参与者与用例的定义，并练习说明参与者如何在系统边界外与系统交互，以及用例如何对应其目标。",
+            "followup_question": "选一个你熟悉的软件系统，描述一个边界外角色与系统的一次交互，并说明该角色希望达成的目标是什么？",
+            "evidence_event_ids": [
+              "quality-incomplete-0",
+              "quality-incomplete-1",
+              "quality-incomplete-2",
+              "quality-incomplete-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11328,
+        "completion_tokens": 238,
+        "total_tokens": 11566
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "insufficient_evidence",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-low-two-visits",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "low_engagement",
+      "full_expected_type": "low_engagement",
+      "snapshot_sha256": "6b650700ae5a61e9e0be041f7b5f42c5d8e3232f69a60d0375eb2ab4b99e6aa1",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7802,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.96,
+            "problem_type": "low_engagement",
+            "explanation": "本次窗口内有1次客观答题，正确0次，错误1次，客观正确率为0%。最近客观答题（quality-low-two-visits-1）判为错误。最近自主回答（quality-low-two-visits-2，节选）为：“需要再学一下才知道怎么做。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-low-two-visits-observation-0）：资源可用，窗口完整，覆盖率12%，有效时长53秒，学习访问2次。完整行为汇总满足低覆盖率、短有效学习时长的观察条件，学习访问不要求为零。行为观察与知识掌握度分开判断，不能据此直接推断知识不会或学习态度。",
+            "recommendation": "先安排一次聚焦功能、质量约束和可验收条件的短时阅读或案例学习，再完成下面任务并说明依据。",
+            "followup_question": "校园失物平台有两条要求：‘用户能够登记遗失物品’和‘95%的检索请求在800毫秒内返回’。请分别分类并说明判断依据，再自拟一条不同的需求。",
+            "evidence_event_ids": [
+              "quality-low-two-visits-1",
+              "quality-low-two-visits-2",
+              "quality-low-two-visits-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.96,
+            "problem_type": "low_engagement",
+            "explanation": "完整行为测量显示覆盖率为0.12、有效学习时长53秒、资源可用且学习访问2次，符合低投入行为条件。最新客观答题错误，答题称暂时无法给出答案；最新自主对话也表示需要再学，尚无正面证据判断掌握度，因此掌握度未知。",
+            "recommendation": "安排一次短时学习任务：阅读该知识点材料后，分别写出一个系统行为要求和一个可检查的质量约束，并说明判断依据。",
+            "followup_question": "设在线图书系统需要支持“按书名搜索”，并要求“搜索结果在2秒内返回”。你会如何判断这两项要求？请说明理由及“2秒内”的检查方式。",
+            "evidence_event_ids": [
+              "quality-low-two-visits-1",
+              "quality-low-two-visits-2",
+              "quality-low-two-visits-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "problem_type": "low_engagement",
+            "evidence_event_id": "quality-low-two-visits-observation-0",
+            "measurement": {
+              "coverage": 0.12,
+              "effective_seconds": 53,
+              "study_visits": 2,
+              "resource_available": true,
+              "observation_complete": true
+            },
+            "source": "server_rule"
+          }
+        ],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11409,
+        "completion_tokens": 252,
+        "total_tokens": 11661
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "low_engagement",
+      "predicted_status": "supported",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "low_engagement",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-named-scene",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "no_obvious_issue",
+      "snapshot_sha256": "8cba8ac1f647ab233bcc2a31fb0dfafc7f3580106a605e7a3d474bdfd6c5e53b",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 8337,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.8,
+            "confidence": 0.78,
+            "problem_type": "no_obvious_issue",
+            "explanation": "本次窗口内有1次客观答题，正确1次，错误0次，客观正确率为100%。最近客观答题（quality-named-scene-0）判为正确。最近自主回答（quality-named-scene-1，节选）为：“参与者位于边界外。我想到的场景名称是停车缴费。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。模型在本次答题与自主回答中暂未定位明显知识问题，迁移应用仍需新任务检验。",
+            "recommendation": "完成下面的新场景任务并说明判断依据，检查能否把当前理解迁移到不同情境。",
+            "followup_question": "某软件只负责场馆预约登记，门禁由独立系统控制，两者交换预约资格结果。门禁系统是否可能是预约软件的参与者？请说明边界、交互及其目标。",
+            "evidence_event_ids": [
+              "quality-named-scene-0",
+              "quality-named-scene-1"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.8,
+            "confidence": 0.78,
+            "problem_type": "no_obvious_issue",
+            "explanation": "最新客观答题正确指出参与者是边界外的交互角色；较晚的自主对话也重复了这一判断，但只给出“停车缴费”场景名称，未提供可检验的应用实例。现有证据支持基本理解，未见明确错误或行为问题。",
+            "recommendation": "用停车缴费场景画出系统边界，并标注一个边界外参与者及其交互目标。",
+            "followup_question": "在停车缴费场景中，你会把哪一个角色画在系统边界之外？请说明它希望通过系统达成什么目标。",
+            "evidence_event_ids": [
+              "quality-named-scene-0",
+              "quality-named-scene-1"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11159,
+        "completion_tokens": 213,
+        "total_tokens": 11372
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.8,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "no_obvious_issue",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-concept-boundary",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "concept_confusion",
+      "full_expected_type": "concept_confusion",
+      "snapshot_sha256": "93ca7b214a2523cd6782a99e4e744e813f34d6d69dcc6c26ed6a72fb62eddcb8",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 10440,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "supported",
+            "mastery": 0.7,
+            "confidence": 0.88,
+            "problem_type": "concept_confusion",
+            "explanation": "本次窗口内有3次客观答题，正确3次，错误0次，客观正确率为100%。最近客观答题（quality-concept-boundary-2）判为正确。最近自主回答（quality-concept-boundary-3，节选）为：“只要测试9到15之间的中间值就能保证边界没有问题。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。模型暂判存在概念混淆，请将所引回答与定义“按取值域、端点包含性和精度检查边界及相邻位置。”对照。答题判分与学生自己的概念说明分别作为证据，正确率不直接等于语义掌握度。",
+            "recommendation": "对照当前定义检查原回答中的判断，再用下面的新场景检验，说明修改前后的依据。",
+            "followup_question": "某表单只接受6到14的整数，包含两端，整数最小步长为1；范围外整数一律拒绝。请自行选择检查上下边界及紧邻位置的测试值，并说明每个值的预期结果。",
+            "evidence_event_ids": [
+              "quality-concept-boundary-2",
+              "quality-concept-boundary-3"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "supported",
+            "mastery": 0.7,
+            "confidence": 0.88,
+            "problem_type": "concept_confusion",
+            "explanation": "最新客观答题（quality-concept-boundary-2）正确说明应检查取值域、精度和边界附近位置；较晚的自主对话（quality-concept-boundary-3）却认为只测中间值就能保证边界无误，明确忽略端点及相邻位置。客观答题基线为3次全对，但这段对话显示边界检查理解存在冲突。",
+            "recommendation": "针对一个整数取值范围，写出下限和上限的包含性，并列出端点及相邻有效值作为测试输入。",
+            "followup_question": "设输入域为闭区间[9,15]且只接受整数，你会选哪些边界及相邻值进行测试？请说明每个值与端点的关系。",
+            "evidence_event_ids": [
+              "quality-concept-boundary-2",
+              "quality-concept-boundary-3"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11336,
+        "completion_tokens": 254,
+        "total_tokens": 11590
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "concept_confusion",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.7,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "concept_confusion",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-complete-active",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "no_obvious_issue",
+      "snapshot_sha256": "a6e80eb139afac93b19734d13ba4e41dca417f4c4efc16991d9e077e58726c85",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 9742,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.9,
+            "confidence": 0.86,
+            "problem_type": "no_obvious_issue",
+            "explanation": "本次窗口内有1次客观答题，正确1次，错误0次，客观正确率为100%。最近客观答题（quality-complete-active-0）判为正确。最近自主回答（quality-complete-active-1，节选）为：“我会用响应耗时的分位数检查该质量要求。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-complete-active-observation-0）：资源可用，窗口完整，覆盖率82%，有效时长720秒，学习访问4次。模型在本次答题与自主回答中暂未定位明显知识问题，迁移应用仍需新任务检验。",
+            "recommendation": "完成下面的新场景任务并说明判断依据，检查能否把当前理解迁移到不同情境。",
+            "followup_question": "校园失物平台有两条要求：‘用户能够登记遗失物品’和‘95%的检索请求在800毫秒内返回’。请分别分类并说明判断依据，再自拟一条不同的需求。",
+            "evidence_event_ids": [
+              "quality-complete-active-0",
+              "quality-complete-active-1",
+              "quality-complete-active-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.9,
+            "confidence": 0.86,
+            "problem_type": "no_obvious_issue",
+            "explanation": "最新客观答题正确地区分了系统行为与质量约束；之后的自主对话进一步说明可用响应耗时分位数检查质量要求。完整行为测量显示较高覆盖和有效时长，与答题及解释证据一致。",
+            "recommendation": "用一个尚未练习过的功能需求和质量约束场景，分别写出可检查的验收条件，并说明怎样验证。",
+            "followup_question": "以批量导入为场景，请分别写出一条系统行为要求和一条质量约束，并说明后者应如何测量？",
+            "evidence_event_ids": [
+              "quality-complete-active-0",
+              "quality-complete-active-1",
+              "quality-complete-active-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11273,
+        "completion_tokens": 215,
+        "total_tokens": 11488
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.9,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "no_obvious_issue",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-low-two-visits",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "low_engagement",
+      "full_expected_type": "low_engagement",
+      "snapshot_sha256": "6b650700ae5a61e9e0be041f7b5f42c5d8e3232f69a60d0375eb2ab4b99e6aa1",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7487,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.95,
+            "problem_type": "low_engagement",
+            "explanation": "本次窗口内有1次客观答题，正确0次，错误1次，客观正确率为0%。最近客观答题（quality-low-two-visits-1）判为错误。最近自主回答（quality-low-two-visits-2，节选）为：“需要再学一下才知道怎么做。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-low-two-visits-observation-0）：资源可用，窗口完整，覆盖率12%，有效时长53秒，学习访问2次。完整行为汇总满足低覆盖率、短有效学习时长的观察条件，学习访问不要求为零。行为观察与知识掌握度分开判断，不能据此直接推断知识不会或学习态度。",
+            "recommendation": "先安排一次聚焦功能、质量约束和可验收条件的短时阅读或案例学习，再完成下面任务并说明依据。",
+            "followup_question": "校园失物平台有两条要求：‘用户能够登记遗失物品’和‘95%的检索请求在800毫秒内返回’。请分别分类并说明判断依据，再自拟一条不同的需求。",
+            "evidence_event_ids": [
+              "quality-low-two-visits-1",
+              "quality-low-two-visits-2",
+              "quality-low-two-visits-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.95,
+            "problem_type": "low_engagement",
+            "explanation": "最新客观答题（quality-low-two-visits-1）错误，学生表示暂时无法作答；最新自主对话（quality-low-two-visits-2）仍表示需要继续学习，未展示对功能需求与非功能需求的区分。完整行为测量显示资源可用、覆盖率0.12、有效学习53秒、访问2次，符合低投入行为观察条件；答题证据不足以估计掌握度。",
+            "recommendation": "用一个具体系统需求，说明它描述的是系统行为还是质量约束，并指出如何检查该要求。",
+            "followup_question": "某图书借阅系统要求“借阅记录应在2秒内显示”。你会如何判断这项要求的类型，并设计一种检查方法？",
+            "evidence_event_ids": [
+              "quality-low-two-visits-1",
+              "quality-low-two-visits-2",
+              "quality-low-two-visits-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "problem_type": "low_engagement",
+            "evidence_event_id": "quality-low-two-visits-observation-0",
+            "measurement": {
+              "coverage": 0.12,
+              "effective_seconds": 53,
+              "study_visits": 2,
+              "resource_available": true,
+              "observation_complete": true
+            },
+            "source": "server_rule"
+          }
+        ],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11405,
+        "completion_tokens": 251,
+        "total_tokens": 11656
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "low_engagement",
+      "predicted_status": "supported",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "low_engagement",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-unavailable",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "insufficient_evidence",
+      "full_expected_type": "insufficient_evidence",
+      "snapshot_sha256": "5b46f34a8e93a5727ea99ea13ee313b8bc943e742da755b91307bc83fb9b2f24",
+      "expected_status": "insufficient",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 8768,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.92,
+            "problem_type": "insufficient_evidence",
+            "explanation": "本次窗口内有1次客观答题，正确0次，错误1次，客观正确率为0%。最近客观答题（quality-unavailable-1）判为错误。最近自主回答（quality-unavailable-2，节选）为：“需要再学一下才知道怎么做。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-unavailable-observation-0）：资源不可用，窗口完整，覆盖率12%，有效时长53秒，学习访问2次。现有可用证据不足以确定主要知识问题或估计掌握度，需要补充带判断依据的新作答。",
+            "recommendation": "先阅读当前知识点定义，再完成下面的新任务并说明依据，以补充可判断的学习证据。",
+            "followup_question": "某接口只接受2到7的整数，包含两端；本题仅考虑整数输入，范围外输入统一拒绝。请按范围内、下限外和上限外的处理划分类别，自选代表值并说明依据。",
+            "evidence_event_ids": [
+              "quality-unavailable-1",
+              "quality-unavailable-2",
+              "quality-unavailable-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.92,
+            "problem_type": "insufficient_evidence",
+            "explanation": "最新客观答题是 quality-unavailable-1，答错；最新自主对话是 quality-unavailable-2，学生表示还需学习，但未解释具体错误概念。trusted_summary 未验证行为测量，且资源不可用，因此不能据此判断投入不足或只刷题。现有证据不足以定位主要问题或估计掌握度。",
+            "recommendation": "复习等价类划分中按输入条件和预期处理行为分组的方法，并为有效类和无效类各选代表值练习。",
+            "followup_question": "以一个你熟悉的输入规则为例，你会依据什么条件划分等价类，并怎样检查代表值能覆盖不同处理行为？",
+            "evidence_event_ids": [
+              "quality-unavailable-1",
+              "quality-unavailable-2"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11335,
+        "completion_tokens": 228,
+        "total_tokens": 11563
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "insufficient_evidence",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-incomplete",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "insufficient_evidence",
+      "full_expected_type": "insufficient_evidence",
+      "snapshot_sha256": "7db253bfe25981eb163f104fbab14897dcbb8c987cc06ec47c55451c7488648a",
+      "expected_status": "insufficient",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7065,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.98,
+            "problem_type": "insufficient_evidence",
+            "explanation": "本次窗口内有1次客观答题，正确0次，错误1次，客观正确率为0%。最近客观答题（quality-incomplete-1）判为错误。最近自主回答（quality-incomplete-2，节选）为：“需要再学一下才知道怎么做。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-incomplete-observation-0）：资源可用，窗口不完整，覆盖率12%，有效时长53秒，学习访问2次。现有可用证据不足以确定主要知识问题或估计掌握度，需要补充带判断依据的新作答。",
+            "recommendation": "先阅读当前知识点定义，再完成下面的新任务并说明依据，以补充可判断的学习证据。",
+            "followup_question": "某软件只负责场馆预约登记，门禁由独立系统控制，两者交换预约资格结果。门禁系统是否可能是预约软件的参与者？请说明边界、交互及其目标。",
+            "evidence_event_ids": [
+              "quality-incomplete-1",
+              "quality-incomplete-2",
+              "quality-incomplete-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.98,
+            "problem_type": "insufficient_evidence",
+            "explanation": "最新客观答题（quality-incomplete-1）错误，学生表示暂时无法给出答案；最新自主对话（quality-incomplete-2）表示需要再学一下，但没有解释错误概念。证据不足以定位错误类型。行为测量窗口不完整，因此不能据此判定学习投入模式。",
+            "recommendation": "复习参与者与用例的定义，并练习区分系统边界外的交互角色和角色希望达成的目标。",
+            "followup_question": "以图书馆借阅系统为例，指出一个参与者及其希望达成的一个目标，并说明它们分别属于什么？",
+            "evidence_event_ids": [
+              "quality-incomplete-1",
+              "quality-incomplete-2"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11332,
+        "completion_tokens": 214,
+        "total_tokens": 11546
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "insufficient_evidence",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-low-threshold",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "low_engagement",
+      "full_expected_type": "low_engagement",
+      "snapshot_sha256": "1179b0f0bf62ad7fcb0884cfcc4aaeb50ed993c3f2259c4e2e87b8a42ad044e2",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7379,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.98,
+            "problem_type": "low_engagement",
+            "explanation": "本次窗口内有1次客观答题，正确0次，错误1次，客观正确率为0%。最近客观答题（quality-low-threshold-1）判为错误。最近自主回答（quality-low-threshold-2，节选）为：“需要再学一下才知道怎么做。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-low-threshold-observation-0）：资源可用，窗口完整，覆盖率20%，有效时长119秒，学习访问3次。完整行为汇总满足低覆盖率、短有效学习时长的观察条件，学习访问不要求为零。行为观察与知识掌握度分开判断，不能据此直接推断知识不会或学习态度。",
+            "recommendation": "先安排一次聚焦规定要求、预期用途和用户需要的短时阅读或案例学习，再完成下面任务并说明依据。",
+            "followup_question": "为一个食堂订餐功能分别设计一项验证活动和一项确认活动，说明各自需要什么证据，以及两项活动为何不能互相替代。",
+            "evidence_event_ids": [
+              "quality-low-threshold-1",
+              "quality-low-threshold-2",
+              "quality-low-threshold-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.98,
+            "problem_type": "low_engagement",
+            "explanation": "完整行为测量显示覆盖率为0.2、有效学习时长119秒且资源可用，符合低投入行为观察条件。最新客观答题错误（本次唯一客观答题，accuracy为0.0）；最新自主对话仍表示需要再学习才能作答，较早对话也未能解释判断过程。证据不足以估计语义掌握度。",
+            "recommendation": "安排一次短时学习活动，请学生完成一个验证与确认的对比例子，并记录学习覆盖情况。",
+            "followup_question": "以一个具体功能需求为例，分别说明怎样检查它是否符合规定要求，以及怎样判断它是否满足用户的预期用途。",
+            "evidence_event_ids": [
+              "quality-low-threshold-observation-0",
+              "quality-low-threshold-1",
+              "quality-low-threshold-2"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "problem_type": "low_engagement",
+            "evidence_event_id": "quality-low-threshold-observation-0",
+            "measurement": {
+              "coverage": 0.2,
+              "effective_seconds": 119,
+              "study_visits": 3,
+              "resource_available": true,
+              "observation_complete": true
+            },
+            "source": "server_rule"
+          }
+        ],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11392,
+        "completion_tokens": 232,
+        "total_tokens": 11624
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "low_engagement",
+      "predicted_status": "supported",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "low_engagement",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-insufficient",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "insufficient_evidence",
+      "full_expected_type": "insufficient_evidence",
+      "snapshot_sha256": "8ad53cca974fd09ce271bd155d6f9ce80c01e385918350994230fea10d230dd8",
+      "expected_status": "insufficient",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7767,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.96,
+            "problem_type": "insufficient_evidence",
+            "explanation": "本次窗口内有1次客观答题，正确0次，错误1次，客观正确率为0%。最近客观答题（quality-insufficient-1）判为错误。最近自主回答（quality-insufficient-2，节选）为：“需要再学一下才知道怎么做。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。现有可用证据不足以确定主要知识问题或估计掌握度，需要补充带判断依据的新作答。",
+            "recommendation": "先阅读当前知识点定义，再完成下面的新任务并说明依据，以补充可判断的学习证据。",
+            "followup_question": "某表单只接受6到14的整数，包含两端，整数最小步长为1；范围外整数一律拒绝。请自行选择检查上下边界及紧邻位置的测试值，并说明每个值的预期结果。",
+            "evidence_event_ids": [
+              "quality-insufficient-1",
+              "quality-insufficient-2"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "status": "insufficient",
+            "mastery": null,
+            "confidence": 0.96,
+            "problem_type": "insufficient_evidence",
+            "explanation": "最新客观答题（quality-insufficient-1）答错；最新自主对话（quality-insufficient-2）表示需要再学习，但未解释判断过程或具体错误概念。现有证据不足以定位主要问题或估计掌握度。",
+            "recommendation": "安排一道包含明确输入域、端点包含性和数值精度的边界值分析题，请学生说明选择测试值的依据。",
+            "followup_question": "对一个输入范围为 0 到 10（含端点）、精度为整数的字段，你会选哪些边界及相邻测试值？请说明输入域和每个值的依据。",
+            "evidence_event_ids": [
+              "quality-insufficient-1",
+              "quality-insufficient-2"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-BOUND-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11217,
+        "completion_tokens": 216,
+        "total_tokens": 11433
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "insufficient_evidence",
+      "predicted_status": "insufficient",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "insufficient_evidence",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-recent-conflict",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "repeated_error",
+      "full_expected_type": "repeated_error",
+      "snapshot_sha256": "04f767f4c4de3e44da68bcaf2d2d0dc4d5f1190ce70362cf82c99019643ba03e",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.4,
+      "latency_ms": 7026,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": 0.5,
+            "confidence": 0.92,
+            "problem_type": "repeated_error",
+            "explanation": "本次窗口内有5次客观答题，正确2次，错误3次，客观正确率为40%。最近客观答题（quality-recent-conflict-4）判为错误。最近自主回答（quality-recent-conflict-5，节选）为：“我现在认为核对规格应是验证，检查用户用途应是确认。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。至少三次客观错答且最新客观答题仍错，支持反复客观错误观察；对话与答题是否一致需进一步检查。",
+            "recommendation": "把最近客观错答与最近自主回答并排比较，写出不一致之处，再完成下面的新场景任务并解释依据。",
+            "followup_question": "为一个食堂订餐功能分别设计一项验证活动和一项确认活动，说明各自需要什么证据，以及两项活动为何不能互相替代。",
+            "evidence_event_ids": [
+              "quality-recent-conflict-2",
+              "quality-recent-conflict-3",
+              "quality-recent-conflict-4",
+              "quality-recent-conflict-5"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "status": "supported",
+            "mastery": 0.5,
+            "confidence": 0.92,
+            "problem_type": "repeated_error",
+            "explanation": "最新客观答题仍把验证与确认的含义颠倒，且有 3 次不同的客观错答（quality-recent-conflict-2、quality-recent-conflict-3、quality-recent-conflict-4）；较晚的自主对话正确区分了核对规格与检查用户用途，显示出纠正迹象，但尚未由客观答题验证。客观正确率为 0.4，不能直接代表语义掌握度。",
+            "recommendation": "用一个新的软件需求场景，分别写出一项核对规定要求的检查和一项检查用户预期用途的检查，并说明两者各属于验证还是确认。",
+            "followup_question": "针对一个在线预约系统，请各举一项核对规定要求和检查用户预期用途的具体检查，并说明你如何判断它们分别属于验证或确认？",
+            "evidence_event_ids": [
+              "quality-recent-conflict-2",
+              "quality-recent-conflict-3",
+              "quality-recent-conflict-4",
+              "quality-recent-conflict-5"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-VAL-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11468,
+        "completion_tokens": 285,
+        "total_tokens": 11753
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "repeated_error",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.5,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "repeated_error",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-newer-active",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "no_obvious_issue",
+      "full_expected_type": "no_obvious_issue",
+      "snapshot_sha256": "e367d5be21da8b33101d0d709dc994bd612b7438c235acab5e00b66cf57d99df",
+      "expected_status": "supported",
+      "expected_support_needed": false,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 7653,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.9,
+            "confidence": 0.84,
+            "problem_type": "no_obvious_issue",
+            "explanation": "本次窗口内有1次客观答题，正确1次，错误0次，客观正确率为100%。最近客观答题（quality-newer-active-0）判为正确。最近自主回答（quality-newer-active-1，节选）为：“我会用响应耗时的分位数检查该质量要求。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-newer-active-observation-1）：资源可用，窗口完整，覆盖率80%，有效时长600秒，学习访问2次。模型在本次答题与自主回答中暂未定位明显知识问题，迁移应用仍需新任务检验。",
+            "recommendation": "完成下面的新场景任务并说明判断依据，检查能否把当前理解迁移到不同情境。",
+            "followup_question": "校园失物平台有两条要求：‘用户能够登记遗失物品’和‘95%的检索请求在800毫秒内返回’。请分别分类并说明判断依据，再自拟一条不同的需求。",
+            "evidence_event_ids": [
+              "quality-newer-active-0",
+              "quality-newer-active-1",
+              "quality-newer-active-observation-1"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "status": "supported",
+            "mastery": 0.9,
+            "confidence": 0.84,
+            "problem_type": "no_obvious_issue",
+            "explanation": "最新客观答题（quality-newer-active-0）正确地区分了系统行为与质量约束；其后的自主对话（quality-newer-active-1）进一步提出用响应耗时分位数检查质量要求，体现了可检验的理解。两条行为测量结果不一致，且 trusted_summary 未验证行为模式，因此不据此判断学习投入。",
+            "recommendation": "继续练习将具体需求分类，并为每项非功能要求写出可测量的指标和检查方法。",
+            "followup_question": "对一个批量导出功能，若要求“在 500 条记录以内时，95% 的请求在 2 秒内完成”，请说明行为与质量约束分别是什么，并指出该要求的适用输入域和端点如何处理。",
+            "evidence_event_ids": [
+              "quality-newer-active-0",
+              "quality-newer-active-1"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11393,
+        "completion_tokens": 248,
+        "total_tokens": 11641
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "no_obvious_issue",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.9,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "no_obvious_issue",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-practice",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "practice_only",
+      "full_expected_type": "practice_only",
+      "snapshot_sha256": "93f986ac368f8640c6b8a0b13bbc5d6ea18fd1fd4c4b2cba0d69be08d3aad844",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 8406,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.92,
+            "problem_type": "practice_only",
+            "explanation": "本次窗口内有4次客观答题，正确4次，错误0次，客观正确率为100%。最近客观答题（quality-practice-3）判为正确。最近自主回答（quality-practice-4，节选）为：“在停车登记服务中，用户希望登记车牌以进入场馆。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。最近服务端行为汇总（quality-practice-observation-0）：资源可用，窗口完整，覆盖率0%，有效时长0秒，学习访问0次。完整行为汇总满足资源访问为零且至少三次答题的学习方式条件。行为观察与知识掌握度分开判断，不能据此直接推断知识不会或学习态度。",
+            "recommendation": "先用下面的新场景检验独立应用；如解释不完整，再回看定义或教师案例并重新作答。",
+            "followup_question": "某软件只负责场馆预约登记，门禁由独立系统控制，两者交换预约资格结果。门禁系统是否可能是预约软件的参与者？请说明边界、交互及其目标。",
+            "evidence_event_ids": [
+              "quality-practice-0",
+              "quality-practice-1",
+              "quality-practice-2",
+              "quality-practice-3",
+              "quality-practice-4",
+              "quality-practice-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.92,
+            "problem_type": "practice_only",
+            "explanation": "完整观察窗口显示学习访问数为0，资源可用，且有4次答题，符合只答题的学习方式观察。客观答题均正确，最新答题也正确；自主对话还举出停车登记服务中用户登记车牌以进入场馆的目标，显示了角色目标的理解。行为证据支持 practice_only，但无法据此估计语义掌握度，因此 mastery 为 null。",
+            "recommendation": "安排一次不依赖重复答题的迁移练习：请学生从一个新的系统场景中识别边界外角色及其目标，并说明角色如何与系统交互。",
+            "followup_question": "在图书馆自助借书系统中，请举出一个边界外参与者，并描述该参与者希望借助系统完成的具体目标。",
+            "evidence_event_ids": [
+              "quality-practice-0",
+              "quality-practice-1",
+              "quality-practice-2",
+              "quality-practice-3",
+              "quality-practice-4",
+              "quality-practice-observation-0"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "problem_type": "practice_only",
+            "evidence_event_id": "quality-practice-observation-0",
+            "measurement": {
+              "coverage": 0,
+              "effective_seconds": 0,
+              "study_visits": 0,
+              "resource_available": true,
+              "observation_complete": true
+            },
+            "source": "server_rule"
+          }
+        ],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11560,
+        "completion_tokens": 274,
+        "total_tokens": 11834
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "practice_only",
+      "predicted_status": "supported",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "practice_only",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-prerequisite",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "prerequisite_gap",
+      "full_expected_type": "prerequisite_gap",
+      "snapshot_sha256": "cbe63bbbcbc83fcda493dd8da0e81bc1ccd21664158bae1dc1b6a72ddf9ced28",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7418,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "supported",
+            "mastery": 0.0,
+            "confidence": 0.99,
+            "problem_type": "prerequisite_gap",
+            "explanation": "本次窗口内有2次客观答题，正确0次，错误2次，客观正确率为0%。最近客观答题（quality-prerequisite-1）判为错误。最近自主回答（quality-prerequisite-2，节选）为：“还不懂什么是输入的预期处理行为。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。其中2次错误被教师标记为前置检查，支持存在前置知识缺口的假设；尚不能仅凭这些记录确定缺失的是哪项具体基础技能。",
+            "recommendation": "先用自己的话说明输入条件、预期处理行为和类别代表值，对不清楚的术语回看当前定义，再完成下面的新场景任务。",
+            "followup_question": "某接口只接受2到7的整数，包含两端；本题仅考虑整数输入，范围外输入统一拒绝。请按范围内、下限外和上限外的处理划分类别，自选代表值并说明依据。",
+            "evidence_event_ids": [
+              "quality-prerequisite-0",
+              "quality-prerequisite-1",
+              "quality-prerequisite-2"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "supported",
+            "mastery": 0.0,
+            "confidence": 0.99,
+            "problem_type": "prerequisite_gap",
+            "explanation": "最新客观答题（quality-prerequisite-1）仍无法说明输入条件和处理结果；两次明确标记为前置检查的答题均错误。稍后的自主对话（quality-prerequisite-2）也表示不理解“输入的预期处理行为”，与前置概念不足相符。",
+            "recommendation": "先练习描述输入条件及系统对该输入的预期处理行为，再据此为等价类划分选取代表值。",
+            "followup_question": "以登录密码输入为例，你认为哪些输入条件会导致系统采取不同的处理行为？请描述一个有效输入和一个无效输入及其预期结果。",
+            "evidence_event_ids": [
+              "quality-prerequisite-0",
+              "quality-prerequisite-1",
+              "quality-prerequisite-2"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11240,
+        "completion_tokens": 231,
+        "total_tokens": 11471
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "prerequisite_gap",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.0,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "prerequisite_gap",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    },
+    {
+      "id": "quality-concept-actor",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "concept_confusion",
+      "full_expected_type": "concept_confusion",
+      "snapshot_sha256": "a0207e73a140a8091cd4961acec65291d467a05e6caabd1f938b15c78385196e",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": false,
+      "baseline_accuracy": 1.0,
+      "latency_ms": 9489,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.6,
+            "confidence": 0.85,
+            "problem_type": "concept_confusion",
+            "explanation": "本次窗口内有2次客观答题，正确2次，错误0次，客观正确率为100%。最近客观答题（quality-concept-actor-1）判为正确。最近自主回答（quality-concept-actor-2，节选）为：“任何内部缓存键都是这个系统自己的外部参与者。”。这条自主回答晚于最近客观答题，应与该答题一起核对；仅凭自述不能确认错误已稳定纠正。行为数据未采集，暂不评价学习投入或资源访问模式。模型暂判存在概念混淆，请将所引回答与定义“参与者是边界外与系统交互的角色，用例对应角色的目标。”对照。答题判分与学生自己的概念说明分别作为证据，正确率不直接等于语义掌握度。",
+            "recommendation": "对照当前定义检查原回答中的判断，再用下面的新场景检验，说明修改前后的依据。",
+            "followup_question": "某软件只负责场馆预约登记，门禁由独立系统控制，两者交换预约资格结果。门禁系统是否可能是预约软件的参与者？请说明边界、交互及其目标。",
+            "evidence_event_ids": [
+              "quality-concept-actor-1",
+              "quality-concept-actor-2"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": [],
+        "model_drafts": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "status": "supported",
+            "mastery": 0.6,
+            "confidence": 0.85,
+            "problem_type": "concept_confusion",
+            "explanation": "最新客观答题正确地把参与者描述为系统外部交互角色（quality-concept-actor-1）；较晚的自主对话却把内部缓存键称为外部参与者，明确混淆了系统内部元素与边界外角色。客观答题基线为2次全对，但这条最新对话与之冲突，掌握情况仍需确认。",
+            "recommendation": "用一个包含用户、外部支付服务和内部缓存键的系统场景，分别标出系统边界，并说明哪些角色能以目标与系统交互。",
+            "followup_question": "在你选定的场景中，内部缓存键能否独立于系统外部发起交互并达成目标？请说明判断依据。",
+            "evidence_event_ids": [
+              "quality-concept-actor-1",
+              "quality-concept-actor-2"
+            ],
+            "citations": []
+          }
+        ],
+        "observed_behaviors": [],
+        "presentation_version": "diagnosis-presentation-v1",
+        "presentation_actions": [
+          {
+            "knowledge_point_id": "KP-REQ-02",
+            "action": "render_evidence_and_authored_task"
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 11234,
+        "completion_tokens": 246,
+        "total_tokens": 11480
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "concept_confusion",
+      "predicted_status": "supported",
+      "predicted_mastery": 0.6,
+      "guardrail_downgraded": false,
+      "rule_adjusted": false,
+      "raw_predicted_type": "concept_confusion",
+      "presentation_rendered": true,
+      "evidence_valid": true
+    }
+  ],
+  "summaries": {
+    "full": {
+      "samples": 26,
+      "pipeline_successes": 26,
+      "model_calls": 26,
+      "local_insufficient_results": 0,
+      "model_successes": 26,
+      "model_failures": 0,
+      "guardrail_downgrades": 0,
+      "rule_adjustments": 0,
+      "presentation_rendered_results": 26,
+      "raw_model_type_accuracy": 1.0,
+      "raw_model_metric_note": "original draft labels, before server rules; failures count as incorrect",
+      "model_first_pass_valid_rate": 1.0,
+      "type_accuracy_including_failures": 1.0,
+      "problem_type_macro_f1_including_failures": 1.0,
+      "full_label_retention_rate": 1.0,
+      "label_basis": "variant-specific candidate/reviewed labels; full label retention is not accuracy",
+      "evidence_valid_rate_including_failures": 1.0,
+      "baseline_binary_accuracy": 0.7142857142857143,
+      "knowledge_binary_eligible_samples": 14,
+      "binary_target_note": "knowledge support only; behavior and insufficient labels are unscored",
+      "baseline_coverage": 0.5384615384615384,
+      "model_binary_accuracy": 0.8571428571428571,
+      "model_binary_coverage": 0.5384615384615384,
+      "mean_type_accuracy_across_repeats": 1.0,
+      "accuracy_run_range": [
+        1.0,
+        1.0
+      ],
+      "accuracy_approx_95_interval": [
+        1.0,
+        1
+      ],
+      "interval_note": "normal approximation over run means; few repeats give unreliable intervals",
+      "mean_latency_ms": 8095.7692307692305,
+      "total_tokens_known": 300902,
+      "token_usage_coverage": 1.0,
+      "cost": "unknown: no verified unit price configured"
+    }
+  },
+  "planned_records": 26,
+  "run_complete": true,
+  "baseline_summary": {
+    "samples": 26,
+    "knowledge_binary_eligible_samples": 14,
+    "binary_target_note": "knowledge support only; behavior and insufficient labels are unscored",
+    "measured": 14,
+    "unknown": 12,
+    "binary_accuracy": 0.7142857142857143,
+    "coverage": 0.5384615384615384
+  }
+}
