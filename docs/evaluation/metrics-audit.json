@@ -1,0 +1,140 @@
+[
+  {
+    "source": "evidence-v1-smoke.json",
+    "source_sha256": "3a30e87d8e02d72e02e5a58e900f4dc6c0b73c25da01e6ccddd0233485b66d3b",
+    "prompt_version": "evidence-diagnosis-v1",
+    "summaries": {
+      "no_behavior": {
+        "samples": 14,
+        "pipeline_successes": 12,
+        "model_calls": 14,
+        "local_insufficient_results": 0,
+        "model_successes": 12,
+        "model_failures": 2,
+        "guardrail_downgrades": 0,
+        "model_first_pass_valid_rate": 0.8571428571428571,
+        "type_accuracy_including_failures": 0.5714285714285714,
+        "problem_type_macro_f1_including_failures": 0.47619047619047616,
+        "evidence_valid_rate_including_failures": 0.8571428571428571,
+        "baseline_binary_accuracy": 0.5714285714285714,
+        "baseline_coverage": 1.0,
+        "model_binary_accuracy": 0.8,
+        "model_binary_coverage": 0.7142857142857143,
+        "mean_type_accuracy_across_repeats": 0.5714285714285714,
+        "accuracy_run_range": [
+          0.5714285714285714,
+          0.5714285714285714
+        ],
+        "accuracy_approx_95_interval": [
+          0.5714285714285714,
+          0.5714285714285714
+        ],
+        "interval_note": "normal approximation over run means; few repeats give unreliable intervals",
+        "mean_latency_ms": 19244.285714285714,
+        "total_tokens_known": 162664,
+        "token_usage_coverage": 0.8571428571428571,
+        "cost": "unknown: no verified unit price configured"
+      },
+      "full": {
+        "samples": 14,
+        "pipeline_successes": 11,
+        "model_calls": 14,
+        "local_insufficient_results": 0,
+        "model_successes": 11,
+        "model_failures": 3,
+        "guardrail_downgrades": 0,
+        "model_first_pass_valid_rate": 0.7857142857142857,
+        "type_accuracy_including_failures": 0.5714285714285714,
+        "problem_type_macro_f1_including_failures": 0.5428571428571428,
+        "evidence_valid_rate_including_failures": 0.7857142857142857,
+        "baseline_binary_accuracy": 0.5714285714285714,
+        "baseline_coverage": 1.0,
+        "model_binary_accuracy": 0.7272727272727273,
+        "model_binary_coverage": 0.7857142857142857,
+        "mean_type_accuracy_across_repeats": 0.5714285714285714,
+        "accuracy_run_range": [
+          0.5714285714285714,
+          0.5714285714285714
+        ],
+        "accuracy_approx_95_interval": [
+          0.5714285714285714,
+          0.5714285714285714
+        ],
+        "interval_note": "normal approximation over run means; few repeats give unreliable intervals",
+        "mean_latency_ms": 9895.857142857143,
+        "total_tokens_known": 150226,
+        "token_usage_coverage": 0.7857142857142857,
+        "cost": "unknown: no verified unit price configured"
+      },
+      "no_dialogue": {
+        "samples": 14,
+        "pipeline_successes": 13,
+        "model_calls": 12,
+        "local_insufficient_results": 2,
+        "model_successes": 11,
+        "model_failures": 1,
+        "guardrail_downgrades": 0,
+        "model_first_pass_valid_rate": 0.9166666666666666,
+        "type_accuracy_including_failures": 0.5,
+        "problem_type_macro_f1_including_failures": 0.49523809523809526,
+        "evidence_valid_rate_including_failures": 0.9285714285714286,
+        "baseline_binary_accuracy": 0.5714285714285714,
+        "baseline_coverage": 1.0,
+        "model_binary_accuracy": 0.4,
+        "model_binary_coverage": 0.7142857142857143,
+        "mean_type_accuracy_across_repeats": 0.5,
+        "accuracy_run_range": [
+          0.42857142857142855,
+          0.5714285714285714
+        ],
+        "accuracy_approx_95_interval": [
+          0.36,
+          0.64
+        ],
+        "interval_note": "normal approximation over run means; few repeats give unreliable intervals",
+        "mean_latency_ms": 6911.142857142857,
+        "total_tokens_known": 125643,
+        "token_usage_coverage": 0.9166666666666666,
+        "cost": "unknown: no verified unit price configured"
+      }
+    }
+  },
+  {
+    "source": "evidence-v2-smoke.json",
+    "source_sha256": "033e06d58fba7030fb1f4d6b2f14245a82588dc7fdfe8f7b95017edab48138a4",
+    "prompt_version": "evidence-diagnosis-v2",
+    "summaries": {
+      "full": {
+        "samples": 14,
+        "pipeline_successes": 11,
+        "model_calls": 14,
+        "local_insufficient_results": 0,
+        "model_successes": 11,
+        "model_failures": 3,
+        "guardrail_downgrades": 1,
+        "model_first_pass_valid_rate": 0.7142857142857143,
+        "type_accuracy_including_failures": 0.5,
+        "problem_type_macro_f1_including_failures": 0.5047619047619047,
+        "evidence_valid_rate_including_failures": 0.7857142857142857,
+        "baseline_binary_accuracy": 0.5714285714285714,
+        "baseline_coverage": 1.0,
+        "model_binary_accuracy": 0.7,
+        "model_binary_coverage": 0.7142857142857143,
+        "mean_type_accuracy_across_repeats": 0.5,
+        "accuracy_run_range": [
+          0.2857142857142857,
+          0.7142857142857143
+        ],
+        "accuracy_approx_95_interval": [
+          0.08000000000000002,
+          0.9199999999999999
+        ],
+        "interval_note": "normal approximation over run means; few repeats give unreliable intervals",
+        "mean_latency_ms": 12508.214285714286,
+        "total_tokens_known": 149127,
+        "token_usage_coverage": 0.7857142857142857,
+        "cost": "unknown: no verified unit price configured"
+      }
+    }
+  }
+]

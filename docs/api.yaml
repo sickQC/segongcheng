@@ -862,6 +862,134 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
+  /api/v1/courses/{course_id}/practices/{exercise_id}/submissions/me:
+    get:
+      tags:
+      - Course practice
+      summary: My Submissions
+      operationId: my_submissions_api_v1_courses__course_id__practices__exercise_id__submissions_me_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: exercise_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Exercise Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubmissionOut'
+                title: Response My Submissions Api V1 Courses  Course Id  Practices  Exercise
+                  Id  Submissions Me Get
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/practices/{exercise_id}/submissions/{submission_id}/followups:
+    post:
+      tags:
+      - Course practice
+      summary: Answer Followup
+      operationId: answer_followup_api_v1_courses__course_id__practices__exercise_id__submissions__submission_id__followups_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: exercise_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Exercise Id
+      - name: submission_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Submission Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PracticeAnswer'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/practices/{exercise_id}/submissions/{submission_id}/retry:
     post:
       tags:
@@ -924,12 +1052,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
-  /api/v1/courses/{course_id}/practices/{exercise_id}/submissions/me:
+  /api/v1/courses/{course_id}/practices/{exercise_id}/progress:
     get:
       tags:
       - Course practice
-      summary: My Submissions
-      operationId: my_submissions_api_v1_courses__course_id__practices__exercise_id__submissions_me_get
+      summary: Practice Progress
+      operationId: practice_progress_api_v1_courses__course_id__practices__exercise_id__progress_get
       parameters:
       - name: course_id
         in: path
@@ -949,11 +1077,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SubmissionOut'
-                title: Response My Submissions Api V1 Courses  Course Id  Practices  Exercise
-                  Id  Submissions Me Get
+                $ref: '#/components/schemas/PracticeProgress'
         '401':
           content:
             application/json:
@@ -984,12 +1108,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Entity
-  /api/v1/courses/{course_id}/practices/{exercise_id}/progress:
-    get:
+  /api/v1/courses/{course_id}/quizzes:
+    post:
       tags:
-      - Course practice
-      summary: Practice Progress
-      operationId: practice_progress_api_v1_courses__course_id__practices__exercise_id__progress_get
+      - Member C · assessment bridge
+      summary: Create Quiz
+      operationId: create_quiz_api_v1_courses__course_id__quizzes_post
       parameters:
       - name: course_id
         in: path
@@ -997,19 +1121,883 @@ paths:
         schema:
           type: string
           title: Course Id
-      - name: exercise_id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+    get:
+      tags:
+      - Workspace · 演示与占位
+      summary: 可参加测验列表
+      operationId: quizzes_api_v1_courses__course_id__quizzes_get
+      parameters:
+      - name: course_id
         in: path
         required: true
         schema:
           type: string
-          title: Exercise Id
+          title: Course Id
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PracticeProgress'
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuizOut'
+                title: Response Quizzes Api V1 Courses  Course Id  Quizzes Get
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '501':
+          description: 接口占位，业务尚未实现
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/courses/{course_id}/attempts/me:
+    get:
+      tags:
+      - Member C · assessment bridge
+      summary: My Attempts
+      operationId: my_attempts_api_v1_courses__course_id__attempts_me_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/attempts/{attempt_id}:
+    get:
+      tags:
+      - Member C · assessment bridge
+      summary: Get Attempt
+      operationId: get_attempt_api_v1_courses__course_id__attempts__attempt_id__get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: attempt_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Attempt Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/attempts/{attempt_id}/diagnoses:
+    get:
+      tags:
+      - Member C · assessment bridge
+      summary: Attempt Diagnoses
+      operationId: attempt_diagnoses_api_v1_courses__course_id__attempts__attempt_id__diagnoses_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: attempt_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Attempt Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/attempts/{attempt_id}/diagnoses/{diagnosis_id}/retry:
+    post:
+      tags:
+      - Member C · assessment bridge
+      summary: Retry Diagnosis
+      operationId: retry_diagnosis_api_v1_courses__course_id__attempts__attempt_id__diagnoses__diagnosis_id__retry_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: attempt_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Attempt Id
+      - name: diagnosis_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Diagnosis Id
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/learning-templates:
+    get:
+      tags:
+      - Member C · 5E learning
+      summary: Templates
+      operationId: templates_api_v1_courses__course_id__learning_templates_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/learning-sessions:
+    get:
+      tags:
+      - Member C · 5E learning
+      summary: List Sessions
+      operationId: list_sessions_api_v1_courses__course_id__learning_sessions_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/learning-sessions:
+    post:
+      tags:
+      - Member C · 5E learning
+      summary: Start Session
+      operationId: start_session_api_v1_learning_sessions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/learning-sessions/{session_id}:
+    get:
+      tags:
+      - Member C · 5E learning
+      summary: Get Session
+      operationId: get_session_api_v1_learning_sessions__session_id__get
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Session Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/learning-sessions/{session_id}/turns:
+    post:
+      tags:
+      - Member C · 5E learning
+      summary: Answer Turn
+      operationId: answer_turn_api_v1_learning_sessions__session_id__turns_post
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Session Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LearningAnswer'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/learning-sessions/{session_id}/turns/{turn_id}:
+    get:
+      tags:
+      - Member C · 5E learning
+      summary: Get Turn
+      operationId: get_turn_api_v1_learning_sessions__session_id__turns__turn_id__get
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Session Id
+      - name: turn_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Turn Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/diagnosis-reports:
+    post:
+      tags:
+      - Learning diagnosis
+      summary: Diagnose
+      operationId: diagnose_api_v1_courses__course_id__diagnosis_reports_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportCreate'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app__schemas__diagnosis_report__ReportOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+    get:
+      tags:
+      - Learning diagnosis
+      summary: History
+      operationId: history_api_v1_courses__course_id__diagnosis_reports_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/app__schemas__diagnosis_report__ReportOut'
+                title: Response History Api V1 Courses  Course Id  Diagnosis Reports
+                  Get
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/students/{student_id}/diagnosis-reports:
+    post:
+      tags:
+      - Learning diagnosis
+      summary: Diagnose Student
+      operationId: diagnose_student_api_v1_courses__course_id__students__student_id__diagnosis_reports_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: student_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Student Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportCreate'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app__schemas__diagnosis_report__ReportOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/diagnosis-reports/{report_id}:
+    get:
+      tags:
+      - Learning diagnosis
+      summary: Get Report
+      operationId: get_report_api_v1_courses__course_id__diagnosis_reports__report_id__get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: report_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Report Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app__schemas__diagnosis_report__ReportOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/diagnosis-reports/{report_id}/retry:
+    post:
+      tags:
+      - Learning diagnosis
+      summary: Retry
+      operationId: retry_api_v1_courses__course_id__diagnosis_reports__report_id__retry_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: report_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Report Id
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
         '401':
           content:
             application/json:
@@ -1161,70 +2149,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /api/v1/courses/{course_id}/quizzes:
-    get:
-      tags:
-      - Workspace · 演示与占位
-      summary: '[占位] 可参加测验列表'
-      operationId: quizzes_api_v1_courses__course_id__quizzes_get
-      parameters:
-      - name: course_id
-        in: path
-        required: true
-        schema:
-          type: string
-          title: Course Id
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/QuizOut'
-                title: Response Quizzes Api V1 Courses  Course Id  Quizzes Get
-        '401':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Unauthorized
-        '403':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Forbidden
-        '404':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Not Found
-        '409':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Conflict
-        '422':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
-        '501':
-          description: 接口占位，业务尚未实现
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/courses/{course_id}/attempts:
     post:
       tags:
       - Workspace · 演示与占位
-      summary: '[占位] 开始测验'
+      summary: 开始或恢复测验
       operationId: start_attempt_api_v1_courses__course_id__attempts_post
       parameters:
       - name: course_id
@@ -1286,7 +2215,7 @@ paths:
     post:
       tags:
       - Workspace · 演示与占位
-      summary: '[占位] 交卷与判分'
+      summary: 交卷、判分与自动诊断
       operationId: submit_api_v1_courses__course_id__attempts__attempt_id__submit_post
       parameters:
       - name: course_id
@@ -1379,7 +2308,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReportOut'
+                $ref: '#/components/schemas/app__schemas__workspace__ReportOut'
         '401':
           content:
             application/json:
@@ -1559,7 +2488,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReportOut'
+                $ref: '#/components/schemas/app__schemas__workspace__ReportOut'
         '401':
           content:
             application/json:
@@ -2657,6 +3586,28 @@ components:
       additionalProperties: false
       type: object
       title: KpPatch
+    LearningAnswer:
+      properties:
+        answer:
+          type: string
+          maxLength: 4000
+          minLength: 1
+          title: Answer
+        request_id:
+          type: string
+          format: uuid
+          title: Request Id
+        evaluation_choice:
+          anyOf:
+          - type: string
+            maxLength: 20
+          - type: 'null'
+          title: Evaluation Choice
+      additionalProperties: false
+      type: object
+      required:
+      - answer
+      title: LearningAnswer
     Login:
       properties:
         username:
@@ -2804,6 +3755,10 @@ components:
           maxLength: 4000
           minLength: 1
           title: Answer
+        request_id:
+          type: string
+          format: uuid
+          title: Request Id
       additionalProperties: false
       type: object
       required:
@@ -2813,11 +3768,13 @@ components:
       properties:
         knowledge_point_id:
           type: string
+          maxLength: 36
+          minLength: 1
           title: Knowledge Point Id
         question_text:
           type: string
-          maxLength: 2000
-          minLength: 5
+          maxLength: 4000
+          minLength: 1
           title: Question Text
       additionalProperties: false
       type: object
@@ -2956,6 +3913,38 @@ components:
       - options
       - points
       title: QuestionOut
+    QuizCreate:
+      properties:
+        title:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Title
+        duration_minutes:
+          type: integer
+          maximum: 180.0
+          minimum: 1.0
+          title: Duration Minutes
+          default: 20
+        max_attempts:
+          type: integer
+          maximum: 10.0
+          minimum: 1.0
+          title: Max Attempts
+          default: 1
+        questions:
+          items:
+            $ref: '#/components/schemas/QuizQuestionCreate'
+          type: array
+          maxItems: 100
+          minItems: 1
+          title: Questions
+      additionalProperties: false
+      type: object
+      required:
+      - title
+      - questions
+      title: QuizCreate
     QuizOut:
       properties:
         id:
@@ -2979,6 +3968,66 @@ components:
       - duration_minutes
       - attempts_remaining
       title: QuizOut
+    QuizQuestionCreate:
+      properties:
+        knowledge_point_id:
+          type: string
+          maxLength: 36
+          minLength: 1
+          title: Knowledge Point Id
+        prerequisite_for:
+          anyOf:
+          - type: string
+            maxLength: 36
+            minLength: 1
+          - type: 'null'
+          title: Prerequisite For
+        type:
+          type: string
+          enum:
+          - single
+          - multiple
+          - boolean
+          - fill
+          title: Type
+        stem:
+          type: string
+          maxLength: 2000
+          minLength: 1
+          title: Stem
+        options:
+          items:
+            type: string
+          type: array
+          maxItems: 20
+          title: Options
+        correct_values:
+          items:
+            type: string
+          type: array
+          maxItems: 20
+          minItems: 1
+          title: Correct Values
+        explanation:
+          type: string
+          maxLength: 2000
+          minLength: 1
+          title: Explanation
+        points:
+          type: number
+          maximum: 100.0
+          exclusiveMinimum: 0.0
+          title: Points
+          default: 10
+      additionalProperties: false
+      type: object
+      required:
+      - knowledge_point_id
+      - type
+      - stem
+      - correct_values
+      - explanation
+      title: QuizQuestionCreate
     RecommendationItem:
       properties:
         title:
@@ -3020,61 +4069,32 @@ components:
       - score
       - at
       title: RecordItem
-    ReportOut:
+    ReportCreate:
       properties:
-        history_source:
-          anyOf:
-          - type: string
-            enum:
-            - synthetic
-            - real
-          - type: 'null'
-          title: History Source
-        chapter_history:
+        knowledge_point_ids:
           items:
-            $ref: '#/components/schemas/ChapterHistoryOut'
+            type: string
+            maxLength: 36
+            minLength: 1
           type: array
-          title: Chapter History
-          default: []
-        diagnosis:
-          items:
-            $ref: '#/components/schemas/DiagnosisItem'
-          type: array
-          title: Diagnosis
-        profile:
-          items:
-            $ref: '#/components/schemas/ProfileItem'
-          type: array
-          title: Profile
-        recommendations:
-          items:
-            $ref: '#/components/schemas/RecommendationItem'
-          type: array
-          title: Recommendations
-        records:
-          items:
-            $ref: '#/components/schemas/RecordItem'
-          type: array
-          title: Records
-        mistakes:
-          items:
-            $ref: '#/components/schemas/MistakeItem'
-          type: array
-          title: Mistakes
-        timeline:
-          items:
-            $ref: '#/components/schemas/TimelineItem'
-          type: array
-          title: Timeline
+          maxItems: 20
+          minItems: 1
+          title: Knowledge Point Ids
+        days:
+          type: integer
+          maximum: 90.0
+          minimum: 1.0
+          title: Days
+          default: 30
+        request_id:
+          type: string
+          format: uuid
+          title: Request Id
+      additionalProperties: false
       type: object
       required:
-      - diagnosis
-      - profile
-      - recommendations
-      - records
-      - mistakes
-      - timeline
-      title: ReportOut
+      - knowledge_point_ids
+      title: ReportCreate
     ResourceOut:
       properties:
         id:
@@ -3113,6 +4133,16 @@ components:
       title: ResourceOut
     ResultOut:
       properties:
+        attempt_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Attempt Id
+        diagnosis_ids:
+          items:
+            type: string
+          type: array
+          title: Diagnosis Ids
         score:
           type: number
           title: Score
@@ -3144,6 +4174,28 @@ components:
       - label
       - count
       title: ScoreBucket
+    SessionCreate:
+      properties:
+        course_id:
+          type: string
+          maxLength: 36
+          minLength: 1
+          title: Course Id
+        knowledge_point_id:
+          type: string
+          maxLength: 36
+          minLength: 1
+          title: Knowledge Point Id
+        request_id:
+          type: string
+          format: uuid
+          title: Request Id
+      additionalProperties: false
+      type: object
+      required:
+      - course_id
+      - knowledge_point_id
+      title: SessionCreate
     StartAttemptIn:
       properties:
         quiz_id:
@@ -3257,6 +4309,11 @@ components:
           type: string
           format: date-time
           title: Created At
+        parent_submission_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parent Submission Id
         status:
           type: string
           enum:
@@ -3287,6 +4344,7 @@ components:
       - event_id
       - diagnosis_id
       - created_at
+      - parent_submission_id
       - status
       - diagnosis
       - error_message
@@ -3435,3 +4493,112 @@ components:
       - answer
       - knowledge_point
       title: WrongQuestionOut
+    app__schemas__diagnosis_report__ReportOut:
+      properties:
+        id:
+          type: string
+          title: Id
+        course_id:
+          type: string
+          title: Course Id
+        student_id:
+          type: string
+          title: Student Id
+        status:
+          type: string
+          title: Status
+        snapshot:
+          additionalProperties: true
+          type: object
+          title: Snapshot
+        output:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Output
+        trace_id:
+          type: string
+          title: Trace Id
+        error_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Code
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - course_id
+      - student_id
+      - status
+      - snapshot
+      - output
+      - trace_id
+      - error_code
+      - error_message
+      - created_at
+      title: ReportOut
+    app__schemas__workspace__ReportOut:
+      properties:
+        history_source:
+          anyOf:
+          - type: string
+            enum:
+            - synthetic
+            - real
+          - type: 'null'
+          title: History Source
+        chapter_history:
+          items:
+            $ref: '#/components/schemas/ChapterHistoryOut'
+          type: array
+          title: Chapter History
+          default: []
+        diagnosis:
+          items:
+            $ref: '#/components/schemas/DiagnosisItem'
+          type: array
+          title: Diagnosis
+        profile:
+          items:
+            $ref: '#/components/schemas/ProfileItem'
+          type: array
+          title: Profile
+        recommendations:
+          items:
+            $ref: '#/components/schemas/RecommendationItem'
+          type: array
+          title: Recommendations
+        records:
+          items:
+            $ref: '#/components/schemas/RecordItem'
+          type: array
+          title: Records
+        mistakes:
+          items:
+            $ref: '#/components/schemas/MistakeItem'
+          type: array
+          title: Mistakes
+        timeline:
+          items:
+            $ref: '#/components/schemas/TimelineItem'
+          type: array
+          title: Timeline
+      type: object
+      required:
+      - diagnosis
+      - profile
+      - recommendations
+      - records
+      - mistakes
+      - timeline
+      title: ReportOut

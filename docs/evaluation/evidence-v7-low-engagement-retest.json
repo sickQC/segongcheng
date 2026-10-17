@@ -1,0 +1,211 @@
+{
+  "created_at": "2026-10-17T05:23:50.007861+00:00",
+  "mode": "live",
+  "dataset_split": "dev",
+  "dataset_version": "learning-diagnosis-v2",
+  "sample_count": 1,
+  "repeat": 3,
+  "labels_human_reviewed": false,
+  "acceptance_status": "provisional_not_formal_acceptance",
+  "model": "gpt-6-luna",
+  "backend": "codex",
+  "prompt_version": "evidence-diagnosis-v7",
+  "dataset_sha256": "218b7c167aa2b93eff7fbc133a0e15bb2873fa06687527fba7661c080f5c3e87",
+  "label_review_sha256": "0dc65baf43edcfbcd70d06d2d3e58f3c8f5d4755c8587659f7c26a46227f642a",
+  "prompt_sha256": "af7d4fbcec21cd2ee7e6d31a8922f0ae6ace121d0070443ad9fdb600609f1833",
+  "records": [
+    {
+      "id": "dev-learner-003",
+      "variant": "full",
+      "repeat": 1,
+      "expected_type": "low_engagement",
+      "full_expected_type": "low_engagement",
+      "snapshot_sha256": "8d7058ee16122597800d9a077d2378a0d9ac9f122e679b25accd2acc2cee7475",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 30093,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.94,
+            "problem_type": "low_engagement",
+            "explanation": "按时间顺序，学生在多次对话中只回答“不知道”，这不足以定位概念混淆；最新客观答题错误，但只有一次，不能据此估计掌握度。完整行为测量显示资源可用、覆盖率0.05、有效时长8秒，符合低投入行为条件；有1次学习访问，不符合practice_only条件。",
+            "recommendation": "先用一个有效输入和一个无效输入，分别说明它们的预期处理行为，再为每类选一个代表值。",
+            "followup_question": "以“年龄必须为18至60的整数”为例，你会怎样划分有效类和无效类，并各选一个代表值？",
+            "evidence_event_ids": [
+              "dev-learner-003-event-48",
+              "dev-learner-003-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13194,
+        "completion_tokens": 233,
+        "total_tokens": 13427
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "low_engagement",
+      "predicted_status": "supported",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-003",
+      "variant": "full",
+      "repeat": 2,
+      "expected_type": "low_engagement",
+      "full_expected_type": "low_engagement",
+      "snapshot_sha256": "8d7058ee16122597800d9a077d2378a0d9ac9f122e679b25accd2acc2cee7475",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 7251,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.98,
+            "problem_type": "low_engagement",
+            "explanation": "完整的服务端行为测量显示资源可用，覆盖率为0.05、有效时长为8秒，符合低投入行为条件。28条对话和最新客观答题均只回答“不知道”，没有说明具体概念错误；客观答题基线为1题全错，无法据此估计语义掌握度。",
+            "recommendation": "先学习等价类划分的定义，再用一个输入条件分别列出有效类和无效类，并为每类选一个代表值。",
+            "followup_question": "以“年龄须为18至60岁”为例，你会怎样划分有效与无效等价类，并分别选择代表值？",
+            "evidence_event_ids": [
+              "dev-learner-003-event-48",
+              "dev-learner-003-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13194,
+        "completion_tokens": 229,
+        "total_tokens": 13423
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "low_engagement",
+      "predicted_status": "supported",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    },
+    {
+      "id": "dev-learner-003",
+      "variant": "full",
+      "repeat": 3,
+      "expected_type": "low_engagement",
+      "full_expected_type": "low_engagement",
+      "snapshot_sha256": "8d7058ee16122597800d9a077d2378a0d9ac9f122e679b25accd2acc2cee7475",
+      "expected_status": "supported",
+      "expected_support_needed": true,
+      "baseline_support_needed": true,
+      "baseline_accuracy": 0.0,
+      "latency_ms": 10490,
+      "model_succeeded": true,
+      "model_called": true,
+      "output": {
+        "points": [
+          {
+            "knowledge_point_id": "KP-TEST-01",
+            "status": "supported",
+            "mastery": null,
+            "confidence": 0.97,
+            "problem_type": "low_engagement",
+            "explanation": "完整观察窗口的服务端测量显示覆盖率0.05、有效学习时长8秒，符合低投入行为条件。学生多次表示“不知道”，末次客观答题错误，但这些证据不足以定位概念理解情况，因此无法估计掌握度。",
+            "recommendation": "安排一次短时学习活动，要求学生依据一个输入条件写出有效与无效等价类，并各选一个代表值。",
+            "followup_question": "请以年龄输入为例，说明你会怎样划分有效和无效等价类，并选择代表值？",
+            "evidence_event_ids": [
+              "dev-learner-003-event-20",
+              "dev-learner-003-event-48",
+              "dev-learner-003-event-49"
+            ],
+            "citations": []
+          }
+        ],
+        "excluded_instruction_events": [],
+        "model_called": true,
+        "guardrail_actions": []
+      },
+      "usage": {
+        "prompt_tokens": 13198,
+        "completion_tokens": 215,
+        "total_tokens": 13413
+      },
+      "model": "gpt-6-luna",
+      "predicted_type": "low_engagement",
+      "predicted_status": "supported",
+      "predicted_mastery": null,
+      "guardrail_downgraded": false,
+      "evidence_valid": true
+    }
+  ],
+  "summaries": {
+    "full": {
+      "samples": 3,
+      "pipeline_successes": 3,
+      "model_calls": 3,
+      "local_insufficient_results": 0,
+      "model_successes": 3,
+      "model_failures": 0,
+      "guardrail_downgrades": 0,
+      "model_first_pass_valid_rate": 1.0,
+      "type_accuracy_including_failures": 1.0,
+      "problem_type_macro_f1_including_failures": 1.0,
+      "full_label_retention_rate": 1.0,
+      "label_basis": "variant-specific candidate/reviewed labels; full label retention is not accuracy",
+      "evidence_valid_rate_including_failures": 1.0,
+      "baseline_binary_accuracy": null,
+      "knowledge_binary_eligible_samples": 0,
+      "binary_target_note": "knowledge support only; behavior and insufficient labels are unscored",
+      "baseline_coverage": 0.0,
+      "model_binary_accuracy": null,
+      "model_binary_coverage": 0.0,
+      "mean_type_accuracy_across_repeats": 1.0,
+      "accuracy_run_range": [
+        1.0,
+        1.0
+      ],
+      "accuracy_approx_95_interval": [
+        1.0,
+        1
+      ],
+      "interval_note": "normal approximation over run means; few repeats give unreliable intervals",
+      "mean_latency_ms": 15944.666666666666,
+      "total_tokens_known": 40263,
+      "token_usage_coverage": 1.0,
+      "cost": "unknown: no verified unit price configured"
+    }
+  },
+  "planned_records": 3,
+  "run_complete": true,
+  "baseline_summary": {
+    "samples": 3,
+    "knowledge_binary_eligible_samples": 0,
+    "binary_target_note": "knowledge support only; behavior and insufficient labels are unscored",
+    "measured": 0,
+    "unknown": 3,
+    "binary_accuracy": null,
+    "coverage": 0.0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "frozen_at": "2026-10-17T05:44:58.585322+00:00",
+  "prompt_version": "evidence-diagnosis-v7",
+  "model": "gpt-6-luna",
+  "backend": "codex",
+  "scope": {
+    "split": "test",
+    "learners": 40,
+    "variants": [
+      "full"
+    ],
+    "repeat": 1
+  },
+  "files_sha256": {
+    "scripts/eval_evidence_diagnosis.py": "9f6a2159fe7b0e33f740c53c1256efdd263a85d73f345f7bd86fe4d99edd8dd3",
+    "scripts/build_diagnosis_eval.py": "d2a59ef51fda3f5b7706c5385891c46b53ce844e7f5301618da2e59f45c87b07",
+    "backend/app/agents/evidence_diagnosis.py": "1418956c7495bf70ee080a005538a31d2ae20511d4c2766c9b1a9da35e89ad40",
+    "backend/app/schemas/diagnosis_report.py": "664ca1a48c6edfd7cb56b6307d5290f10f71a0e22d9b251e55944577fb399f05",
+    "backend/app/services/evidence_diagnosis.py": "cd70505af19581dc472418e9b896ef66767a6dc56535d107e2fbf75650abdf9d",
+    "backend/app/services/c_model_gateway.py": "86dbff007e53a7680b43b35f16d6a3f8c516e9e6ffd08034771fbd7bd46fcd32",
+    "data/eval/learning_diagnosis/v2/test.jsonl": "e2b640a5c0551a02706301581eef014dbcfe27e8391e2b9726aa9a8e4ec475df",
+    "data/eval/learning_diagnosis/v2/label-review.csv": "9433ef449dae6ea917cb7261c0cdf98b9a91d323fd4b35fb37bb453951c6f3ea"
+  }
+}

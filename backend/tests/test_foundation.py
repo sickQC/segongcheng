@@ -3,10 +3,6 @@ from datetime import timedelta
 from uuid import uuid4
 
 import pytest
-from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, func, inspect, select, text
-from sqlalchemy.engine import make_url
-
 from app.core.config import Settings
 from app.core.database import Base
 from app.core.security import hash_password, token_hash
@@ -14,6 +10,9 @@ from app.main import create_app
 from app.models import Chapter, Course, CourseMember, KnowledgePoint, LearningEvent, User, UserSession
 from app.models.legacy import now
 from app.services.seed import seed_data
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine, func, inspect, select, text
+from sqlalchemy.engine import make_url
 
 ORIGIN = {"Origin": "http://testserver"}
 PASSWORD = "test-password-123"
@@ -257,9 +256,8 @@ def test_seed_is_idempotent_and_preserves_changes(foundation):
 def test_migrations_incremental_preserve_legacy(foundation, monkeypatch):
     from pathlib import Path
 
-    from alembic.config import Config
-
     from alembic import command
+    from alembic.config import Config
     from app.models import LearningEvent
 
     app, _, url = foundation
@@ -299,17 +297,18 @@ def test_workspace_contracts_do_not_fake_success(foundation):
     members = c.get(base + "/members").json()["items"]
     sid = next(m["user"]["id"] for m in members if m["role"] == "student")
     assert c.get(base + "/resources").status_code == 200
-    for path in ["/quizzes", "/report", "/dashboard", f"/students/{sid}/report"]:
+    assert c.get(base + "/quizzes").json() == []
+    for path in ["/report", "/dashboard", f"/students/{sid}/report"]:
         r = c.get(base + path)
         assert r.status_code == 501
         assert r.json()["detail"]["code"] == "NOT_IMPLEMENTED"
     for path, body in [
-        ("/attempts", {"quiz_id": "q"}),
-        ("/attempts/a/submit", {"answers": []}),
         ("/report/followup", {"message": "question"}),
         (f"/students/{sid}/diagnoses", None),
     ]:
         assert c.post(base + path, json=body, headers=h).status_code == 501
+    assert c.post(base + "/attempts", json={"quiz_id": "q"}, headers=h).status_code == 403
+    assert c.post(base + "/attempts/a/submit", json={"answers": []}, headers=h).status_code == 403
     assert (
         c.post(
             base + "/chat", json={"resource_id": "r", "message": "question", "mode": "rag"}, headers=h
@@ -336,10 +335,9 @@ def test_workspace_contracts_do_not_fake_success(foundation):
 
 
 def test_synthetic_history_personalizes_only_related_questions(foundation, monkeypatch):
-    from pydantic import SecretStr
-
     from app.rag.llm import LLMResult
     from app.services import tutor
+    from pydantic import SecretStr
 
     app, c, _ = foundation
     app.state.settings.llm_api_key = SecretStr("mock-key")

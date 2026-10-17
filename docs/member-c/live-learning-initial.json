@@ -1,0 +1,701 @@
+{
+  "model": "gpt-6-luna",
+  "backend": "codex",
+  "input_source": "scripted_simulated_students",
+  "sessions": [
+    {
+      "knowledge_point": "KP-REQ-01",
+      "student_kind": "ready",
+      "session_id": "22a62bb5-20fe-4733-acc6-cd528f7e6038",
+      "status": "active",
+      "stage": "explore",
+      "turns": [
+        {
+          "id": "087952c2-0aeb-459c-9bb1-3a4489f1935a",
+          "session_id": "22a62bb5-20fe-4733-acc6-cd528f7e6038",
+          "answer": "我用过的选课系统可以查课程，但高峰时加载很慢，我希望它在许多人同时使用时仍能及时响应。",
+          "evaluation_choice": null,
+          "stage_before": "engage",
+          "stage_after": "explore",
+          "status": "succeeded",
+          "output": {
+            "status": "supported",
+            "quality": 0.85,
+            "next_stage": "explore",
+            "transition_reason": "回答指出了选课系统的使用场景、希望改善的表现及其影响，符合 engage 任务要求，可以进入相邻的 explore 阶段。",
+            "reply": "请比较“可以导出报告”和“报告应在两秒内生成”：它们分别关注系统做什么，还是系统如何运行？",
+            "evidence_event_ids": [
+              "e1e0d21c-9479-45f6-b355-e521009562d1"
+            ],
+            "citations": [],
+            "actual_stage": "explore",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "e1e0d21c-9479-45f6-b355-e521009562d1",
+          "trace_id": "02c94226-13a5-46bc-bbb3-f7f683d597be",
+          "created_at": "2026-10-16T15:17:33.236242"
+        },
+        {
+          "id": "e911b290-3b9a-459b-9ef7-aa7fedf46d72",
+          "session_id": "22a62bb5-20fe-4733-acc6-cd528f7e6038",
+          "answer": "可以导出报告描述系统提供什么功能，两秒内生成则限制这个功能在特定场景下的性能。两者的验收方式不同。",
+          "evaluation_choice": null,
+          "stage_before": "explore",
+          "stage_after": null,
+          "status": "failed",
+          "output": null,
+          "error_code": "EXPLORE_ANSWER_LEAK",
+          "error_message": "探究阶段需要引导问题，模型直接讲解的结果已拒绝。",
+          "event_id": "08796586-96f7-4e00-9aaf-3f3d0c3cfce6",
+          "trace_id": "c488765f-7726-47fa-8c9d-3efb770fe35d",
+          "created_at": "2026-10-16T15:17:42.442811"
+        }
+      ]
+    },
+    {
+      "knowledge_point": "KP-REQ-01",
+      "student_kind": "confused",
+      "session_id": "6ae0b591-5263-472c-960c-2f739a9ec5c5",
+      "status": "active",
+      "stage": "explore",
+      "turns": [
+        {
+          "id": "3e48ca7f-8e07-46de-bddb-cc9fa42a0eed",
+          "session_id": "6ae0b591-5263-472c-960c-2f739a9ec5c5",
+          "answer": "我用过的选课系统可以查课程，但高峰时加载很慢，我希望它在许多人同时使用时仍能及时响应。",
+          "evaluation_choice": null,
+          "stage_before": "engage",
+          "stage_after": "explore",
+          "status": "succeeded",
+          "output": {
+            "status": "supported",
+            "quality": 0.92,
+            "next_stage": "explore",
+            "transition_reason": "回答指出了选课系统高峰期响应慢的问题及其对使用者的影响，符合 engage 阶段任务。",
+            "reply": "比较“可以导出报告”和“报告应在两秒内生成”：你觉得两条要求分别关注什么？",
+            "evidence_event_ids": [
+              "b7a77fb1-70f0-422d-ad92-6a8200f66aa0"
+            ],
+            "citations": [],
+            "actual_stage": "explore",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "b7a77fb1-70f0-422d-ad92-6a8200f66aa0",
+          "trace_id": "53c3f046-d9c4-4f41-a897-16e99e04e925",
+          "created_at": "2026-10-16T15:17:50.954334"
+        },
+        {
+          "id": "292af8e8-05b5-429b-8b13-5f015c65ecd3",
+          "session_id": "6ae0b591-5263-472c-960c-2f739a9ec5c5",
+          "answer": "导出报告和两秒内生成都是同一种功能需求，不需要分别验收，系统能运行就足够了。",
+          "evaluation_choice": null,
+          "stage_before": "explore",
+          "stage_after": "explore",
+          "status": "succeeded",
+          "output": {
+            "status": "insufficient",
+            "quality": 0.2,
+            "next_stage": "explore",
+            "transition_reason": "回答把导出报告与生成时间归为同类，未区分系统要做什么和运行质量要求。",
+            "reply": "再比较两条要求：哪一条描述系统提供的操作，哪一条限制操作完成所需的时间？请分别说明你的判断依据。",
+            "evidence_event_ids": [
+              "7fd129e9-691a-4fe4-98e3-11066ece606e"
+            ],
+            "citations": [],
+            "actual_stage": "explore",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "7fd129e9-691a-4fe4-98e3-11066ece606e",
+          "trace_id": "430d8bd8-b1a7-4941-bc4f-d23c72f48d6e",
+          "created_at": "2026-10-16T15:17:57.806956"
+        },
+        {
+          "id": "baf8d3ea-f33d-4564-a0a5-f213cf63ec44",
+          "session_id": "6ae0b591-5263-472c-960c-2f739a9ec5c5",
+          "answer": "可以导出报告描述系统提供什么功能，两秒内生成则限制这个功能在特定场景下的性能。两者的验收方式不同。",
+          "evaluation_choice": null,
+          "stage_before": "explore",
+          "stage_after": null,
+          "status": "failed",
+          "output": null,
+          "error_code": "EXPLORE_ANSWER_LEAK",
+          "error_message": "探究阶段需要引导问题，模型直接讲解的结果已拒绝。",
+          "event_id": "50e01d89-dcfd-4818-8869-a422bf6c3ec2",
+          "trace_id": "8b621fa5-3419-4b5d-bf0a-dc1d1352b5c8",
+          "created_at": "2026-10-16T15:18:07.434616"
+        }
+      ]
+    },
+    {
+      "knowledge_point": "KP-REQ-01",
+      "student_kind": "insufficient",
+      "session_id": "d10837a2-76b1-46bb-93a5-308ae04c57e5",
+      "status": "active",
+      "stage": "explore",
+      "turns": [
+        {
+          "id": "a0472bac-07eb-4430-8243-c2c4348b8969",
+          "session_id": "d10837a2-76b1-46bb-93a5-308ae04c57e5",
+          "answer": "不知道。",
+          "evaluation_choice": null,
+          "stage_before": "engage",
+          "stage_after": "engage",
+          "status": "succeeded",
+          "output": {
+            "status": "insufficient",
+            "quality": 0.1,
+            "next_stage": "engage",
+            "transition_reason": "回答“ 不知道 ”没有说明使用过的软件、希望改善之处或对使用者的影响，尚无可评价的学习证据。",
+            "reply": "想一想你最近用过的软件：有没有哪一步让你觉得麻烦、慢或不方便？你最希望改善什么，这会怎样影响使用者？",
+            "evidence_event_ids": [
+              "04c1a794-90c3-4178-aca3-65a91f482b8d"
+            ],
+            "citations": [],
+            "actual_stage": "engage",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "04c1a794-90c3-4178-aca3-65a91f482b8d",
+          "trace_id": "7a379354-dfcd-4abd-a751-128a79048f6d",
+          "created_at": "2026-10-16T15:18:18.191780"
+        },
+        {
+          "id": "e5ded5e1-deb3-4dbd-a7de-c75b4968ba73",
+          "session_id": "d10837a2-76b1-46bb-93a5-308ae04c57e5",
+          "answer": "我用过的选课系统可以查课程，但高峰时加载很慢，我希望它在许多人同时使用时仍能及时响应。",
+          "evaluation_choice": null,
+          "stage_before": "engage",
+          "stage_after": "explore",
+          "status": "succeeded",
+          "output": {
+            "status": "supported",
+            "quality": 0.9,
+            "next_stage": "explore",
+            "transition_reason": "回答描述了选课系统的高峰加载慢这一待改善问题，也说明了期望系统在多人同时使用时及时响应，提供了具体的使用情境和影响。",
+            "reply": "你提到的“可以查课程”和“许多人同时使用时仍能及时响应”，分别关注系统提供什么能力、以及系统如何运行。比较“可以导出报告”和“报告应在两秒内生成”：这两条要求各自关注什么？",
+            "evidence_event_ids": [
+              "11d344c4-7a26-4528-9f09-4ae81dd744cf"
+            ],
+            "citations": [],
+            "actual_stage": "explore",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "11d344c4-7a26-4528-9f09-4ae81dd744cf",
+          "trace_id": "5b150030-32eb-43e7-a04c-c8b92714ad21",
+          "created_at": "2026-10-16T15:18:27.838776"
+        },
+        {
+          "id": "885efe2d-c1d2-4304-927f-4394b97d4d66",
+          "session_id": "d10837a2-76b1-46bb-93a5-308ae04c57e5",
+          "answer": "可以导出报告描述系统提供什么功能，两秒内生成则限制这个功能在特定场景下的性能。两者的验收方式不同。",
+          "evaluation_choice": null,
+          "stage_before": "explore",
+          "stage_after": null,
+          "status": "failed",
+          "output": null,
+          "error_code": "EXPLORE_ANSWER_LEAK",
+          "error_message": "探究阶段需要引导问题，模型直接讲解的结果已拒绝。",
+          "event_id": "0c3a33f4-7eea-4a51-8a14-ae1382517d65",
+          "trace_id": "fda4f076-4d64-49bb-ade0-5faf921b1df7",
+          "created_at": "2026-10-16T15:18:40.131751"
+        }
+      ]
+    },
+    {
+      "knowledge_point": "KP-REQ-02",
+      "student_kind": "ready",
+      "session_id": "b417c164-b707-489a-a70d-cf5d494d5374",
+      "status": "active",
+      "stage": "explore",
+      "turns": [
+        {
+          "id": "58606a9f-3bca-4b50-8ca9-f77b8d481772",
+          "session_id": "b417c164-b707-489a-a70d-cf5d494d5374",
+          "answer": "我作为学生进入选课系统，希望成功选到课程；我输入课程号并发起选课，系统反馈是否成功。",
+          "evaluation_choice": null,
+          "stage_before": "engage",
+          "stage_after": "explore",
+          "status": "succeeded",
+          "output": {
+            "status": "supported",
+            "quality": 0.92,
+            "next_stage": "explore",
+            "transition_reason": "回答描述了与选课系统的交互，并明确了学生的目标，符合 engage 阶段任务。",
+            "reply": "请进入探究阶段：比较学生、选课系统自身和外部支付平台，分别判断谁可能与系统边界发生交互，并说明理由。",
+            "evidence_event_ids": [
+              "71959bc2-9a19-4b7d-923a-6538c3e8b1b8"
+            ],
+            "citations": [],
+            "actual_stage": "explore",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "71959bc2-9a19-4b7d-923a-6538c3e8b1b8",
+          "trace_id": "3a8cebfe-a2ed-4f52-a617-f6afae148b71",
+          "created_at": "2026-10-16T15:18:50.831490"
+        },
+        {
+          "id": "17b037b2-75a8-4b43-818b-cba8ec3a9adc",
+          "session_id": "b417c164-b707-489a-a70d-cf5d494d5374",
+          "answer": "学生在系统外发起选课，外部支付平台可能在系统外完成交互，它们可以是参与者；系统自身在边界内，不是自己的外部参与者。",
+          "evaluation_choice": null,
+          "stage_before": "explore",
+          "stage_after": null,
+          "status": "failed",
+          "output": null,
+          "error_code": "EXPLORE_ANSWER_LEAK",
+          "error_message": "探究阶段需要引导问题，模型直接讲解的结果已拒绝。",
+          "event_id": "ca154bc6-1e32-4eaf-bac2-2f1f1d7fb3e3",
+          "trace_id": "d0c7e8ba-0f69-4680-a460-5a98910f9f29",
+          "created_at": "2026-10-16T15:18:58.646871"
+        }
+      ]
+    },
+    {
+      "knowledge_point": "KP-REQ-02",
+      "student_kind": "confused",
+      "session_id": "dead5646-2786-46f8-a091-83d46f567f80",
+      "status": "active",
+      "stage": "explore",
+      "turns": [
+        {
+          "id": "4020d257-02e8-4516-aca1-ad7a0448559b",
+          "session_id": "dead5646-2786-46f8-a091-83d46f567f80",
+          "answer": "我作为学生进入选课系统，希望成功选到课程；我输入课程号并发起选课，系统反馈是否成功。",
+          "evaluation_choice": null,
+          "stage_before": "engage",
+          "stage_after": "explore",
+          "status": "succeeded",
+          "output": {
+            "status": "supported",
+            "quality": 0.85,
+            "next_stage": "explore",
+            "transition_reason": "回答具体描述了选课系统交互和学生的目标，满足 engage 任务要求。",
+            "reply": "接下来比较学生、选课系统自身和外部支付平台：谁可能与系统边界发生交互？请说明你的理由。",
+            "evidence_event_ids": [
+              "adb498aa-2e5a-423b-b7b7-5cbc41f11beb"
+            ],
+            "citations": [],
+            "actual_stage": "explore",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "adb498aa-2e5a-423b-b7b7-5cbc41f11beb",
+          "trace_id": "ec5cdd2a-8a6f-4b1d-a621-286c018aaa95",
+          "created_at": "2026-10-16T15:19:06.424996"
+        },
+        {
+          "id": "051e5ea9-93c5-4991-91e7-0abc0b9bab26",
+          "session_id": "dead5646-2786-46f8-a091-83d46f567f80",
+          "answer": "选课系统自己和系统内部数据库表都是它自己的外部参与者，学生不是参与者。",
+          "evaluation_choice": null,
+          "stage_before": "explore",
+          "stage_after": "explore",
+          "status": "succeeded",
+          "output": {
+            "status": "insufficient",
+            "quality": 0.25,
+            "next_stage": "explore",
+            "transition_reason": "回答把系统内部数据库表误认为外部参与者，也排除了实际与系统交互的学生；尚未比较外部支付平台与系统边界的关系。",
+            "reply": "请分别比较学生、选课系统自身、系统内部数据库表和外部支付平台：哪些会从系统边界外与选课系统交互？你判断的依据是什么？",
+            "evidence_event_ids": [
+              "0f2671e3-d219-4402-9831-a7108ab038b1"
+            ],
+            "citations": [],
+            "actual_stage": "explore",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "0f2671e3-d219-4402-9831-a7108ab038b1",
+          "trace_id": "ee641332-4843-42a4-8fa9-a8485a569240",
+          "created_at": "2026-10-16T15:19:13.607045"
+        },
+        {
+          "id": "6f288495-c126-420d-9c7c-90b9159f4b6f",
+          "session_id": "dead5646-2786-46f8-a091-83d46f567f80",
+          "answer": "学生在系统外发起选课，外部支付平台可能在系统外完成交互，它们可以是参与者；系统自身在边界内，不是自己的外部参与者。",
+          "evaluation_choice": null,
+          "stage_before": "explore",
+          "stage_after": null,
+          "status": "failed",
+          "output": null,
+          "error_code": "EXPLORE_ANSWER_LEAK",
+          "error_message": "探究阶段需要引导问题，模型直接讲解的结果已拒绝。",
+          "event_id": "4cd0efbb-fb80-4e18-be2b-943a3c49cd1d",
+          "trace_id": "fb24aa61-49af-4283-ba1c-807782a01d2d",
+          "created_at": "2026-10-16T15:19:23.273473"
+        }
+      ]
+    },
+    {
+      "knowledge_point": "KP-REQ-02",
+      "student_kind": "insufficient",
+      "session_id": "839295ee-cff3-45c5-875e-57513a76b54d",
+      "status": "active",
+      "stage": "explore",
+      "turns": [
+        {
+          "id": "f7deaa8a-03f6-47fa-865e-3c937bc49ea5",
+          "session_id": "839295ee-cff3-45c5-875e-57513a76b54d",
+          "answer": "不知道。",
+          "evaluation_choice": null,
+          "stage_before": "engage",
+          "stage_after": "engage",
+          "status": "succeeded",
+          "output": {
+            "status": "insufficient",
+            "quality": 0.1,
+            "next_stage": "engage",
+            "transition_reason": "回答“ 不知道 ”未提供与选课系统交互的经历或目标，当前证据不足以完成 engage 任务。",
+            "reply": "想想你最近一次打开选课系统时做了什么：你想完成什么目标？可以从查找课程、选课或退课中选一个例子来描述。",
+            "evidence_event_ids": [
+              "d0882336-ae20-4bcc-931a-1da497c33bbc"
+            ],
+            "citations": [],
+            "actual_stage": "engage",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "d0882336-ae20-4bcc-931a-1da497c33bbc",
+          "trace_id": "0e116742-0605-4907-ad00-3d22c865b347",
+          "created_at": "2026-10-16T15:19:33.517386"
+        },
+        {
+          "id": "78dd2981-df3a-4412-b7d5-493f0adc5806",
+          "session_id": "839295ee-cff3-45c5-875e-57513a76b54d",
+          "answer": "我作为学生进入选课系统，希望成功选到课程；我输入课程号并发起选课，系统反馈是否成功。",
+          "evaluation_choice": null,
+          "stage_before": "engage",
+          "stage_after": "explore",
+          "status": "succeeded",
+          "output": {
+            "status": "supported",
+            "quality": 0.9,
+            "next_stage": "explore",
+            "transition_reason": "学生描述了进入选课系统、输入课程号并发起选课的交互，也明确指出目标是成功选到课程，满足 engage 任务要求。",
+            "reply": "接下来比较学生、选课系统自身和外部支付平台：你认为谁会与选课系统的边界发生交互？请分别说明理由。",
+            "evidence_event_ids": [
+              "853c9e5e-17ca-488a-8d74-a86333f2e93d"
+            ],
+            "citations": [],
+            "actual_stage": "explore",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "853c9e5e-17ca-488a-8d74-a86333f2e93d",
+          "trace_id": "163365c1-ae5f-41e1-919d-a74a959d5884",
+          "created_at": "2026-10-16T15:19:41.033200"
+        },
+        {
+          "id": "ae947d81-a412-469e-9f31-f3e4e36e7463",
+          "session_id": "839295ee-cff3-45c5-875e-57513a76b54d",
+          "answer": "学生在系统外发起选课，外部支付平台可能在系统外完成交互，它们可以是参与者；系统自身在边界内，不是自己的外部参与者。",
+          "evaluation_choice": null,
+          "stage_before": "explore",
+          "stage_after": null,
+          "status": "failed",
+          "output": null,
+          "error_code": "EXPLORE_ANSWER_LEAK",
+          "error_message": "探究阶段需要引导问题，模型直接讲解的结果已拒绝。",
+          "event_id": "e94e286a-29c8-4568-96e4-bd9c02843467",
+          "trace_id": "693abeea-15b8-4486-b4ed-3b118f376b03",
+          "created_at": "2026-10-16T15:19:49.872058"
+        }
+      ]
+    },
+    {
+      "knowledge_point": "KP-VAL-01",
+      "student_kind": "ready",
+      "session_id": "29b4ad4f-cdb7-4d37-8edc-1a07ed8d368b",
+      "status": "active",
+      "stage": "explore",
+      "turns": [
+        {
+          "id": "e75bb513-a718-437f-a12f-943aab118abb",
+          "session_id": "29b4ad4f-cdb7-4d37-8edc-1a07ed8d368b",
+          "answer": "我遇到过一个报表系统，按钮与计算都正常，却无法支持用户实际的统计场景，所以功能正常仍不好用。",
+          "evaluation_choice": null,
+          "stage_before": "engage",
+          "stage_after": "explore",
+          "status": "succeeded",
+          "output": {
+            "status": "supported",
+            "quality": 0.8,
+            "next_stage": "explore",
+            "transition_reason": "回答给出了报表系统的具体使用场景，说明了功能正常但不满足实际统计需要。",
+            "reply": "设想这个报表系统已经按规格实现，但用户仍不满意。你会分别检查哪些方面？先提出假设，并说明你会观察什么来验证它。",
+            "evidence_event_ids": [
+              "6f3ee9aa-d83b-40cf-9098-311ae9278e16"
+            ],
+            "citations": [],
+            "actual_stage": "explore",
+            "completed": false,
+            "evaluation_correct": null
+          },
+          "error_code": null,
+          "error_message": null,
+          "event_id": "6f3ee9aa-d83b-40cf-9098-311ae9278e16",
+          "trace_id": "2f45f7a5-1cec-4646-a3a9-8aea0ecf5a79",
+          "created_at": "2026-10-16T15:19:57.118437"
+        },
+        {
+          "id": "9d0bb2d8-cec3-46ad-9cc3-ea1b48807b80",
+          "session_id": "29b4ad4f-cdb7-4d37-8edc-1a07ed8d368b",
+          "answer": "我会先假设规格本身遗漏了真实场景，一方面检查实现是否符合规格，另一方面向用户核实实际用途和需要，这两种检查对象不同。",
+          "evaluation_choice": null,
+          "stage_before": "explore",
+          "stage_after": null,
+          "status": "failed",
+          "output": null,
+          "error_code": "EXPLORE_ANSWER_LEAK",
+          "error_message": "探究阶段需要引导问题，模型直接讲解的结果已拒绝。",
+          "event_id": "1d76b26b-cdda-4d1b-b373-dbe388550cf3",
+          "trace_id": "e0894d11-0e7e-490f-b326-915c943e9cdf",
+          "created_at": "2026-10-16T15:20:17.816273"
+        }
+      ]
+    }
+  ],
+  "traces": [
+    {
+      "trace_id": "02c94226-13a5-46bc-bbb3-f7f683d597be",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10097,
+        "completion_tokens": 131,
+        "total_tokens": 10228
+      },
+      "latency_ms": 9182
+    },
+    {
+      "trace_id": "c488765f-7726-47fa-8c9d-3efb770fe35d",
+      "model": "gpt-6-luna",
+      "status": "failed",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10298,
+        "completion_tokens": 122,
+        "total_tokens": 10420
+      },
+      "latency_ms": 8473
+    },
+    {
+      "trace_id": "53c3f046-d9c4-4f41-a897-16e99e04e925",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10099,
+        "completion_tokens": 121,
+        "total_tokens": 10220
+      },
+      "latency_ms": 6838
+    },
+    {
+      "trace_id": "430d8bd8-b1a7-4941-bc4f-d23c72f48d6e",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10281,
+        "completion_tokens": 126,
+        "total_tokens": 10407
+      },
+      "latency_ms": 9608
+    },
+    {
+      "trace_id": "8b621fa5-3419-4b5d-bf0a-dc1d1352b5c8",
+      "model": "gpt-6-luna",
+      "status": "failed",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10478,
+        "completion_tokens": 115,
+        "total_tokens": 10593
+      },
+      "latency_ms": 10724
+    },
+    {
+      "trace_id": "7a379354-dfcd-4abd-a751-128a79048f6d",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10072,
+        "completion_tokens": 136,
+        "total_tokens": 10208
+      },
+      "latency_ms": 9280
+    },
+    {
+      "trace_id": "5b150030-32eb-43e7-a04c-c8b92714ad21",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10268,
+        "completion_tokens": 164,
+        "total_tokens": 10432
+      },
+      "latency_ms": 12275
+    },
+    {
+      "trace_id": "fda4f076-4d64-49bb-ade0-5faf921b1df7",
+      "model": "gpt-6-luna",
+      "status": "failed",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10508,
+        "completion_tokens": 123,
+        "total_tokens": 10631
+      },
+      "latency_ms": 10671
+    },
+    {
+      "trace_id": "3a8cebfe-a2ed-4f52-a617-f6afae148b71",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10084,
+        "completion_tokens": 130,
+        "total_tokens": 10214
+      },
+      "latency_ms": 7789
+    },
+    {
+      "trace_id": "d0c7e8ba-0f69-4680-a460-5a98910f9f29",
+      "model": "gpt-6-luna",
+      "status": "failed",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10289,
+        "completion_tokens": 132,
+        "total_tokens": 10421
+      },
+      "latency_ms": 7746
+    },
+    {
+      "trace_id": "ec5cdd2a-8a6f-4b1d-a621-286c018aaa95",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10081,
+        "completion_tokens": 117,
+        "total_tokens": 10198
+      },
+      "latency_ms": 7158
+    },
+    {
+      "trace_id": "ee641332-4843-42a4-8fa9-a8485a569240",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10249,
+        "completion_tokens": 144,
+        "total_tokens": 10393
+      },
+      "latency_ms": 9651
+    },
+    {
+      "trace_id": "fb24aa61-49af-4283-ba1c-807782a01d2d",
+      "model": "gpt-6-luna",
+      "status": "failed",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10476,
+        "completion_tokens": 132,
+        "total_tokens": 10608
+      },
+      "latency_ms": 10211
+    },
+    {
+      "trace_id": "0e116742-0605-4907-ad00-3d22c865b347",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10051,
+        "completion_tokens": 133,
+        "total_tokens": 10184
+      },
+      "latency_ms": 7499
+    },
+    {
+      "trace_id": "163365c1-ae5f-41e1-919d-a74a959d5884",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10248,
+        "completion_tokens": 139,
+        "total_tokens": 10387
+      },
+      "latency_ms": 8811
+    },
+    {
+      "trace_id": "693abeea-15b8-4486-b4ed-3b118f376b03",
+      "model": "gpt-6-luna",
+      "status": "failed",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10466,
+        "completion_tokens": 118,
+        "total_tokens": 10584
+      },
+      "latency_ms": 7212
+    },
+    {
+      "trace_id": "2f45f7a5-1cec-4646-a3a9-8aea0ecf5a79",
+      "model": "gpt-6-luna",
+      "status": "succeeded",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10081,
+        "completion_tokens": 127,
+        "total_tokens": 10208
+      },
+      "latency_ms": 20678
+    },
+    {
+      "trace_id": "e0894d11-0e7e-490f-b326-915c943e9cdf",
+      "model": "gpt-6-luna",
+      "status": "failed",
+      "prompt_version": "learning-5e-v1",
+      "usage": {
+        "prompt_tokens": 10278,
+        "completion_tokens": 110,
+        "total_tokens": 10388
+      },
+      "latency_ms": 10483
+    }
+  ]
+}

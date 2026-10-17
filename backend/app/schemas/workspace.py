@@ -90,6 +90,8 @@ class AnswerResultOut(BaseModel):
 
 
 class ResultOut(BaseModel):
+    attempt_id: str | None = None
+    diagnosis_ids: list[str] = Field(default_factory=list)
     score: float
     total: float
     answers: list[AnswerResultOut]

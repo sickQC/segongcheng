@@ -1,0 +1,6 @@
+# Keep frozen evaluation evidence byte-identical across checkouts (SHA-256 records).
+data/eval/diagnosis_c.jsonl -text whitespace=trailing-space,space-before-tab,cr-at-eol
+data/eval/learning_diagnosis/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+data/eval/diagnosis_quality_dev/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+docs/evaluation/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+docs/member-c/*.json -text whitespace=trailing-space,space-before-tab,cr-at-eol

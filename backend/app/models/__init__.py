@@ -1,4 +1,7 @@
+from app.models.assessment import CourseQuiz, QuizAttempt
+from app.models.diagnosis_report import DiagnosisReport
 from app.models.foundation import Chapter, Course, CourseMember, KnowledgePoint, User, UserSession
+from app.models.learning_session import LearningSession, LearningTurn
 from app.models.legacy import Diagnosis, LearningEvent, ModelTrace
 from app.models.practice import PracticeExercise, PracticeSubmission
 
@@ -14,4 +17,9 @@ __all__ = [
     "ModelTrace",
     "PracticeExercise",
     "PracticeSubmission",
+    "CourseQuiz",
+    "QuizAttempt",
+    "DiagnosisReport",
+    "LearningSession",
+    "LearningTurn",
 ]
