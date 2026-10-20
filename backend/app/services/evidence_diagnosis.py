@@ -19,6 +19,7 @@ from app.models.legacy import now
 from app.schemas.diagnosis_report import PointDiagnosis, ReportFeedback
 from app.services.c_model_gateway import ModelCallError, complete_json
 from app.services.diagnosis_presentation import PRESENTATION_VERSION, render_point, verified_behavior
+from app.services.profile import apply_report
 
 
 def utc(value):
@@ -521,6 +522,9 @@ def run_report(sessions, settings, report_id, trace_id):
                 "presentation_version": output["presentation_version"],
                 "observed_behaviors": output["observed_behaviors"],
             }
+            # Commit the diagnosis and its idempotent mastery projection together.
+            db.flush()
+            apply_report(db, row)
 
 
 def retry_report(sessions, settings, report_id):

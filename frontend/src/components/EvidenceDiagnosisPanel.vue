@@ -8,6 +8,7 @@ type Point = { knowledge_point_id: string; name: string; events: Event[]; baseli
 type Diagnosis = { knowledge_point_id: string; status: string; mastery: number | null; problem_type: string; explanation: string; recommendation: string; followup_question: string; evidence_event_ids: string[] }
 type Report = { id: string; status: string; snapshot: { cutoff: string; points: Point[] }; output: { points: Diagnosis[]; excluded_instruction_events: string[]; guardrail_actions?: unknown[]; observed_behaviors?: { knowledge_point_id: string; problem_type: string }[] } | null; error_message: string | null; trace_id: string; created_at: string }
 const props = defineProps<{ courseId: string }>()
+const emit = defineEmits<{ completed: [] }>()
 const points = ref<{ id: string; name: string }[]>([]), selected = ref<string[]>([])
 const reports = ref<Report[]>([]), current = ref<Report>(), busy = ref(false), error = ref('')
 const labels: Record<string, string> = { concept_confusion: '概念混淆', prerequisite_gap: '前置知识可能不足', repeated_error: '反复错误', low_engagement: '有效学习记录偏少', practice_only: '答题与资源学习失衡', no_obvious_issue: '未发现明显问题', insufficient_evidence: '证据不足' }
@@ -21,6 +22,7 @@ async function refresh(id = current.value?.id) {
   try {
     const value = await api<Report>(`${base()}/${encodeURIComponent(id)}`)
     if (run !== generation) return
+    if (value.status === 'supported' && (current.value?.id !== value.id || current.value?.status !== 'supported')) emit('completed')
     current.value = value
     reports.value = reports.value.map(row => row.id === value.id ? value : row)
     if (value.status === 'pending') timer = setTimeout(() => void refresh(id), 1500)
@@ -67,7 +69,7 @@ onUnmounted(() => { ++generation; clearTimeout(timer) })
 <template>
   <section class="panel" aria-label="综合学习诊断">
     <h2>综合学习诊断</h2>
-    <p class="muted">汇总最近 30 天的实际答题、练习和学习对话。模型判断与客观正确率分别展示，不修改成绩或模拟画像。</p>
+    <p class="muted">汇总最近 30 天的实际答题、练习和学习对话。有效掌握度诊断会更新真实画像，模型判断与客观正确率分别展示，不修改成绩。</p>
     <el-alert v-if="error" :title="error" type="error" :closable="false" />
     <div v-if="session.user?.role === 'student'" class="practice-actions">
       <el-select v-model="selected" multiple :multiple-limit="20" collapse-tags aria-label="综合诊断知识点" :disabled="busy || current?.status === 'pending'"><el-option v-for="point in points" :key="point.id" :value="point.id" :label="point.name" /></el-select>

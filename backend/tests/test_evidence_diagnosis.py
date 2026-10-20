@@ -3,14 +3,15 @@ from datetime import timedelta
 from uuid import uuid4
 
 import pytest
+from sqlalchemy import func, select
+from test_foundation import course_id, foundation, sign_in  # noqa: F401
+
 from app.models import KnowledgePoint, LearningEvent, ModelTrace
 from app.models.diagnosis_report import DiagnosisReport
 from app.models.legacy import now
 from app.schemas.diagnosis_report import ReportFeedback
 from app.services import evidence_diagnosis as service
 from app.services.c_model_gateway import ModelCallError, ModelReply
-from sqlalchemy import func, select
-from test_foundation import course_id, foundation, sign_in  # noqa: F401
 
 
 @pytest.fixture

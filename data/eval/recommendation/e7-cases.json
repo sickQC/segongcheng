@@ -1,0 +1,18 @@
+{
+  "version": "e7-cases-v1",
+  "provenance": "authored synthetic constraint cases; minutes are test inputs, not observed learning time",
+  "cases": [
+    {"id":"dev_chain","split":"dev","target":"T","budget":20,"nodes":[{"id":"A","minutes":10,"mastery":null},{"id":"B","minutes":10,"mastery":null},{"id":"T","minutes":10,"mastery":null}],"edges":[["A","B"],["B","T"]]},
+    {"id":"dev_expensive_root","split":"dev","target":"T","budget":10,"nodes":[{"id":"A","minutes":20,"mastery":null},{"id":"B","minutes":5,"mastery":null},{"id":"T","minutes":5,"mastery":null}],"edges":[["A","T"],["B","T"]]},
+    {"id":"dev_weakness","split":"dev","target":"T","budget":5,"nodes":[{"id":"A","minutes":5,"mastery":0.65},{"id":"B","minutes":5,"mastery":0.1},{"id":"T","minutes":5,"mastery":null}],"edges":[["A","T"],["B","T"]]},
+    {"id":"dev_too_small","split":"dev","target":"T","budget":1,"nodes":[{"id":"T","minutes":8,"mastery":null}],"edges":[]},
+    {"id":"test_diamond","split":"test","target":"T","budget":18,"nodes":[{"id":"A","minutes":7,"mastery":null},{"id":"B","minutes":5,"mastery":0.2},{"id":"C","minutes":6,"mastery":null},{"id":"T","minutes":4,"mastery":null}],"edges":[["A","B"],["A","C"],["B","T"],["C","T"]]},
+    {"id":"test_mastered_bridge","split":"test","target":"T","budget":10,"nodes":[{"id":"A","minutes":12,"mastery":null},{"id":"B","minutes":4,"mastery":0.9},{"id":"T","minutes":3,"mastery":null}],"edges":[["A","B"],["B","T"]]},
+    {"id":"test_exact_fit","split":"test","target":"T","budget":10,"nodes":[{"id":"A","minutes":4,"mastery":null},{"id":"T","minutes":6,"mastery":null}],"edges":[["A","T"]]},
+    {"id":"test_goal_mastered","split":"test","target":"T","budget":3,"nodes":[{"id":"A","minutes":20,"mastery":null},{"id":"T","minutes":8,"mastery":0.8}],"edges":[["A","T"]]},
+    {"id":"test_closeness","split":"test","target":"T","budget":6,"nodes":[{"id":"A","minutes":6,"mastery":null},{"id":"B","minutes":6,"mastery":null},{"id":"X","minutes":6,"mastery":null},{"id":"T","minutes":4,"mastery":null}],"edges":[["A","X"],["X","T"],["B","T"]]},
+    {"id":"test_unequal_costs","split":"test","target":"T","budget":16,"nodes":[{"id":"A","minutes":18,"mastery":0.3},{"id":"B","minutes":4,"mastery":0.5},{"id":"C","minutes":6,"mastery":0.2},{"id":"T","minutes":5,"mastery":null}],"edges":[["A","T"],["B","C"],["C","T"]]},
+    {"id":"test_skip_threshold","split":"test","target":"T","budget":9,"nodes":[{"id":"A","minutes":10,"mastery":0.7},{"id":"B","minutes":5,"mastery":0.69},{"id":"T","minutes":4,"mastery":null}],"edges":[["A","B"],["B","T"]]},
+    {"id":"test_fork_budget","split":"test","target":"T","budget":14,"nodes":[{"id":"A","minutes":8,"mastery":0.6},{"id":"B","minutes":8,"mastery":0.1},{"id":"C","minutes":3,"mastery":null},{"id":"T","minutes":4,"mastery":null}],"edges":[["A","T"],["B","C"],["C","T"]]}
+  ]
+}

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import WorkspaceHeader from '../components/WorkspaceHeader.vue'
+import EventExportPanel from '../components/EventExportPanel.vue'
 import { useWorkspace } from '../composables/useWorkspace'
 import { workspaceApi } from '../api/workspace'
 import * as sample from '../api/preview'
@@ -103,6 +104,7 @@ async function diagnose() {
       <el-alert v-if="detailError" :title="detailError" type="error" :closable="false" />
       <el-alert v-if="notice" :title="notice" type="success" :closable="false" />
       <template v-if="detail">
+        <EventExportPanel v-if="!preview" :key="`${courseId}:${detail.student_id}`" :course-id="courseId" :student-id="detail.student_id" :points="detail.points" />
         <el-alert v-if="detail.simulated_record_count" :title="`下方包含 ${detail.simulated_record_count} 条模拟记录`" type="warning" :closable="false" />
         <p>近 {{ detail.days }} 天测验正确率：<strong>{{ rate(detail.correct_count, detail.question_count, detail.accuracy_percent) }}</strong></p>
         <p>教师提醒：{{ detail.attention_reasons.join('；') || '暂无' }}</p>

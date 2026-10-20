@@ -5,7 +5,16 @@ from datetime import timedelta, timezone
 
 from sqlalchemy import select
 
-from app.models import Chapter, CourseMember, Diagnosis, KnowledgePoint, LearningEvent, PracticeExercise, PracticeSubmission, User
+from app.models import (
+    Chapter,
+    CourseMember,
+    Diagnosis,
+    KnowledgePoint,
+    LearningEvent,
+    PracticeExercise,
+    PracticeSubmission,
+    User,
+)
 from app.models.assessment import CourseQuiz, QuizAttempt
 from app.models.diagnosis_report import DiagnosisReport
 from app.models.legacy import now

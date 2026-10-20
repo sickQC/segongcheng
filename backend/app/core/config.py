@@ -31,3 +31,4 @@ class Settings(BaseSettings):
         "http://localhost:5173",
     ]
     seed_password: SecretStr = SecretStr("")
+    mastery_threshold: float = Field(default=0.7, gt=0, le=1)

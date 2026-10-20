@@ -1,0 +1,492 @@
+{
+  "dataset_version": "e7-cases-v1",
+  "scheduling_rule": "(0.6 * weakness + 0.4 / (1 + distance_to_target)) / estimated_minutes",
+  "limitations": "Authored synthetic cases, deterministic rules and estimated time only. No real learning outcomes or acceptance measurements. No claim of global optimality or superiority on every case.",
+  "summary": [
+    {
+      "split": "dev",
+      "strategy": "baseline",
+      "case_count": 4,
+      "mean_selected_steps": 0.75,
+      "mean_estimated_minutes": 6.25,
+      "goal_in_plan_rate": 0,
+      "mean_budget_utilization": 0.5,
+      "prerequisite_violation_count": 0,
+      "budget_violation_count": 0,
+      "acceptance_rate": null
+    },
+    {
+      "split": "dev",
+      "strategy": "budgeted",
+      "case_count": 4,
+      "mean_selected_steps": 1,
+      "mean_estimated_minutes": 7.5,
+      "goal_in_plan_rate": 0,
+      "mean_budget_utilization": 0.625,
+      "prerequisite_violation_count": 0,
+      "budget_violation_count": 0,
+      "acceptance_rate": null
+    },
+    {
+      "split": "test",
+      "strategy": "baseline",
+      "case_count": 8,
+      "mean_selected_steps": 1.125,
+      "mean_estimated_minutes": 6.375,
+      "goal_in_plan_rate": 0.375,
+      "mean_budget_utilization": 0.5714285714285714,
+      "prerequisite_violation_count": 0,
+      "budget_violation_count": 0,
+      "acceptance_rate": null
+    },
+    {
+      "split": "test",
+      "strategy": "budgeted",
+      "case_count": 8,
+      "mean_selected_steps": 1.5,
+      "mean_estimated_minutes": 8,
+      "goal_in_plan_rate": 0.375,
+      "mean_budget_utilization": 0.6763392857142857,
+      "prerequisite_violation_count": 0,
+      "budget_violation_count": 0,
+      "acceptance_rate": null
+    }
+  ],
+  "cases": [
+    {
+      "case": "dev_chain",
+      "split": "dev",
+      "strategy": "baseline",
+      "budget": 20,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "remaining": [
+        "T"
+      ],
+      "selected_steps": 2,
+      "estimated_minutes": 20,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 1.0
+    },
+    {
+      "case": "dev_chain",
+      "split": "dev",
+      "strategy": "budgeted",
+      "budget": 20,
+      "selected": [
+        "A",
+        "B"
+      ],
+      "remaining": [
+        "T"
+      ],
+      "selected_steps": 2,
+      "estimated_minutes": 20,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 1.0
+    },
+    {
+      "case": "dev_expensive_root",
+      "split": "dev",
+      "strategy": "baseline",
+      "budget": 10,
+      "selected": [],
+      "remaining": [
+        "A",
+        "B",
+        "T"
+      ],
+      "selected_steps": 0,
+      "estimated_minutes": 0,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0
+    },
+    {
+      "case": "dev_expensive_root",
+      "split": "dev",
+      "strategy": "budgeted",
+      "budget": 10,
+      "selected": [
+        "B"
+      ],
+      "remaining": [
+        "A",
+        "T"
+      ],
+      "selected_steps": 1,
+      "estimated_minutes": 5,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0.5
+    },
+    {
+      "case": "dev_weakness",
+      "split": "dev",
+      "strategy": "baseline",
+      "budget": 5,
+      "selected": [
+        "A"
+      ],
+      "remaining": [
+        "B",
+        "T"
+      ],
+      "selected_steps": 1,
+      "estimated_minutes": 5,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0.35
+    },
+    {
+      "case": "dev_weakness",
+      "split": "dev",
+      "strategy": "budgeted",
+      "budget": 5,
+      "selected": [
+        "B"
+      ],
+      "remaining": [
+        "A",
+        "T"
+      ],
+      "selected_steps": 1,
+      "estimated_minutes": 5,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0.9
+    },
+    {
+      "case": "dev_too_small",
+      "split": "dev",
+      "strategy": "baseline",
+      "budget": 1,
+      "selected": [],
+      "remaining": [
+        "T"
+      ],
+      "selected_steps": 0,
+      "estimated_minutes": 0,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0
+    },
+    {
+      "case": "dev_too_small",
+      "split": "dev",
+      "strategy": "budgeted",
+      "budget": 1,
+      "selected": [],
+      "remaining": [
+        "T"
+      ],
+      "selected_steps": 0,
+      "estimated_minutes": 0,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0
+    },
+    {
+      "case": "test_diamond",
+      "split": "test",
+      "strategy": "baseline",
+      "budget": 18,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "remaining": [
+        "T"
+      ],
+      "selected_steps": 3,
+      "estimated_minutes": 18,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 1.8
+    },
+    {
+      "case": "test_diamond",
+      "split": "test",
+      "strategy": "budgeted",
+      "budget": 18,
+      "selected": [
+        "A",
+        "B",
+        "C"
+      ],
+      "remaining": [
+        "T"
+      ],
+      "selected_steps": 3,
+      "estimated_minutes": 18,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 1.8
+    },
+    {
+      "case": "test_mastered_bridge",
+      "split": "test",
+      "strategy": "baseline",
+      "budget": 10,
+      "selected": [],
+      "remaining": [
+        "A",
+        "T"
+      ],
+      "selected_steps": 0,
+      "estimated_minutes": 0,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0
+    },
+    {
+      "case": "test_mastered_bridge",
+      "split": "test",
+      "strategy": "budgeted",
+      "budget": 10,
+      "selected": [],
+      "remaining": [
+        "A",
+        "T"
+      ],
+      "selected_steps": 0,
+      "estimated_minutes": 0,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0
+    },
+    {
+      "case": "test_exact_fit",
+      "split": "test",
+      "strategy": "baseline",
+      "budget": 10,
+      "selected": [
+        "A",
+        "T"
+      ],
+      "remaining": [],
+      "selected_steps": 2,
+      "estimated_minutes": 10,
+      "goal_in_plan": true,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 1.0
+    },
+    {
+      "case": "test_exact_fit",
+      "split": "test",
+      "strategy": "budgeted",
+      "budget": 10,
+      "selected": [
+        "A",
+        "T"
+      ],
+      "remaining": [],
+      "selected_steps": 2,
+      "estimated_minutes": 10,
+      "goal_in_plan": true,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 1.0
+    },
+    {
+      "case": "test_goal_mastered",
+      "split": "test",
+      "strategy": "baseline",
+      "budget": 3,
+      "selected": [],
+      "remaining": [],
+      "selected_steps": 0,
+      "estimated_minutes": 0,
+      "goal_in_plan": true,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0
+    },
+    {
+      "case": "test_goal_mastered",
+      "split": "test",
+      "strategy": "budgeted",
+      "budget": 3,
+      "selected": [],
+      "remaining": [],
+      "selected_steps": 0,
+      "estimated_minutes": 0,
+      "goal_in_plan": true,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0
+    },
+    {
+      "case": "test_closeness",
+      "split": "test",
+      "strategy": "baseline",
+      "budget": 6,
+      "selected": [
+        "A"
+      ],
+      "remaining": [
+        "B",
+        "X",
+        "T"
+      ],
+      "selected_steps": 1,
+      "estimated_minutes": 6,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0.5
+    },
+    {
+      "case": "test_closeness",
+      "split": "test",
+      "strategy": "budgeted",
+      "budget": 6,
+      "selected": [
+        "B"
+      ],
+      "remaining": [
+        "A",
+        "X",
+        "T"
+      ],
+      "selected_steps": 1,
+      "estimated_minutes": 6,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0.5
+    },
+    {
+      "case": "test_unequal_costs",
+      "split": "test",
+      "strategy": "baseline",
+      "budget": 16,
+      "selected": [],
+      "remaining": [
+        "A",
+        "B",
+        "C",
+        "T"
+      ],
+      "selected_steps": 0,
+      "estimated_minutes": 0,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0
+    },
+    {
+      "case": "test_unequal_costs",
+      "split": "test",
+      "strategy": "budgeted",
+      "budget": 16,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "remaining": [
+        "A",
+        "T"
+      ],
+      "selected_steps": 2,
+      "estimated_minutes": 10,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 1.3
+    },
+    {
+      "case": "test_skip_threshold",
+      "split": "test",
+      "strategy": "baseline",
+      "budget": 9,
+      "selected": [
+        "B",
+        "T"
+      ],
+      "remaining": [],
+      "selected_steps": 2,
+      "estimated_minutes": 9,
+      "goal_in_plan": true,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0.81
+    },
+    {
+      "case": "test_skip_threshold",
+      "split": "test",
+      "strategy": "budgeted",
+      "budget": 9,
+      "selected": [
+        "B",
+        "T"
+      ],
+      "remaining": [],
+      "selected_steps": 2,
+      "estimated_minutes": 9,
+      "goal_in_plan": true,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0.81
+    },
+    {
+      "case": "test_fork_budget",
+      "split": "test",
+      "strategy": "baseline",
+      "budget": 14,
+      "selected": [
+        "A"
+      ],
+      "remaining": [
+        "B",
+        "C",
+        "T"
+      ],
+      "selected_steps": 1,
+      "estimated_minutes": 8,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 0.4
+    },
+    {
+      "case": "test_fork_budget",
+      "split": "test",
+      "strategy": "budgeted",
+      "budget": 14,
+      "selected": [
+        "B",
+        "C"
+      ],
+      "remaining": [
+        "A",
+        "T"
+      ],
+      "selected_steps": 2,
+      "estimated_minutes": 11,
+      "goal_in_plan": false,
+      "prerequisite_violations": [],
+      "budget_violation": false,
+      "selected_weakness_sum": 1.4
+    }
+  ],
+  "dataset_sha256": "7fd840001eeeead14e3cc810fdd8ca825674ebb21e3bd42a2b47399656b7dcce"
+}

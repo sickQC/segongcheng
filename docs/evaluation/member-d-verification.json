@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-19",
+  "scope": "Member D acceptance and handoff; current uncommitted workspace",
+  "git": {
+    "branch": "main",
+    "head": "ad239798f92e13ef227db6f0a0dec3a03ee9092a",
+    "uncommitted_work": true,
+    "committed_or_pushed_by_this_task": false
+  },
+  "environment": {
+    "os": "Windows",
+    "python": "3.13.1",
+    "frontend_node": "22.20.0"
+  },
+  "checks": [
+    {
+      "name": "backend_full_sqlite_regression",
+      "status": "passed",
+      "tests": 269,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_seconds": 127.601,
+      "junit_path": ".local/ci/d-handoff-tests.xml",
+      "junit_sha256": "1eba86187e645a410ac88c8ad6e5061220c302f193b78f39cd06eaae70d9396b",
+      "command": "python -m pytest backend/tests -q --tb=short -p no:cacheprovider --basetemp=.local/d-handoff-tests --junitxml=.local/ci/d-handoff-tests.xml",
+      "note": "Temporary SQLite and model test doubles; does not verify real model quality"
+    },
+    {
+      "name": "frontend_typecheck_build",
+      "status": "passed",
+      "command": "npm run build",
+      "node": "22.20.0",
+      "note": "vue-tsc --noEmit and Vite build; existing bundle-size warning"
+    },
+    {
+      "name": "http_business_smoke",
+      "status": "passed",
+      "origin": "http://127.0.0.1:8000",
+      "checks": [
+        "health",
+        "frontend_assets",
+        "anonymous_denied",
+        "teacher_login",
+        "student_login",
+        "courses",
+        "logout"
+      ],
+      "note": "Existing native service; creates/revokes its own login sessions only; no browser clicks"
+    },
+    {
+      "name": "actionlint",
+      "status": "passed",
+      "version": "1.7.12",
+      "shellcheck": false,
+      "pyflakes": false
+    },
+    {
+      "name": "e7_frozen_report_source_hashes",
+      "status": "passed",
+      "report": "docs/evaluation/e7-multiseed.json",
+      "case_count": 100,
+      "note": "Hash consistency checked now; multi-seed execution and timings were measured in the prior experiment phase"
+    }
+  ],
+  "not_verified": [
+    "GitHub Actions execution",
+    "Linux clean installation",
+    "PostgreSQL for current D changes",
+    "Docker build/container runtime/pgvector/volume persistence",
+    "browser manual acceptance",
+    "real model calls",
+    "real learner acceptance or learning outcomes"
+  ],
+  "not_implemented": [
+    "automatic external publication/CD",
+    "full video/read preference integration",
+    "CI style and secret scanning gates"
+  ],
+  "source_sha256": {
+    ".github/workflows/ci.yml": "8b5fe1ee85e2ea93a09a23c3a12fee446920b62b405a4fb7db6e8f159adceff4",
+    "deploy/Dockerfile": "18e997cd2d727f4b4c1e34b7f901f1b634aef532466c218473829c9c245e2573",
+    "deploy/compose.app.yaml": "78b2d6b618132c8368dc74a9ef021d7820e3afd4f82af09ce3813a9a71649cf8",
+    "backend/app/services/profile.py": "8a3c3444e160bde23c5f8c7e66bce9c333c37bba1fdc5bb7926f552f5f84b8df",
+    "backend/app/services/recommendation.py": "8796b118f2ae42782bd7a412cff4accadc4a8497db93071be9b7047d25702610",
+    "backend/app/services/prerequisites.py": "486cac164bf9fbccbc913d5bef578a1f0bec26e15cfa502e7a45d56f091b3b7f",
+    "backend/app/services/budgeted_recommendation.py": "d05612e27fa197b94b50c3f4c29f445186f6779e7715c10529b4f527c8794153",
+    "docs/evaluation/e7-baseline-budgeted.json": "e558549881baf24884ce7788cc20ebd200f398e3f641ecadf96b9ba0a7371af7",
+    "docs/evaluation/e7-multiseed.json": "8273906c4ac28f480721df000fad812f5f7e8f6d5ee6dd86f0816ce742034176"
+  },
+  "privacy": "No environment-file contents, passwords, API keys, cookies or database records included"
+}

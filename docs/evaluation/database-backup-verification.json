@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-20",
+  "module": "D local SQLite backup, verification and isolated restore drill",
+  "backend_full_regression": {
+    "tests": 341,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "new_tests": 11,
+    "seconds": 156.781,
+    "junit_sha256": "64f59f58c350a594f7b6ef0f6a1d615f5d29e7538ef3c2159063d40aab0224fd"
+  },
+  "live": {
+    "status": "passed",
+    "date": "2026-10-20",
+    "backup_directory": ".local/backups/20261020T104757-2fdbe7e8bcc54ce9b02582a439e3fe6f",
+    "drill_directory": ".local/restore-drills/20261020T104757-ea51ea0cee3b48e5a1b5ef8108b84162",
+    "backup_bytes": 483328,
+    "tables_verified": 23,
+    "alembic_revisions": [
+      "0011"
+    ],
+    "original_database_bytes_unchanged": true,
+    "original_table_counts_unchanged": true,
+    "env_unchanged": true,
+    "isolated_restore_integrity_and_foreign_keys": "passed",
+    "restored_checksum_matches": true
+  },
+  "quality": {
+    "version": "8.30.1",
+    "scope": "Git-visible current worktree",
+    "files": 323,
+    "blocked_files": [],
+    "findings": [],
+    "history_scanned": true,
+    "secret_values_in_report": false,
+    "status": "passed"
+  },
+  "ruff": "passed",
+  "user_browser_feedback": "User reported acceptance complete; no per-case evidence supplied",
+  "not_verified": [
+    "PostgreSQL backup and restore",
+    "Docker volumes",
+    "production rollback",
+    "remote or encrypted backups",
+    "cloud CI execution"
+  ],
+  "frontend_changed": false,
+  "database_schema_changed": false,
+  "committed_or_pushed": false,
+  "source_files": [
+    {
+      "file": "scripts/database_backup.py",
+      "sha256": "a191af6a9b3cf1407faf0c160c1746f938cc413610135c53e33d45242a49df01"
+    },
+    {
+      "file": "backend/tests/test_database_backup_d.py",
+      "sha256": "4f9baef8c496d7bb42cfa028505970d57d7ef17a0e423c5df858555154dff650"
+    }
+  ]
+}

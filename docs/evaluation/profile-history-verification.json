@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-20",
+  "module": "D profile history snapshots and comparison",
+  "status": "passed",
+  "backend": {
+    "tests": 296,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 144.54,
+    "new_module_tests": 14,
+    "junit_sha256": "f3b19d4604bd87457b0a8d8f99c7140e89f9bc3d17e90ac32d7303cdb9044847"
+  },
+  "frontend_build": "passed (vue-tsc and Vite; existing size warning)",
+  "ruff": "passed for changed profile core and new tests/migration",
+  "http": {
+    "date": "2026-10-20",
+    "status": "passed",
+    "revision": "0011",
+    "env_unchanged": true,
+    "old_business_rows_not_reduced": true,
+    "backup": "before-profile-history-20261020T032434291923.db",
+    "http_checks": [
+      "save_server_computed_snapshots",
+      "request_idempotence",
+      "frozen_detail",
+      "comparison",
+      "history_list",
+      "other_student_404",
+      "teacher_course_access",
+      "frontend_assets"
+    ],
+    "snapshot_ids": [
+      "83bc40ba-9f98-4ad8-b830-ceb47ea2c47e",
+      "05131fed-b3c6-45e7-a1aa-e7b50e04a3dc"
+    ],
+    "note": "Two real computed manual snapshots saved for student01; no learning answers, grades or feedback created."
+  },
+  "migration": "0011 additive; backup before migration",
+  "source_sha256": {
+    "backend/app/services/profile.py": "a772c7dc7c27812b6f43117b22ef76340bf9abcf7d3ac0049363a3c3a7f02e54",
+    "backend/app/services/profile_history.py": "75863ff500800b70113c642ca46bfe386e8fb7c0bad22d2e50f07d439f69781b",
+    "backend/app/models/profile.py": "745b725a7d159a92aa04ac123541289ed103494ef0e0fcf13d7d3f6551f5b2f8",
+    "backend/app/api/routes/profile.py": "a6330af3f2c209bdc644c135a487fe2e4ecd5100309ea0946dff0bc683424c55",
+    "backend/app/schemas/profile.py": "cb2dee28d24468b9b708ce61f0791c34be372b5a6555a3028bb496939f142dcf",
+    "backend/alembic/versions/0011_profile_snapshots.py": "266bce52e2e061f995831bb0471f91ff8202c791354c243af12e96fca44d6d3c",
+    "frontend/src/components/ProfileHistoryPanel.vue": "65ed206b9045776b7e706e9dd5d9c5a1f3be538046992c43e532233930e60bef",
+    "frontend/src/views/LearningReportView.vue": "e77c3c344513c71744864f1abe972318a796a475f237b08f40f91e0bd50be0a4"
+  },
+  "not_verified": [
+    "PostgreSQL",
+    "Docker",
+    "GitHub Actions",
+    "browser manual acceptance",
+    "real model calls"
+  ],
+  "committed_or_pushed": false
+}

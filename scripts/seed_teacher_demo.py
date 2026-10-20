@@ -16,7 +16,16 @@ sys.path.insert(0, str(ROOT / "backend"))
 
 from app.core.config import Settings  # noqa: E402
 from app.core.security import hash_password  # noqa: E402
-from app.models import Course, CourseMember, Diagnosis, KnowledgePoint, LearningEvent, PracticeExercise, PracticeSubmission, User  # noqa: E402
+from app.models import (  # noqa: E402
+    Course,
+    CourseMember,
+    Diagnosis,
+    KnowledgePoint,
+    LearningEvent,
+    PracticeExercise,
+    PracticeSubmission,
+    User,
+)
 from app.models.assessment import CourseQuiz, QuizAttempt  # noqa: E402
 from app.models.legacy import now  # noqa: E402
 from app.services.seed import seed_id  # noqa: E402

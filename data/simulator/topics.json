@@ -1,0 +1,8 @@
+[
+  {"code":"SIM-REQ-FUNC","name":"功能与质量需求","correct":"响应时间上限属于质量约束。","wrong":"所有带数字的要求都是功能需求。","misconception":"带数字就是功能需求","followup":"响应时间少于两秒也算系统功能吗？","explanation":"功能描述系统做什么，响应时间约束描述系统运行质量。"},
+  {"code":"SIM-REQ-VERIFY","name":"需求可验证性","correct":"可以为需求制定可观察的验收条件。","wrong":"只要用户说满意就无需验收条件。","misconception":"需求只要主观满意就足够","followup":"把界面必须好看写进去就能直接验收吗？","explanation":"主观目标应与相关方澄清，并约定可检查的验收条件。"},
+  {"code":"SIM-TEST-EQUIV","name":"等价类划分","correct":"有效与无效输入都需要考虑。","wrong":"只测试有效输入就覆盖了全部等价类。","misconception":"等价类只需要有效输入","followup":"无效输入是不是都可以不测？","explanation":"应同时识别有效类与无效类，并选择代表值检查行为。"},
+  {"code":"SIM-TEST-BOUND","name":"边界值分析","correct":"需要考虑边界附近及边界两侧输入。","wrong":"只测取值范围中间的数字就足够。","misconception":"范围中间值能替代边界测试","followup":"最小值和最大值附近的输入为什么还要测？","explanation":"边界附近常出现比较和越界问题，中间值不能替代边界检查。"},
+  {"code":"SIM-TEST-COVER","name":"测试覆盖","correct":"达到语句覆盖不代表没有缺陷。","wrong":"语句覆盖百分之百就证明程序没有缺陷。","misconception":"语句覆盖百分之百证明无缺陷","followup":"所有语句都执行过，还可能漏掉分支组合吗？","explanation":"语句覆盖只检查语句执行，不能证明所有条件组合或需求行为正确。"},
+  {"code":"SIM-REQ-TRACE","name":"需求追溯","correct":"追溯关系可帮助评估变更影响。","wrong":"需求一旦批准就不需要再追溯。","misconception":"批准需求后无需追溯","followup":"已经签字的需求发生变化时，为什么还要查测试关联？","explanation":"追溯把需求与设计、实现及测试关联，便于检查变更影响。"}
+]

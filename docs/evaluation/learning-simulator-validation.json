@@ -1,0 +1,65 @@
+{
+  "version": "learning-simulator-v1",
+  "synthetic": true,
+  "status": "passed",
+  "seed": 20261019,
+  "generator_sha256": "ef2bf749b064aaac0241b77e4fc4b81f549728a154a7d2bab1ecbffd166af02d",
+  "manifest_sha256": "3025f573199b736cf489349e36f51ec5648fefa231e73b8543cd240ab9343d0e",
+  "students": 100,
+  "student_types": {
+    "strong_active": 25,
+    "weak_active": 25,
+    "low_engagement": 25,
+    "uneven": 25
+  },
+  "events": 5000,
+  "events_per_student": 50,
+  "split_students": {
+    "dev": 20,
+    "test": 80
+  },
+  "event_kinds": {
+    "ask": 1086,
+    "video": 1060,
+    "read": 928,
+    "assessment": 1115,
+    "practice": 811
+  },
+  "dialogues": 100,
+  "misconception_episodes": 34,
+  "knowledge_fixtures": 6,
+  "formal_synthetic_scale_checked": true,
+  "truth_labels_excluded_from_observations": true,
+  "file_sha256": {
+    "students.jsonl": "e4bef117b0efc9a7f1af803a886e7425537d9cade05417e7950050b84932eb63",
+    "knowledge_points.jsonl": "da36461d05059eef6b633f6c00438db42760b5828f31830eba726efb894bbaef",
+    "events.jsonl": "beabaad7c4872cd5fb05aacd51834d5afdc18467277927ace0fa3b85cf5ce778",
+    "dialogues.jsonl": "a360890898af80d378d6f37d9d88eb874aaf93ab9cbac6c3bc76db5bf94ab013",
+    "truth/students.jsonl": "7dcd63360db9983415af1ea41fe8e9cdc18b57023ca8b3e136f9de4dbc1157a0",
+    "truth/dialogues.jsonl": "1f7ed3a485ef5d184159ca0038ef42c4c3a384209ea51e39f3c3c7123a403f38"
+  },
+  "limitations": "Structural checks only; not human annotation review, real learner data or actual playback/learning validation",
+  "verification": {
+    "date": "2026-10-19",
+    "backend_full_regression": {
+      "status": "passed",
+      "tests": 282,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 128.292,
+      "junit_path": ".local/ci/simulator-final-regression.xml",
+      "junit_sha256": "8a007dc57b7b6a8a29045bc5bccd97dd05a1fa50283eb5edc37888956ecefac4"
+    },
+    "new_module_tests": 13,
+    "ruff": "passed",
+    "actionlint": "passed (shellcheck/pyflakes disabled)",
+    "cloud_ci": "not run",
+    "frontend": "unchanged; not rebuilt in this phase",
+    "generator_source_hash_matches": true,
+    "validator_sha256": "29697068a673815f422e55eb8e3f3bc1599e953c22c6ffeff592bf043569c211",
+    "business_database_imported": false,
+    "env_modified": false,
+    "committed_or_pushed": false
+  }
+}

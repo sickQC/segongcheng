@@ -8,6 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+
 from app.services import c_model_gateway as gateway
 from app.services import evidence_diagnosis as diagnosis
 

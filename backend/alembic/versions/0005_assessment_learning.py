@@ -1,6 +1,7 @@
 """C: formal quiz bridge and persistent five-stage learning sessions."""
 
 import sqlalchemy as sa
+
 from alembic import op
 
 revision = "0005"

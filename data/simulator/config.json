@@ -1,0 +1,16 @@
+{
+  "version": "learning-simulator-v1",
+  "seed": 20261019,
+  "start": "2026-09-01T08:00:00+00:00",
+  "students_per_type": 25,
+  "events_per_student": 50,
+  "dev_students_per_type": 5,
+  "slip": 0.12,
+  "guess": 0.2,
+  "profiles": [
+    {"key": "strong_active", "mastery_beta": [[8, 2]], "session_days": [0,1,2,3,4,5,6,7,8,9], "seconds": [60,300], "weights": [3,3,5,3,2]},
+    {"key": "weak_active", "mastery_beta": [[2, 6]], "session_days": [0,1,2,3,4,5,6,7,8,9], "seconds": [60,300], "weights": [3,3,4,4,5]},
+    {"key": "low_engagement", "mastery_beta": [[5, 3]], "session_days": [0,1,14,27,28], "seconds": [5,40], "weights": [4,2,2,1,1]},
+    {"key": "uneven", "mastery_beta": [[8,2],[2,7]], "session_days": [0,1,2,3,4,5,6,7,8,9], "seconds": [30,240], "weights": [3,3,4,3,4]}
+  ]
+}

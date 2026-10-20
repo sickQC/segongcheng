@@ -29,7 +29,9 @@ from app.schemas.workspace import (
 from app.services import assessment, tutor
 from app.services.diagnosis import run_diagnosis
 from app.services.personalization import DEMO_COURSE_ID, demo_history
-from app.services.teacher_dashboard import dashboard as build_dashboard, student_report as build_student_report
+from app.services.profile import build_report
+from app.services.teacher_dashboard import dashboard as build_dashboard
+from app.services.teacher_dashboard import student_report as build_student_report
 from app.services.tutor import TutorError
 
 router = APIRouter(
@@ -179,13 +181,18 @@ def submit(course_id: str, attempt_id: str, body: SubmitIn, db: Db, user: Curren
     return result
 
 
-@router.get("/report", response_model=ReportOut, summary="演示学生学习历史；正式报告尚未实现")
+@router.get("/report", response_model=ReportOut, summary="真实学习报告；可显式选择模拟历史")
 def report(
-    course_id: str, db: Db, user: CurrentUser, algorithm: Literal["baseline", "enhanced"] = "baseline"
+    course_id: str, db: Db, user: CurrentUser, algorithm: Literal["baseline", "enhanced"] = "baseline",
+    history: Literal["real", "synthetic"] = "real",
 ):
     course_access(db, user, course_id)
     if algorithm != "baseline":
         pending()
+    if user.role != "student":
+        fail(403, "STUDENT_REQUIRED", "请通过教师看板查询指定学生")
+    if history == "real":
+        return build_report(db, course_id, user.id)
     history = learner_demo(user, course_id)
     return ReportOut(
         history_source="synthetic",

@@ -1,7 +1,7 @@
 let csrfToken = ''
 export function setCsrfToken(value: string) { csrfToken = value }
 export class ApiError extends Error {
-  constructor(message: string, public status: number, public code: string) { super(message) }
+  constructor(message: string, public status: number, public code: string, public fields?: unknown) { super(message) }
 }
 export async function api<T>(path: string, options: { method?: string; body?: unknown } = {}): Promise<T> {
   const method = options.method ?? 'GET'
@@ -16,7 +16,7 @@ export async function api<T>(path: string, options: { method?: string; body?: un
   const data = await response.json()
   if (!response.ok) {
     if (response.status === 401 && path !== '/auth/login') window.dispatchEvent(new Event('session-expired'))
-    throw new ApiError(data.detail?.message ?? '请求失败，请稍后重试', response.status, data.detail?.code ?? 'HTTP_ERROR')
+    throw new ApiError(data.detail?.message ?? '请求失败，请稍后重试', response.status, data.detail?.code ?? 'HTTP_ERROR', data.detail?.fields)
   }
   return data as T
 }

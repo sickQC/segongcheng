@@ -4,6 +4,8 @@ from app.models.foundation import Chapter, Course, CourseMember, KnowledgePoint,
 from app.models.learning_session import LearningSession, LearningTurn
 from app.models.legacy import Diagnosis, LearningEvent, ModelTrace
 from app.models.practice import PracticeExercise, PracticeSubmission
+from app.models.profile import MasteryProfile, ProfileApplication, ProfileSnapshot
+from app.models.recommendation import KnowledgeEdge, Recommendation, RecommendationFeedback
 
 __all__ = [
     "Chapter",
@@ -22,4 +24,10 @@ __all__ = [
     "DiagnosisReport",
     "LearningSession",
     "LearningTurn",
+    "MasteryProfile",
+    "ProfileApplication",
+    "ProfileSnapshot",
+    "KnowledgeEdge",
+    "Recommendation",
+    "RecommendationFeedback",
 ]

@@ -12,14 +12,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
+from fastapi.testclient import TestClient  # noqa: E402
+from sqlalchemy import select  # noqa: E402
+
 from app.agents.learning_templates import LEARNING_PROMPT_VERSION, TEMPLATES  # noqa: E402
 from app.core.config import Settings  # noqa: E402
 from app.core.database import Base  # noqa: E402
 from app.main import create_app  # noqa: E402
 from app.models import ModelTrace  # noqa: E402
 from app.services.seed import seed_data  # noqa: E402
-from fastapi.testclient import TestClient  # noqa: E402
-from sqlalchemy import select  # noqa: E402
 
 ANSWERS = {
     "KP-REQ-01": [

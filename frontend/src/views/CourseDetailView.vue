@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { api, errorMessage } from '../api/client'
 import { session } from '../composables/useSession'
 import { bloomLabels, type Bloom, type Chapter, type KnowledgePoint, type Member, type Outline, type Page, type PracticeExercise } from '../types/foundation'
 import PracticePanel from '../components/PracticePanel.vue'
+import PrerequisiteEditor from '../components/PrerequisiteEditor.vue'
+import StudyTimeEditor from '../components/StudyTimeEditor.vue'
 const route = useRoute(), outline = ref<Outline>(), loading = ref(false), error = ref('')
 const editable = computed(() => session.user?.role === 'teacher' && !!route.meta.teacher)
 const courseId = computed(() => String(route.params.id))
@@ -32,6 +34,10 @@ async function load() {
     outline.value = data; active.value = data.chapters.map(c => c.id)
     await loadPractices()
     if (editable.value) await loadMembers()
+    await nextTick()
+    if (run === generation && route.query.knowledge_point) {
+      document.getElementById(`kp-${String(route.query.knowledge_point)}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
   } catch (e) { if (run === generation) error.value = errorMessage(e) }
   finally { if (run === generation) loading.value = false }
 }
@@ -85,13 +91,15 @@ function closeDialog(done: () => void) { if (!saving.value) done() }
       <div class="course-summary"><div><strong>{{ outline.chapters.length }}</strong><span>课程章节</span></div><div><strong>{{ count }}</strong><span>知识点</span></div><p>{{ editable ? '编辑完成后，课程成员刷新目录即可看到更新。' : '阅读知识点定义，了解每一章节的学习目标。' }}</p></div>
       <nav class="work-nav"><RouterLink :to="`/courses/${courseId}/learn`">资源学习</RouterLink><RouterLink :to="`/courses/${courseId}/quiz`">课程测验</RouterLink><RouterLink :to="`/courses/${courseId}/report`">学习报告</RouterLink><RouterLink v-if="editable" :to="`/teacher/courses/${courseId}/dashboard`">教师看板</RouterLink></nav>
       <div class="section-bar"><h2>章节目录</h2><span class="muted">按教学顺序排列</span></div>
+      <PrerequisiteEditor v-if="editable" :course-id="courseId" :points="outline.chapters.flatMap(ch => ch.knowledge_points)" />
+      <StudyTimeEditor v-if="editable" :course-id="courseId" :points="outline.chapters.flatMap(ch => ch.knowledge_points)" @changed="load" />
       <el-empty v-if="!outline.chapters.length" :description="editable ? '暂无章节，点击右上角新建章节' : '教师尚未发布章节'" />
       <el-collapse v-model="active" class="chapter-list">
         <el-collapse-item v-for="chapter in outline.chapters" :key="chapter.id" :name="chapter.id">
           <template #title><div class="chapter-title"><span class="chapter-order">{{ String(chapter.sort_order).padStart(2, '0') }}</span><strong>{{ chapter.title }}</strong><span class="muted">{{ chapter.knowledge_points.length }} 个知识点</span></div></template>
           <div v-if="editable" class="chapter-actions"><el-button size="small" @click="openChapter(chapter)">编辑章节</el-button><el-button size="small" type="primary" plain @click="openKp(chapter)">＋ 添加知识点</el-button></div>
           <el-empty v-if="!chapter.knowledge_points.length" description="本章节暂无知识点" :image-size="60" />
-          <article v-for="kp in chapter.knowledge_points" :key="kp.id" class="knowledge-card"><div class="panel-meta"><span class="eyebrow">{{ kp.code }}</span><div class="tag-row"><el-tag size="small" effect="plain">{{ bloomLabels[kp.bloom_level] }}</el-tag><el-tag size="small" type="info" effect="plain">难度 {{ kp.difficulty }} / 5</el-tag></div></div><h3>{{ kp.name }}</h3><p>{{ kp.definition }}</p><PracticePanel :course-id="courseId" :chapter-id="chapter.id" :knowledge-point-id="kp.id" :exercise="practiceFor(kp.id)" :editable="editable" @created="loadPractices" /><div v-if="editable" class="knowledge-actions"><el-button size="small" text type="primary" @click="openKp(chapter, kp)">编辑</el-button><el-button size="small" text type="danger" @click="removeKp(kp)">删除</el-button></div></article>
+          <article v-for="kp in chapter.knowledge_points" :key="kp.id" :id="`kp-${kp.id}`" :class="{ 'recommended-point': String(route.query.knowledge_point) === kp.id }" class="knowledge-card"><div class="panel-meta"><span class="eyebrow">{{ kp.code }}</span><div class="tag-row"><el-tag size="small" effect="plain">{{ bloomLabels[kp.bloom_level] }}</el-tag><el-tag size="small" type="info" effect="plain">难度 {{ kp.difficulty }} / 5</el-tag></div></div><h3>{{ kp.name }}</h3><p>{{ kp.definition }}</p><PracticePanel :course-id="courseId" :chapter-id="chapter.id" :knowledge-point-id="kp.id" :exercise="practiceFor(kp.id)" :editable="editable" @created="loadPractices" /><div v-if="editable" class="knowledge-actions"><el-button size="small" text type="primary" @click="openKp(chapter, kp)">编辑</el-button><el-button size="small" text type="danger" @click="removeKp(kp)">删除</el-button></div></article>
         </el-collapse-item>
       </el-collapse>
       <section v-if="editable" class="panel member-panel"><div class="section-bar"><h2>课程成员</h2><span class="muted">{{ memberTotal }} 人</span></div><p class="muted">通过已存在的学生用户名加入课程。演示学生：student01、student02。</p><el-alert v-if="memberError" :title="memberError" type="error" :closable="false" class="alert-space" /><el-form inline @submit.prevent="addMember"><el-form-item label="学生用户名"><el-input v-model="memberName" placeholder="例如 student01" maxlength="100" /></el-form-item><el-form-item><el-button native-type="submit" type="primary" :loading="memberBusy">加入课程</el-button></el-form-item></el-form><el-table :data="members"><el-table-column prop="user.display_name" label="显示名称" /><el-table-column prop="user.username" label="用户名" /><el-table-column label="身份"><template #default="scope">{{ scope.row.role === 'teacher' ? '教师' : '学生' }}</template></el-table-column></el-table><el-pagination v-if="memberTotal > 20" v-model:current-page="memberPage" :page-size="20" :total="memberTotal" layout="prev, pager, next" @current-change="loadMembers" /></section>
@@ -100,3 +108,7 @@ function closeDialog(done: () => void) { if (!saving.value) done() }
   <el-dialog v-model="chapterDialog" :title="chapterForm.id ? '编辑章节' : '新建章节'" width="min(540px, 94vw)" :close-on-click-modal="!saving" :before-close="closeDialog"><el-form label-position="top" @submit.prevent="saveChapter"><el-form-item label="章节名称"><el-input v-model="chapterForm.title" maxlength="200" /></el-form-item><el-form-item label="显示顺序"><el-input-number v-model="chapterForm.sort_order" :min="0" :max="10000" /></el-form-item></el-form><template #footer><el-button :disabled="saving" @click="chapterDialog = false">取消</el-button><el-button type="primary" :loading="saving" @click="saveChapter">保存章节</el-button></template></el-dialog>
   <el-dialog v-model="kpDialog" :title="kpForm.id ? '编辑知识点' : '添加知识点'" width="min(600px, 94vw)" :close-on-click-modal="!saving" :before-close="closeDialog"><el-form label-position="top" @submit.prevent="saveKp"><el-form-item label="知识点编号"><el-input v-model="kpForm.code" :disabled="!!kpForm.id" maxlength="100" placeholder="例如 KP-REQ-03，同课程内唯一" /></el-form-item><el-form-item label="知识点名称"><el-input v-model="kpForm.name" maxlength="100" /></el-form-item><el-form-item label="定义与说明"><el-input v-model="kpForm.definition" type="textarea" :rows="4" maxlength="8000" show-word-limit /></el-form-item><div class="form-row"><el-form-item label="难度"><el-input-number v-model="kpForm.difficulty" :min="1" :max="5" /></el-form-item><el-form-item label="学习目标"><el-select v-model="kpForm.bloom_level" style="width:160px"><el-option v-for="(label, key) in bloomLabels" :key="key" :label="label" :value="key" /></el-select></el-form-item></div></el-form><template #footer><el-button :disabled="saving" @click="kpDialog = false">取消</el-button><el-button type="primary" :loading="saving" @click="saveKp">保存知识点</el-button></template></el-dialog>
 </template>
+
+<style scoped>
+.recommended-point { outline: 2px solid var(--el-color-primary); scroll-margin-top: 24px; }
+</style>

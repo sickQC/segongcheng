@@ -1,5 +1,5 @@
 import { api } from './client'
-import type { Resource, ChatReply, Quiz, Attempt, QuizResult, Report, Dashboard, TeacherStudentReport } from '../types/workspace'
+import type { Resource, ChatReply, Quiz, Attempt, QuizResult, Report, Dashboard, TeacherStudentReport, EventPage } from '../types/workspace'
 const base = (id: string) => `/courses/${encodeURIComponent(id)}`
 export const workspaceApi = {
  resources: (id: string) => api<Resource[]>(`${base(id)}/resources`),
@@ -7,7 +7,8 @@ export const workspaceApi = {
  quizzes: (id: string) => api<Quiz[]>(`${base(id)}/quizzes`),
  start: (id: string, quiz_id: string) => api<Attempt>(`${base(id)}/attempts`, { method: 'POST', body: { quiz_id } }),
  submit: (id: string, attemptId: string, answers: { question_id: string; value: string[] }[]) => api<QuizResult>(`${base(id)}/attempts/${encodeURIComponent(attemptId)}/submit`, { method: 'POST', body: { answers } }),
- report: (id: string, algorithm = 'baseline') => api<Report>(`${base(id)}/report?algorithm=${algorithm}`),
+ report: (id: string, algorithm = 'baseline', history = 'real') => api<Report>(`${base(id)}/report?algorithm=${algorithm}&history=${history}`),
+ events: (id: string, query: URLSearchParams) => api<EventPage>(`${base(id)}/learning-events?${query}`),
  followup: (id: string, message: string) => api<ChatReply>(`${base(id)}/report/followup`, { method: 'POST', body: { message } }),
  dashboard: (id: string, days: number, includeDemo: boolean) => api<Dashboard>(`${base(id)}/dashboard?days=${days}&include_demo=${includeDemo}`),
  student: (id: string, studentId: string, days: number, includeDemo: boolean) => api<TeacherStudentReport>(`${base(id)}/students/${encodeURIComponent(studentId)}/report?days=${days}&include_demo=${includeDemo}`),

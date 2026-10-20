@@ -3,6 +3,10 @@ from datetime import timedelta
 from uuid import uuid4
 
 import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine, func, inspect, select, text
+from sqlalchemy.engine import make_url
+
 from app.core.config import Settings
 from app.core.database import Base
 from app.core.security import hash_password, token_hash
@@ -10,9 +14,6 @@ from app.main import create_app
 from app.models import Chapter, Course, CourseMember, KnowledgePoint, LearningEvent, User, UserSession
 from app.models.legacy import now
 from app.services.seed import seed_data
-from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, func, inspect, select, text
-from sqlalchemy.engine import make_url
 
 ORIGIN = {"Origin": "http://testserver"}
 PASSWORD = "test-password-123"
@@ -256,8 +257,9 @@ def test_seed_is_idempotent_and_preserves_changes(foundation):
 def test_migrations_incremental_preserve_legacy(foundation, monkeypatch):
     from pathlib import Path
 
-    from alembic import command
     from alembic.config import Config
+
+    from alembic import command
     from app.models import LearningEvent
 
     app, _, url = foundation
@@ -298,10 +300,7 @@ def test_workspace_contracts_do_not_fake_success(foundation):
     sid = next(m["user"]["id"] for m in members if m["role"] == "student")
     assert c.get(base + "/resources").status_code == 200
     assert c.get(base + "/quizzes").json() == []
-    for path in ["/report"]:
-        r = c.get(base + path)
-        assert r.status_code == 501
-        assert r.json()["detail"]["code"] == "NOT_IMPLEMENTED"
+    assert c.get(base + "/report").status_code == 403
     dashboard = c.get(base + "/dashboard").json()
     assert dashboard["student_count"] == 2
     assert dashboard["average_quiz_percent"] is None
@@ -335,16 +334,18 @@ def test_workspace_contracts_do_not_fake_success(foundation):
     assert c.get(base + "/dashboard").status_code == 403
     assert c.get(base + f"/students/{sid}/report").status_code == 403
     assert c.get(base + "/resources").status_code == 200
-    assert c.get(base + "/report").json()["history_source"] == "synthetic"
+    assert c.get(base + "/report").json()["history_source"] == "real"
+    assert c.get(base + "/report?history=synthetic").json()["history_source"] == "synthetic"
     sign_in(c, "otherteacher")
     assert c.get(base + "/resources").status_code == 403
     assert c.get(base + "/dashboard").status_code == 403
 
 
 def test_synthetic_history_personalizes_only_related_questions(foundation, monkeypatch):
+    from pydantic import SecretStr
+
     from app.rag.llm import LLMResult
     from app.services import tutor
-    from pydantic import SecretStr
 
     app, c, _ = foundation
     app.state.settings.llm_api_key = SecretStr("mock-key")
@@ -360,7 +361,7 @@ def test_synthetic_history_personalizes_only_related_questions(foundation, monke
     sign_in(c, "student01")
     cid = course_id(c)
     base = f"/api/v1/courses/{cid}"
-    first_report = c.get(base + "/report").json()
+    first_report = c.get(base + "/report?history=synthetic").json()
     assert first_report["history_source"] == "synthetic"
     assert first_report["chapter_history"][0]["accuracy"] == 48
     assert first_report["chapter_history"][0]["high_error"] is True
@@ -378,7 +379,7 @@ def test_synthetic_history_personalizes_only_related_questions(foundation, monke
     assert "两者都是系统要实现的功能" in prompts[-1][1]
 
     sign_in(c, "student02")
-    second_report = c.get(base + "/report").json()
+    second_report = c.get(base + "/report?history=synthetic").json()
     assert second_report["chapter_history"][0]["accuracy"] == 72
     assert second_report["chapter_history"][1]["high_error"] is True
     second = c.post(

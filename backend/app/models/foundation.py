@@ -64,3 +64,4 @@ class KnowledgePoint(Base):
     definition: Mapped[str] = mapped_column(Text)
     difficulty: Mapped[int] = mapped_column(Integer)
     bloom_level: Mapped[str] = mapped_column(String(20))
+    estimated_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)

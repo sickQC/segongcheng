@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-20",
+  "module": "D real event export and read-only acceptance tools",
+  "branch": "main",
+  "head": "ad239798f92e13ef227db6f0a0dec3a03ee9092a",
+  "backend_full_regression": {
+    "tests": 330,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "new_tests": 22,
+    "seconds": 154.118,
+    "junit_sha256": "6edd55eebc0e37519c88634dd4974890a13572ccf258c91657155035bae73291"
+  },
+  "frontend": "Vue type check and production build passed after export UI changes",
+  "real_http": {
+    "real_http": true,
+    "export_count": 9,
+    "jsonl_csv_count_match": true,
+    "teacher_student_ids_match": true,
+    "cross_user_403": true,
+    "anonymous_401": true,
+    "business_row_counts_unchanged": true,
+    "session_login_logout_only": true,
+    "env_unchanged": true,
+    "browser_clicks_verified": false
+  },
+  "performance_report": "read-api-benchmark.json",
+  "course_inventory": "course-inventory.json",
+  "quality": {
+    "version": "8.30.1",
+    "scope": "Git-visible current worktree",
+    "files": 320,
+    "blocked_files": [],
+    "findings": [],
+    "history_scanned": true,
+    "secret_values_in_report": false,
+    "status": "passed"
+  },
+  "ruff": "passed",
+  "actionlint": "passed",
+  "diff_check": "passed (existing line ending warnings)",
+  "database_migrated": false,
+  "env_modified": false,
+  "committed_or_pushed": false,
+  "not_verified": [
+    "browser download clicks and layout",
+    "Docker/Linux/PostgreSQL runtime",
+    "GitHub Actions cloud run",
+    "large-course performance",
+    "real model",
+    "external deployment"
+  ],
+  "source_files": [
+    {
+      "file": "backend/app/api/routes/profile.py",
+      "sha256": "49091c6e15eb7504c7f3ce72b4710d406b4fd83a843623da6f5259abd5a87587"
+    },
+    {
+      "file": "backend/app/services/learning_events.py",
+      "sha256": "bd3b13b2d6bd83874b671a10718e6b30fa5d426daaa95470de75ca8060f2f9a2"
+    },
+    {
+      "file": "backend/app/services/event_export.py",
+      "sha256": "6c59fec234c50d37c98bd63482de270287fa431d1b4512a2f9b202aa75743767"
+    },
+    {
+      "file": "backend/tests/test_event_export_d.py",
+      "sha256": "044886bc98ad7a7ef0c7f09443935ba49a1d1043d5848d3439f25e2373a4438e"
+    },
+    {
+      "file": "backend/tests/test_acceptance_tools_d.py",
+      "sha256": "85ea72c013ce61defadb8d42857ff2e5a1c82c75f2ee82e4a67a04860496852c"
+    },
+    {
+      "file": "scripts/benchmark_read_api.py",
+      "sha256": "9a98a8f9e5bf9d6bf29f7c49c71022841149e36de2fd0a4cd188ee99747288d6"
+    },
+    {
+      "file": "scripts/audit_course_data.py",
+      "sha256": "1ff66a3de93f9633c233fcc5a0154f35c8dfaae7f486af5d8ce508ecce5a211e"
+    },
+    {
+      "file": "frontend/src/api/eventExport.ts",
+      "sha256": "110598bc3041e7d2ee9635f0162d512442f7884b526c4fa2ab7e0170b813398f"
+    },
+    {
+      "file": "frontend/src/components/EventExportPanel.vue",
+      "sha256": "31fe30aacbf5ae61d2442f77ee152262b9af33024d03030a947a28ea6abf5317"
+    },
+    {
+      "file": "frontend/src/components/LearningProfilePanel.vue",
+      "sha256": "048da003dcc0a4e382afb830c153ec9768e91f0d9855422effc8709a72c52c29"
+    },
+    {
+      "file": "frontend/src/views/TeacherDashboardView.vue",
+      "sha256": "d73f3eee2133b7bb8c095e5e1f05e26aed94f56bbce86cfa9688ccfe1e0f7c48"
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "sha256": "6d78fbb723594ae85a91e65efd7c72ee5e7ce8e9ec7dc17c29c57bfb650ea981"
+    },
+    {
+      "file": "docs/api.yaml",
+      "sha256": "7510d6f71f771e03e230e1f90083186f7154d3a2d9bea2b7ba18deea815b2f5d"
+    }
+  ]
+}

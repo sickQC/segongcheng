@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-20",
+  "module": "D CI Python quality and redacted secret gates",
+  "status": "passed",
+  "backend_full_regression": {
+    "tests": 308,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 144.485,
+    "new_tests": 12,
+    "junit_sha256": "bdf27b6989866e823ac9eaa82969bb4d231ae1977fff28d6e0d16d57152b325e"
+  },
+  "quality_checks": {
+    "explicit_ruff": "passed",
+    "inherited_ruff": "passed",
+    "scanner_self_test": "passed",
+    "powershell_entry": "passed",
+    "actionlint": "passed (shellcheck/pyflakes disabled)"
+  },
+  "secret_scan": {
+    "version": "8.30.1",
+    "scope": "Git-visible current worktree",
+    "files": 308,
+    "blocked_files": [],
+    "findings": [],
+    "history_scanned": true,
+    "secret_values_in_report": false,
+    "status": "passed"
+  },
+  "gitleaks_archive_verification": "Windows binary verified against pinned official SHA256",
+  "format_changes": "24 import-sort diagnostics safely fixed by Ruff I only; no manual business-body edits",
+  "source_files": [
+    {
+      "file": "ruff.toml",
+      "sha256": "287a609ff05a822b3624609e3c832606d5bb147b28f22be04609dba8055df488"
+    },
+    {
+      "file": ".gitleaks.toml",
+      "sha256": "1abbb21b35ee35d837480108d907a489edf2718e2cafc23c03bb4cf5d36620a8"
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "sha256": "df66a3be6a93ba3f505b1e37d0a51bdcd826812925cfdf437df8a5c7cec5a1f7"
+    },
+    {
+      "file": "backend/pyproject.toml",
+      "sha256": "6a5c25badebcdef4b976eade98e8e5c07167bbc1c6e325b733ba974a529932ef"
+    },
+    {
+      "file": "scripts/install_quality_tools.py",
+      "sha256": "b97784ee75f8549b8c3638cc6e63e8cc6bfdc18a13842329d24bfb1613674651"
+    },
+    {
+      "file": "scripts/check_secrets.py",
+      "sha256": "10579263ebd664162d7bad05b9060e670e85da1fbc24bb1c0be517d00e11e197"
+    },
+    {
+      "file": "scripts/quality.ps1",
+      "sha256": "95f51c7f7f2d32cc52f10c500ea341c4ad33fa49eeb4f69746a0b25c7bd7b1cc"
+    },
+    {
+      "file": "backend/tests/test_quality_d.py",
+      "sha256": "855058928695b019f1ee599b033b05d6b0240452e1514d1edb3db3797f280f07"
+    }
+  ],
+  "not_verified": [
+    "GitHub Actions runtime",
+    "Linux native scanner execution",
+    "branch protection enforcement"
+  ],
+  "frontend_changed": false,
+  "database_migrated": false,
+  "env_modified": false,
+  "committed_or_pushed": false
+}

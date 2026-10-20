@@ -7,6 +7,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+
 from app.schemas.diagnosis_report import ReportFeedback
 from app.services import evidence_diagnosis as service
 from app.services.c_model_gateway import ModelCallError, ModelReply

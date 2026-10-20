@@ -1,0 +1,49 @@
+# Independent from compose.yaml (the older database-only local environment).
+name: se-learning-demo
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: se_learning
+      POSTGRES_USER: se_learning
+      POSTGRES_PASSWORD: ${DEPLOY_DB_PASSWORD:?Set DEPLOY_DB_PASSWORD in deploy/.env.deploy}
+    volumes:
+      - app_postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/01-vector.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U se_learning -d se_learning"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DEPLOY_DB_HOST: postgres
+      DEPLOY_DB_PASSWORD: ${DEPLOY_DB_PASSWORD:?Set DEPLOY_DB_PASSWORD in deploy/.env.deploy}
+      SEED_PASSWORD: ${DEPLOY_SEED_PASSWORD:?Set DEPLOY_SEED_PASSWORD in deploy/.env.deploy}
+      ENABLE_DEV_ROUTES: 'false'
+      C_LLM_BACKEND: api
+      LLM_API_KEY: ${DEPLOY_LLM_API_KEY:-}
+      LLM_BASE_URL: ${DEPLOY_LLM_BASE_URL:-https://api.openai.com/v1}
+      LLM_MODEL: ${DEPLOY_LLM_MODEL:-}
+      C_LLM_MODEL: ${DEPLOY_C_LLM_MODEL:-}
+      COOKIE_SECURE: ${DEPLOY_COOKIE_SECURE:-false}
+      ALLOWED_ORIGINS: ${DEPLOY_ALLOWED_ORIGINS:-["http://127.0.0.1:8080","http://localhost:8080"]}
+    ports:
+      - "${DEPLOY_BIND_ADDRESS:-127.0.0.1}:${DEPLOY_PORT:-8080}:8000"
+    volumes:
+      - app_index:/app/data/index
+      - app_logs:/app/data/logs
+      - app_uploads:/app/data/uploads
+    restart: unless-stopped
+volumes:
+  app_postgres_data:
+  app_index:
+  app_logs:
+  app_uploads:

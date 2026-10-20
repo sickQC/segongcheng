@@ -23,4 +23,4 @@ data/logs/        运行期 JSONL 明细 trace，不入版本控制
 评测集按 ID 奇偶确定性划分为开发集与测试集：阈值只在开发集标定，指标在测试集报告。
 
 运行产生的 SQLite 文件及本地配置不进入版本控制。
-后续按规划扩展 kg/、questions/、simulator/。
+后续按规划扩展 kg/、questions/。`simulator/` 已提供四类100人×50事件的离线生成配置和模板；详见 [模拟数据说明](simulator/README.md)。其合成真值与观测分离，不导入正式业务库。

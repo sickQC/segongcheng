@@ -1,0 +1,18 @@
+# Explicit project policy; local/CI checks must not inherit a user's global Ruff config.
+line-length = 110
+target-version = "py311"
+src = ["backend"]
+
+[lint]
+# Ruff's standard syntax/style groups, undefined/unused names, and import ordering.
+# Existing long lines are not a gate; no bulk business-code reformat is required.
+select = ["E4", "E7", "E9", "F", "I"]
+
+[lint.per-file-ignores]
+# These CLI scripts intentionally add backend/ to sys.path before importing app.
+"scripts/build_rag_index.py" = ["E402"]
+"scripts/calibrate_rag.py" = ["E402"]
+"scripts/eval_rag.py" = ["E402"]
+"scripts/eval_recommendation.py" = ["E402"]
+"scripts/eval_e7_experiment.py" = ["E402"]
+"scripts/export_openapi.py" = ["E402"]

@@ -3,8 +3,9 @@ from sqlalchemy import select
 
 from app.api.deps import Db, Teacher, course_access
 from app.core.errors import fail
-from app.models import Chapter, KnowledgePoint, PracticeExercise
+from app.models import Chapter, KnowledgeEdge, KnowledgePoint, MasteryProfile, PracticeExercise
 from app.schemas.foundation import ChapterOut, ChapterPatch, KpCreate, KpOut, KpPatch
+from app.services.prerequisites import lock_course
 
 router = APIRouter(tags=["Knowledge"])
 
@@ -52,8 +53,16 @@ def edit_kp(kp_id: str, body: KpPatch, user: Teacher, db: Db):
 
 @router.delete("/knowledge-points/{kp_id}", status_code=204)
 def delete_kp(kp_id: str, user: Teacher, db: Db):
+    row = authorized_row(db, user, KnowledgePoint, kp_id)
+    lock_course(db, row.course_id)
+    if db.scalar(
+        select(KnowledgeEdge).where((KnowledgeEdge.from_kp_id == kp_id) | (KnowledgeEdge.to_kp_id == kp_id))
+    ):
+        fail(409, "PREREQUISITES_EXIST", "该知识点仍有先修关系，请先移除相关关系。")
     if db.scalar(select(PracticeExercise).where(PracticeExercise.knowledge_point_id == kp_id)):
         fail(409, "PRACTICE_EXISTS", "该知识点已有小练习，暂不可删除")
-    db.delete(authorized_row(db, user, KnowledgePoint, kp_id))
+    if db.scalar(select(MasteryProfile).where(MasteryProfile.knowledge_point_id == kp_id)):
+        fail(409, "PROFILE_EXISTS", "该知识点已有学习画像记录，暂不可删除")
+    db.delete(row)
     db.flush()
     return Response(status_code=204)

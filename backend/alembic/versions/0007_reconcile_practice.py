@@ -6,6 +6,7 @@ table reports 0004. Fresh databases already have the current schema.
 """
 
 import sqlalchemy as sa
+
 from alembic import op
 
 revision = "0007"

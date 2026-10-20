@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 
 from test_foundation import PASSWORD, course_id, foundation, sign_in  # noqa: F401
+
 from app.schemas.diagnosis_report import ReportCreate
 from app.services.evidence_diagnosis import collect_snapshot
 

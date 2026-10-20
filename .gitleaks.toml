@@ -1,0 +1,4 @@
+title = "Learning platform secret scanning"
+
+[extend]
+useDefault = true

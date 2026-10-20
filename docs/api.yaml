@@ -47,7 +47,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '422':
-          description: Unprocessable Entity
+          description: Unprocessable Content
           content:
             application/json:
               schema:
@@ -90,7 +90,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '422':
-          description: Unprocessable Entity
+          description: Unprocessable Content
           content:
             application/json:
               schema:
@@ -129,7 +129,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '422':
-          description: Unprocessable Entity
+          description: Unprocessable Content
           content:
             application/json:
               schema:
@@ -194,7 +194,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
     post:
       tags:
       - Courses
@@ -242,7 +242,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/outline:
     get:
       tags:
@@ -292,7 +292,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/chapters:
     post:
       tags:
@@ -348,7 +348,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/members:
     get:
       tags:
@@ -415,7 +415,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
     post:
       tags:
       - Courses
@@ -470,7 +470,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/chapters/{chapter_id}:
     patch:
       tags:
@@ -526,7 +526,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/chapters/{chapter_id}/knowledge-points:
     post:
       tags:
@@ -582,7 +582,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/knowledge-points/{kp_id}:
     patch:
       tags:
@@ -638,7 +638,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
     delete:
       tags:
       - Knowledge
@@ -683,7 +683,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/chapters/{chapter_id}/practices:
     post:
       tags:
@@ -745,7 +745,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/practices:
     get:
       tags:
@@ -799,7 +799,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/practices/{exercise_id}/submissions:
     post:
       tags:
@@ -861,7 +861,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/practices/{exercise_id}/submissions/me:
     get:
       tags:
@@ -921,7 +921,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/practices/{exercise_id}/submissions/{submission_id}/followups:
     post:
       tags:
@@ -989,7 +989,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/practices/{exercise_id}/submissions/{submission_id}/retry:
     post:
       tags:
@@ -1051,7 +1051,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/practices/{exercise_id}/progress:
     get:
       tags:
@@ -1107,7 +1107,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/quizzes:
     post:
       tags:
@@ -1162,7 +1162,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
     get:
       tags:
       - Workspace · 演示与占位
@@ -1214,7 +1214,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -1269,7 +1269,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/attempts/{attempt_id}:
     get:
       tags:
@@ -1324,7 +1324,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/attempts/{attempt_id}/diagnoses:
     get:
       tags:
@@ -1379,7 +1379,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/attempts/{attempt_id}/diagnoses/{diagnosis_id}/retry:
     post:
       tags:
@@ -1440,7 +1440,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/learning-templates:
     get:
       tags:
@@ -1489,7 +1489,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/learning-sessions:
     get:
       tags:
@@ -1538,7 +1538,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/learning-sessions:
     post:
       tags:
@@ -1582,7 +1582,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '422':
-          description: Unprocessable Entity
+          description: Unprocessable Content
           content:
             application/json:
               schema:
@@ -1635,7 +1635,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/learning-sessions/{session_id}/turns:
     post:
       tags:
@@ -1690,7 +1690,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/learning-sessions/{session_id}/turns/{turn_id}:
     get:
       tags:
@@ -1745,7 +1745,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/diagnosis-reports:
     post:
       tags:
@@ -1801,7 +1801,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
     get:
       tags:
       - Learning diagnosis
@@ -1854,7 +1854,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/students/{student_id}/diagnosis-reports:
     post:
       tags:
@@ -1916,7 +1916,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/diagnosis-reports/{report_id}:
     get:
       tags:
@@ -1972,7 +1972,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/diagnosis-reports/{report_id}/retry:
     post:
       tags:
@@ -2027,7 +2027,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
   /api/v1/courses/{course_id}/resources:
     get:
       tags:
@@ -2080,7 +2080,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2142,7 +2142,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2204,7 +2204,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2272,7 +2272,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2283,7 +2283,7 @@ paths:
     get:
       tags:
       - Workspace · 演示与占位
-      summary: 演示学生学习历史；正式报告尚未实现
+      summary: 真实学习报告；可显式选择模拟历史
       operationId: report_api_v1_courses__course_id__report_get
       parameters:
       - name: course_id
@@ -2302,6 +2302,16 @@ paths:
           type: string
           default: baseline
           title: Algorithm
+      - name: history
+        in: query
+        required: false
+        schema:
+          enum:
+          - real
+          - synthetic
+          type: string
+          default: real
+          title: History
       responses:
         '200':
           description: Successful Response
@@ -2338,7 +2348,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2400,7 +2410,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2472,7 +2482,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2550,7 +2560,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2612,13 +2622,1258 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Entity
+          description: Unprocessable Content
         '501':
           description: 接口占位，业务尚未实现
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/courses/{course_id}/profile:
+    get:
+      tags:
+      - Learning profile and events
+      summary: My Profile
+      operationId: my_profile_api_v1_courses__course_id__profile_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: days
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 90
+          minimum: 1
+          default: 30
+          title: Days
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningProfileOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/students/{student_id}/profile:
+    get:
+      tags:
+      - Learning profile and events
+      summary: Student Profile
+      operationId: student_profile_api_v1_courses__course_id__students__student_id__profile_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: student_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Student Id
+      - name: days
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 90
+          minimum: 1
+          default: 30
+          title: Days
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearningProfileOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/profile/snapshots:
+    post:
+      tags:
+      - Learning profile and events
+      summary: Save Profile Snapshot
+      operationId: save_profile_snapshot_api_v1_courses__course_id__profile_snapshots_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: student_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Student Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SnapshotCreate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SnapshotOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+    get:
+      tags:
+      - Learning profile and events
+      summary: Profile Snapshots
+      operationId: profile_snapshots_api_v1_courses__course_id__profile_snapshots_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: student_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Student Id
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SnapshotPage'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/profile/snapshots/compare:
+    get:
+      tags:
+      - Learning profile and events
+      summary: Compare Profile Snapshots
+      operationId: compare_profile_snapshots_api_v1_courses__course_id__profile_snapshots_compare_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: before_id
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Before Id
+      - name: after_id
+        in: query
+        required: true
+        schema:
+          type: string
+          title: After Id
+      - name: student_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Student Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SnapshotComparison'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/profile/snapshots/{snapshot_id}:
+    get:
+      tags:
+      - Learning profile and events
+      summary: Profile Snapshot
+      operationId: profile_snapshot_api_v1_courses__course_id__profile_snapshots__snapshot_id__get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: snapshot_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Snapshot Id
+      - name: student_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Student Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SnapshotOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/learning-events:
+    get:
+      tags:
+      - Learning profile and events
+      summary: Learning Events
+      operationId: learning_events_api_v1_courses__course_id__learning_events_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: student_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Student Id
+      - name: knowledge_point_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Knowledge Point Id
+      - name: verb
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 40
+          - type: 'null'
+          title: Verb
+      - name: start
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Start
+      - name: end
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: End
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventPage'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/learning-events/export:
+    get:
+      tags:
+      - Learning profile and events
+      summary: Export Learning Events
+      operationId: export_learning_events_api_v1_courses__course_id__learning_events_export_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: format
+        in: query
+        required: false
+        schema:
+          enum:
+          - csv
+          - jsonl
+          type: string
+          default: jsonl
+          title: Format
+      - name: student_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Student Id
+      - name: knowledge_point_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Knowledge Point Id
+      - name: verb
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            maxLength: 40
+          - type: 'null'
+          title: Verb
+      - name: start
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Start
+      - name: end
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: End
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/csv: {}
+            application/x-ndjson: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/knowledge-points/{point_id}/study-time:
+    patch:
+      tags:
+      - Prerequisites and recommendation
+      summary: Set Study Time
+      operationId: set_study_time_api_v1_courses__course_id__knowledge_points__point_id__study_time_patch
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: point_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Point Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudyTimeUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KpOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/recommendation-metrics:
+    get:
+      tags:
+      - Prerequisites and recommendation
+      summary: Metrics
+      operationId: metrics_api_v1_courses__course_id__recommendation_metrics_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationMetrics'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/recommendations/{recommendation_id}/feedback:
+    get:
+      tags:
+      - Prerequisites and recommendation
+      summary: Get Feedback
+      operationId: get_feedback_api_v1_courses__course_id__recommendations__recommendation_id__feedback_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: recommendation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Recommendation Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/FeedbackOut'
+                - type: 'null'
+                title: Response Get Feedback Api V1 Courses  Course Id  Recommendations  Recommendation
+                  Id  Feedback Get
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+    post:
+      tags:
+      - Prerequisites and recommendation
+      summary: Feedback
+      operationId: feedback_api_v1_courses__course_id__recommendations__recommendation_id__feedback_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: recommendation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Recommendation Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackCreate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/prerequisites:
+    get:
+      tags:
+      - Prerequisites and recommendation
+      summary: Prerequisites
+      operationId: prerequisites_api_v1_courses__course_id__prerequisites_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EdgeOut'
+                title: Response Prerequisites Api V1 Courses  Course Id  Prerequisites
+                  Get
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+    post:
+      tags:
+      - Prerequisites and recommendation
+      summary: Create Edge
+      operationId: create_edge_api_v1_courses__course_id__prerequisites_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EdgeCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EdgeOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/prerequisites/{edge_id}:
+    delete:
+      tags:
+      - Prerequisites and recommendation
+      summary: Delete Edge
+      operationId: delete_edge_api_v1_courses__course_id__prerequisites__edge_id__delete
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: edge_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Edge Id
+      responses:
+        '204':
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/recommendations:
+    post:
+      tags:
+      - Prerequisites and recommendation
+      summary: Recommend
+      operationId: recommend_api_v1_courses__course_id__recommendations_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+    get:
+      tags:
+      - Prerequisites and recommendation
+      summary: History
+      operationId: history_api_v1_courses__course_id__recommendations_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecommendationOut'
+                title: Response History Api V1 Courses  Course Id  Recommendations
+                  Get
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/students/{student_id}/recommendations:
+    get:
+      tags:
+      - Prerequisites and recommendation
+      summary: Student History
+      operationId: student_history_api_v1_courses__course_id__students__student_id__recommendations_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: student_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Student Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecommendationOut'
+                title: Response Student History Api V1 Courses  Course Id  Students  Student
+                  Id  Recommendations Get
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
+  /api/v1/courses/{course_id}/recommendations/{recommendation_id}:
+    get:
+      tags:
+      - Prerequisites and recommendation
+      summary: Get Recommendation
+      operationId: get_recommendation_api_v1_courses__course_id__recommendations__recommendation_id__get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: recommendation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Recommendation Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Content
   /health:
     get:
       tags:
@@ -3148,6 +4403,83 @@ components:
       - recommendation
       - followup_question
       title: DiagnosisOutput
+    EdgeCreate:
+      properties:
+        from_kp_id:
+          type: string
+          maxLength: 36
+          minLength: 1
+          title: From Kp Id
+        to_kp_id:
+          type: string
+          maxLength: 36
+          minLength: 1
+          title: To Kp Id
+      additionalProperties: false
+      type: object
+      required:
+      - from_kp_id
+      - to_kp_id
+      title: EdgeCreate
+    EdgeOut:
+      properties:
+        from_kp_id:
+          type: string
+          maxLength: 36
+          minLength: 1
+          title: From Kp Id
+        to_kp_id:
+          type: string
+          maxLength: 36
+          minLength: 1
+          title: To Kp Id
+        id:
+          type: string
+          title: Id
+        course_id:
+          type: string
+          title: Course Id
+      additionalProperties: false
+      type: object
+      required:
+      - from_kp_id
+      - to_kp_id
+      - id
+      - course_id
+      title: EdgeOut
+    EngagementDimension:
+      properties:
+        active_days:
+          type: integer
+          title: Active Days
+        event_count:
+          type: integer
+          title: Event Count
+        effective_seconds:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Effective Seconds
+        observed_resource_count:
+          type: integer
+          title: Observed Resource Count
+        completed_resource_percent:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Completed Resource Percent
+        explanation:
+          type: string
+          title: Explanation
+      type: object
+      required:
+      - active_days
+      - event_count
+      - effective_seconds
+      - observed_resource_count
+      - completed_resource_percent
+      - explanation
+      title: EngagementDimension
     ErrorDetail:
       properties:
         code:
@@ -3181,6 +4513,108 @@ components:
       - detail
       - request_id
       title: ErrorResponse
+    EventOut:
+      properties:
+        event_id:
+          type: string
+          title: Event Id
+        actor:
+          type: string
+          title: Actor
+        verb:
+          type: string
+          title: Verb
+        object:
+          additionalProperties: true
+          type: object
+          title: Object
+        result:
+          additionalProperties: true
+          type: object
+          title: Result
+        context:
+          additionalProperties: true
+          type: object
+          title: Context
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+      type: object
+      required:
+      - event_id
+      - actor
+      - verb
+      - object
+      - result
+      - context
+      - timestamp
+      title: EventOut
+    EventPage:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/EventOut'
+          type: array
+          title: Items
+        next_offset:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Offset
+        window_start:
+          type: string
+          format: date-time
+          title: Window Start
+        window_end:
+          type: string
+          format: date-time
+          title: Window End
+      type: object
+      required:
+      - items
+      - next_offset
+      - window_start
+      - window_end
+      title: EventPage
+    FeedbackCreate:
+      properties:
+        choice:
+          type: string
+          enum:
+          - accepted
+          - declined
+          title: Choice
+      additionalProperties: false
+      type: object
+      required:
+      - choice
+      title: FeedbackCreate
+    FeedbackOut:
+      properties:
+        recommendation_id:
+          type: string
+          title: Recommendation Id
+        student_id:
+          type: string
+          title: Student Id
+        choice:
+          type: string
+          enum:
+          - accepted
+          - declined
+          title: Choice
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - recommendation_id
+      - student_id
+      - choice
+      - created_at
+      title: FeedbackOut
     FollowupIn:
       properties:
         message:
@@ -3202,6 +4636,29 @@ components:
       required:
       - job_id
       title: JobOut
+    KnowledgeDimension:
+      properties:
+        known_points:
+          type: integer
+          title: Known Points
+        total_points:
+          type: integer
+          title: Total Points
+        points:
+          items:
+            $ref: '#/components/schemas/MasteryPointOut'
+          type: array
+          title: Points
+        explanation:
+          type: string
+          title: Explanation
+      type: object
+      required:
+      - known_points
+      - total_points
+      - points
+      - explanation
+      title: KnowledgeDimension
     KpCreate:
       properties:
         code:
@@ -3245,6 +4702,11 @@ components:
       title: KpCreate
     KpOut:
       properties:
+        estimated_minutes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Estimated Minutes
         id:
           type: string
           title: Id
@@ -3331,6 +4793,30 @@ components:
       additionalProperties: false
       type: object
       title: KpPatch
+    LearningAction:
+      properties:
+        kind:
+          type: string
+          enum:
+          - knowledge
+          - practice
+          title: Kind
+        id:
+          type: string
+          title: Id
+        title:
+          type: string
+          title: Title
+        url:
+          type: string
+          title: Url
+      type: object
+      required:
+      - kind
+      - id
+      - title
+      - url
+      title: LearningAction
     LearningAnswer:
       properties:
         answer:
@@ -3353,6 +4839,50 @@ components:
       required:
       - answer
       title: LearningAnswer
+    LearningProfileOut:
+      properties:
+        student_id:
+          type: string
+          title: Student Id
+        course_id:
+          type: string
+          title: Course Id
+        rule_version:
+          type: string
+          title: Rule Version
+        generated_at:
+          type: string
+          format: date-time
+          title: Generated At
+        window_start:
+          type: string
+          format: date-time
+          title: Window Start
+        window_end:
+          type: string
+          format: date-time
+          title: Window End
+        knowledge:
+          $ref: '#/components/schemas/KnowledgeDimension'
+        engagement:
+          $ref: '#/components/schemas/EngagementDimension'
+        preference:
+          $ref: '#/components/schemas/PreferenceDimension'
+        risk:
+          $ref: '#/components/schemas/RiskDimension'
+      type: object
+      required:
+      - student_id
+      - course_id
+      - rule_version
+      - generated_at
+      - window_start
+      - window_end
+      - knowledge
+      - engagement
+      - preference
+      - risk
+      title: LearningProfileOut
     Login:
       properties:
         username:
@@ -3371,6 +4901,73 @@ components:
       - username
       - password
       title: Login
+    MasteryPointOut:
+      properties:
+        knowledge_point_id:
+          type: string
+          title: Knowledge Point Id
+        name:
+          type: string
+          title: Name
+        mastery_percent:
+          anyOf:
+          - type: number
+            maximum: 100.0
+            minimum: 0.0
+          - type: 'null'
+          title: Mastery Percent
+        confidence_percent:
+          anyOf:
+          - type: number
+            maximum: 100.0
+            minimum: 0.0
+          - type: 'null'
+          title: Confidence Percent
+        report_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Report Id
+        evidence_ids:
+          items:
+            type: string
+          type: array
+          title: Evidence Ids
+        input_cutoff:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Input Cutoff
+        updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updated At
+        accuracy_percent:
+          anyOf:
+          - type: number
+            maximum: 100.0
+            minimum: 0.0
+          - type: 'null'
+          title: Accuracy Percent
+        question_count:
+          type: integer
+          title: Question Count
+      type: object
+      required:
+      - knowledge_point_id
+      - name
+      - mastery_percent
+      - confidence_percent
+      - report_id
+      - evidence_ids
+      - input_cutoff
+      - updated_at
+      - accuracy_percent
+      - question_count
+      title: MasteryPointOut
     MemberCreate:
       properties:
         username:
@@ -3398,6 +4995,29 @@ components:
       - user
       - role
       title: MemberOut
+    MetricChange:
+      properties:
+        before:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Before
+        after:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: After
+        delta:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Delta
+      type: object
+      required:
+      - before
+      - after
+      - delta
+      title: MetricChange
     MistakeItem:
       properties:
         stem:
@@ -3471,6 +5091,177 @@ components:
       - page
       - page_size
       title: Page[MemberOut]
+    PathPoint:
+      properties:
+        knowledge_point_id:
+          type: string
+          title: Knowledge Point Id
+        code:
+          type: string
+          title: Code
+        name:
+          type: string
+          title: Name
+        mastery:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Mastery
+        confidence:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Confidence
+        diagnosis_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Diagnosis Id
+        evidence_ids:
+          items:
+            type: string
+          type: array
+          title: Evidence Ids
+        input_cutoff:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Input Cutoff
+        reason:
+          type: string
+          title: Reason
+        reason_source:
+          type: string
+          enum:
+          - diagnosis
+          - prerequisite_rule
+          title: Reason Source
+      type: object
+      required:
+      - knowledge_point_id
+      - code
+      - name
+      - mastery
+      - confidence
+      - diagnosis_id
+      - evidence_ids
+      - input_cutoff
+      - reason
+      - reason_source
+      title: PathPoint
+    PathStep:
+      properties:
+        knowledge_point_id:
+          type: string
+          title: Knowledge Point Id
+        code:
+          type: string
+          title: Code
+        name:
+          type: string
+          title: Name
+        mastery:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Mastery
+        confidence:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Confidence
+        diagnosis_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Diagnosis Id
+        evidence_ids:
+          items:
+            type: string
+          type: array
+          title: Evidence Ids
+        input_cutoff:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Input Cutoff
+        reason:
+          type: string
+          title: Reason
+        reason_source:
+          type: string
+          enum:
+          - diagnosis
+          - prerequisite_rule
+          title: Reason Source
+        estimated_minutes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Estimated Minutes
+        estimate_source:
+          anyOf:
+          - type: string
+            enum:
+            - teacher
+            - rule_estimate
+          - type: 'null'
+          title: Estimate Source
+        priority_score:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Priority Score
+        deferral_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Deferral Reason
+        order:
+          type: integer
+          title: Order
+        prerequisite_ids:
+          items:
+            type: string
+          type: array
+          title: Prerequisite Ids
+        actions:
+          items:
+            $ref: '#/components/schemas/LearningAction'
+          type: array
+          title: Actions
+        notes:
+          items:
+            type: string
+          type: array
+          title: Notes
+      type: object
+      required:
+      - knowledge_point_id
+      - code
+      - name
+      - mastery
+      - confidence
+      - diagnosis_id
+      - evidence_ids
+      - input_cutoff
+      - reason
+      - reason_source
+      - order
+      - prerequisite_ids
+      - actions
+      - notes
+      title: PathStep
     PersonalizationOut:
       properties:
         source:
@@ -3493,6 +5284,25 @@ components:
       - matched_knowledge_points
       - similarity
       title: PersonalizationOut
+    PointChange:
+      properties:
+        knowledge_point_id:
+          type: string
+          title: Knowledge Point Id
+        name:
+          type: string
+          title: Name
+        mastery:
+          $ref: '#/components/schemas/MetricChange'
+        accuracy:
+          $ref: '#/components/schemas/MetricChange'
+      type: object
+      required:
+      - knowledge_point_id
+      - name
+      - mastery
+      - accuracy
+      title: PointChange
     PointStatOut:
       properties:
         knowledge_point_id:
@@ -3615,6 +5425,51 @@ components:
       - attention_count
       - students
       title: PracticeProgress
+    PreferenceDimension:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/PreferenceItem'
+          type: array
+          title: Items
+        explanation:
+          type: string
+          title: Explanation
+      type: object
+      required:
+      - items
+      - explanation
+      title: PreferenceDimension
+    PreferenceItem:
+      properties:
+        key:
+          type: string
+          enum:
+          - video
+          - read
+          - ask
+          - practice
+          title: Key
+        label:
+          type: string
+          title: Label
+        count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Count
+        percent:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Percent
+      type: object
+      required:
+      - key
+      - label
+      - count
+      - percent
+      title: PreferenceItem
     ProfileItem:
       properties:
         label:
@@ -3778,6 +5633,36 @@ components:
       - correct_values
       - explanation
       title: QuizQuestionCreate
+    RecommendationCreate:
+      properties:
+        target_kp_id:
+          type: string
+          maxLength: 36
+          minLength: 1
+          title: Target Kp Id
+        strategy:
+          type: string
+          enum:
+          - baseline
+          - budgeted
+          title: Strategy
+          default: baseline
+        time_budget_minutes:
+          anyOf:
+          - type: integer
+            maximum: 240.0
+            minimum: 1.0
+          - type: 'null'
+          title: Time Budget Minutes
+        request_id:
+          type: string
+          format: uuid
+          title: Request Id
+      additionalProperties: false
+      type: object
+      required:
+      - target_kp_id
+      title: RecommendationCreate
     RecommendationItem:
       properties:
         title:
@@ -3802,6 +5687,144 @@ components:
       - minutes
       - resource_id
       title: RecommendationItem
+    RecommendationMetrics:
+      properties:
+        scope:
+          type: string
+          enum:
+          - student
+          - course
+          title: Scope
+        strategies:
+          items:
+            $ref: '#/components/schemas/StrategyMetrics'
+          type: array
+          title: Strategies
+        explanation:
+          type: string
+          title: Explanation
+      type: object
+      required:
+      - scope
+      - strategies
+      - explanation
+      title: RecommendationMetrics
+    RecommendationOut:
+      properties:
+        id:
+          type: string
+          title: Id
+        course_id:
+          type: string
+          title: Course Id
+        student_id:
+          type: string
+          title: Student Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        strategy:
+          type: string
+          enum:
+          - baseline
+          - budgeted
+          title: Strategy
+        time_budget_minutes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Time Budget Minutes
+        estimated_minutes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Estimated Minutes
+        full_path_estimated_minutes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Full Path Estimated Minutes
+        remaining_estimated_minutes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Remaining Estimated Minutes
+        remaining_steps:
+          items:
+            $ref: '#/components/schemas/PathStep'
+          type: array
+          title: Remaining Steps
+        goal_in_plan:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Goal In Plan
+        scheduling_rule:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scheduling Rule
+        algorithm_version:
+          type: string
+          title: Algorithm Version
+        mastery_threshold:
+          type: number
+          title: Mastery Threshold
+        target_kp_id:
+          type: string
+          title: Target Kp Id
+        target_name:
+          type: string
+          title: Target Name
+        status:
+          type: string
+          enum:
+          - ready
+          - target_mastered
+          title: Status
+        input_cutoff:
+          type: string
+          format: date-time
+          title: Input Cutoff
+        graph_edges:
+          items:
+            $ref: '#/components/schemas/EdgeCreate'
+          type: array
+          title: Graph Edges
+        steps:
+          items:
+            $ref: '#/components/schemas/PathStep'
+          type: array
+          title: Steps
+        skipped:
+          items:
+            $ref: '#/components/schemas/PathPoint'
+          type: array
+          title: Skipped
+        notes:
+          items:
+            type: string
+          type: array
+          title: Notes
+      type: object
+      required:
+      - id
+      - course_id
+      - student_id
+      - created_at
+      - strategy
+      - algorithm_version
+      - mastery_threshold
+      - target_kp_id
+      - target_name
+      - status
+      - input_cutoff
+      - graph_edges
+      - steps
+      - skipped
+      - notes
+      title: RecommendationOut
     RecordItem:
       properties:
         title:
@@ -3910,6 +5933,35 @@ components:
       - total
       - answers
       title: ResultOut
+    RiskDimension:
+      properties:
+        level:
+          type: string
+          enum:
+          - unknown
+          - attention
+          - normal
+          title: Level
+        reasons:
+          items:
+            type: string
+          type: array
+          title: Reasons
+        evidence_ids:
+          items:
+            type: string
+          type: array
+          title: Evidence Ids
+        explanation:
+          type: string
+          title: Explanation
+      type: object
+      required:
+      - level
+      - reasons
+      - evidence_ids
+      - explanation
+      title: RiskDimension
     SessionCreate:
       properties:
         course_id:
@@ -3932,6 +5984,166 @@ components:
       - course_id
       - knowledge_point_id
       title: SessionCreate
+    SnapshotComparison:
+      properties:
+        before:
+          $ref: '#/components/schemas/SnapshotSummary'
+        after:
+          $ref: '#/components/schemas/SnapshotSummary'
+        points:
+          items:
+            $ref: '#/components/schemas/PointChange'
+          type: array
+          title: Points
+        engagement:
+          additionalProperties:
+            $ref: '#/components/schemas/MetricChange'
+          type: object
+          title: Engagement
+        preference:
+          additionalProperties:
+            $ref: '#/components/schemas/MetricChange'
+          type: object
+          title: Preference
+        risk_before:
+          type: string
+          enum:
+          - unknown
+          - attention
+          - normal
+          title: Risk Before
+        risk_after:
+          type: string
+          enum:
+          - unknown
+          - attention
+          - normal
+          title: Risk After
+        warnings:
+          items:
+            type: string
+          type: array
+          title: Warnings
+      type: object
+      required:
+      - before
+      - after
+      - points
+      - engagement
+      - preference
+      - risk_before
+      - risk_after
+      - warnings
+      title: SnapshotComparison
+    SnapshotCreate:
+      properties:
+        request_id:
+          type: string
+          maxLength: 64
+          minLength: 1
+          pattern: ^[A-Za-z0-9_-]+$
+          title: Request Id
+        days:
+          type: integer
+          maximum: 90.0
+          minimum: 1.0
+          title: Days
+          default: 30
+      additionalProperties: false
+      type: object
+      required:
+      - request_id
+      title: SnapshotCreate
+    SnapshotOut:
+      properties:
+        id:
+          type: string
+          title: Id
+        reason:
+          type: string
+          enum:
+          - manual
+          - diagnosis
+          title: Reason
+        report_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Report Id
+        days:
+          type: integer
+          title: Days
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        rule_version:
+          type: string
+          title: Rule Version
+        profile:
+          $ref: '#/components/schemas/LearningProfileOut'
+      type: object
+      required:
+      - id
+      - reason
+      - report_id
+      - days
+      - created_at
+      - rule_version
+      - profile
+      title: SnapshotOut
+    SnapshotPage:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/SnapshotSummary'
+          type: array
+          title: Items
+        next_offset:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Next Offset
+      type: object
+      required:
+      - items
+      - next_offset
+      title: SnapshotPage
+    SnapshotSummary:
+      properties:
+        id:
+          type: string
+          title: Id
+        reason:
+          type: string
+          enum:
+          - manual
+          - diagnosis
+          title: Reason
+        report_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Report Id
+        days:
+          type: integer
+          title: Days
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        rule_version:
+          type: string
+          title: Rule Version
+      type: object
+      required:
+      - id
+      - reason
+      - report_id
+      - days
+      - created_at
+      - rule_version
+      title: SnapshotSummary
     StartAttemptIn:
       properties:
         quiz_id:
@@ -3944,6 +6156,50 @@ components:
       required:
       - quiz_id
       title: StartAttemptIn
+    StrategyMetrics:
+      properties:
+        strategy:
+          type: string
+          enum:
+          - baseline
+          - budgeted
+          title: Strategy
+        recommendation_count:
+          type: integer
+          title: Recommendation Count
+        feedback_count:
+          type: integer
+          title: Feedback Count
+        accepted_count:
+          type: integer
+          title: Accepted Count
+        acceptance_rate:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Acceptance Rate
+        estimated_path_count:
+          type: integer
+          title: Estimated Path Count
+        average_estimated_minutes:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Average Estimated Minutes
+        goal_in_plan_count:
+          type: integer
+          title: Goal In Plan Count
+      type: object
+      required:
+      - strategy
+      - recommendation_count
+      - feedback_count
+      - accepted_count
+      - acceptance_rate
+      - estimated_path_count
+      - average_estimated_minutes
+      - goal_in_plan_count
+      title: StrategyMetrics
     StudentProgress:
       properties:
         student_id:
@@ -3970,6 +6226,20 @@ components:
       - latest_submission
       - needs_attention
       title: StudentProgress
+    StudyTimeUpdate:
+      properties:
+        estimated_minutes:
+          anyOf:
+          - type: integer
+            maximum: 240.0
+            minimum: 1.0
+          - type: 'null'
+          title: Estimated Minutes
+      additionalProperties: false
+      type: object
+      required:
+      - estimated_minutes
+      title: StudyTimeUpdate
     SubmissionOut:
       properties:
         id:
@@ -4396,6 +6666,10 @@ components:
       title: ReportOut
     app__schemas__workspace__ReportOut:
       properties:
+        learning_profile:
+          anyOf:
+          - $ref: '#/components/schemas/LearningProfileOut'
+          - type: 'null'
         history_source:
           anyOf:
           - type: string

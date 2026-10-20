@@ -14,6 +14,8 @@ from app.api.routes import (
     knowledge,
     learning_session,
     practice,
+    profile,
+    recommendation,
     workspace,
 )
 from app.api.routes.dev import create_dev_router
@@ -72,6 +74,8 @@ def create_app(settings=None):
     api.include_router(learning_session.router)
     api.include_router(diagnosis_report.router)
     api.include_router(workspace.router)
+    api.include_router(profile.router)
+    api.include_router(recommendation.router)
     app.include_router(api)
     if settings.enable_dev_routes:
         app.include_router(create_dev_router(sessions, settings))

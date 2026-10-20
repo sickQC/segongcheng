@@ -70,6 +70,7 @@ class KpCreate(Input):
 
 
 class KpOut(Output):
+    estimated_minutes: int | None = None
     id: str
     code: str
     chapter_id: str

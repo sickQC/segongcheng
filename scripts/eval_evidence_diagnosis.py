@@ -20,16 +20,17 @@ from typing import get_args
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
-from app.agents.evidence_diagnosis import PROMPT, PROMPT_VERSION  # noqa: E402
-from app.core.config import Settings  # noqa: E402
-from app.schemas.diagnosis_report import ProblemType  # noqa: E402
-from app.services.evidence_diagnosis import infer_snapshot  # noqa: E402
 from build_diagnosis_eval import (  # noqa: E402
     DATASET_VERSION,
     DEFAULT_DIRECTORY,
     snapshot_for_variant,
     snapshot_hash,
 )
+
+from app.agents.evidence_diagnosis import PROMPT, PROMPT_VERSION  # noqa: E402
+from app.core.config import Settings  # noqa: E402
+from app.schemas.diagnosis_report import ProblemType  # noqa: E402
+from app.services.evidence_diagnosis import infer_snapshot  # noqa: E402
 
 STOP_ERRORS = {
     "CODEX_NOT_INSTALLED",

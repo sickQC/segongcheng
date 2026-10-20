@@ -5,6 +5,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.schemas.profile import LearningProfileOut
+
 
 class Input(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
@@ -155,6 +157,7 @@ class ChapterHistoryOut(BaseModel):
 
 
 class ReportOut(BaseModel):
+    learning_profile: LearningProfileOut | None = None
     history_source: Literal["synthetic", "real"] | None = None
     chapter_history: list[ChapterHistoryOut] = []
     diagnosis: list[DiagnosisItem]

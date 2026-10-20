@@ -1,0 +1,57 @@
+{
+  "version": "course-inventory-v1",
+  "course_id": "8433e390-3096-59ee-8527-48e3d48c3745",
+  "counts": {
+    "chapters": 2,
+    "knowledge_points": 4,
+    "prerequisites": 3,
+    "unique_objective_questions": 0,
+    "published_question_instances": 0,
+    "practice_exercises": 0,
+    "videos": null,
+    "documents": null
+  },
+  "checks": {
+    "chapters": {
+      "count": 2,
+      "minimum": 2,
+      "status": "passed"
+    },
+    "knowledge_points": {
+      "count": 4,
+      "minimum": 30,
+      "status": "shortfall"
+    },
+    "prerequisites": {
+      "count": 3,
+      "minimum": 40,
+      "status": "shortfall"
+    },
+    "unique_objective_questions": {
+      "count": 0,
+      "minimum": 100,
+      "status": "shortfall"
+    },
+    "videos": {
+      "count": null,
+      "minimum": 10,
+      "status": "unknown"
+    },
+    "documents": {
+      "count": null,
+      "minimum": 10,
+      "status": "unknown"
+    }
+  },
+  "isolated_point_ids": [],
+  "covered_objective_types": [],
+  "missing_objective_types": [
+    "boolean",
+    "fill",
+    "multiple",
+    "single"
+  ],
+  "issues": [],
+  "ready": false,
+  "limitations": "Counts only; no question answers or content quality claim. Resource tables are not implemented, so video/document counts remain unknown. Practice questions reported separately; unique objective stems/types/options deduplicated across quizzes. Operator tool, not a student-facing export."
+}

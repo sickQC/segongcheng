@@ -3,6 +3,11 @@ from datetime import timedelta
 from uuid import uuid4
 
 import pytest
+from fastapi import HTTPException
+from sqlalchemy import func, select
+from test_foundation import course_id, foundation, sign_in  # noqa: F401
+from test_practice_c import install_mock
+
 from app.agents.learning_templates import LEARNING_PROMPT_VERSION, STAGES, TEMPLATES
 from app.models import LearningEvent, ModelTrace
 from app.models.assessment import QuizAttempt
@@ -11,10 +16,6 @@ from app.models.legacy import now
 from app.schemas.learning_session import LearningAnswer
 from app.services import learning_session as learning
 from app.services.c_model_gateway import ModelCallError, ModelReply, codex_arguments, strict_schema
-from fastapi import HTTPException
-from sqlalchemy import func, select
-from test_foundation import course_id, foundation, sign_in  # noqa: F401
-from test_practice_c import install_mock
 
 
 @pytest.fixture

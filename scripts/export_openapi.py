@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
 import yaml
+
 from app.main import app
 
 path = ROOT / "docs" / "api.yaml"

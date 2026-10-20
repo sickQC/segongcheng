@@ -7,15 +7,16 @@ from uuid import uuid4
 
 import httpx
 import pytest
+from pydantic import SecretStr
+from sqlalchemy import func, select
+from test_foundation import course_id, foundation, sign_in  # noqa: F401
+
 from app.agents.diagnosis import PRACTICE_PROMPT, PROMPT_VERSION
 from app.agents.diagnosis_guardrails import is_instruction_attack
 from app.models import Diagnosis, LearningEvent, ModelTrace, PracticeSubmission
 from app.schemas.practice import PracticeAnswer
 from app.services import diagnosis as service
 from app.services.practice import save_answer
-from pydantic import SecretStr
-from sqlalchemy import func, select
-from test_foundation import course_id, foundation, sign_in  # noqa: F401
 
 
 @pytest.fixture

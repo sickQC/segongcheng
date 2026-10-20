@@ -1,6 +1,7 @@
 """Member C: course exercise/answer storage, including follow-up ancestry."""
 
 import sqlalchemy as sa
+
 from alembic import op
 
 revision = "0004"

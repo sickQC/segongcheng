@@ -13,9 +13,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
+from eval_learning_c import ANSWERS, CONFUSIONS, TEMPLATES  # noqa: E402
+
 from app.core.config import Settings  # noqa: E402
 from app.services.c_model_gateway import ModelCallError, complete_json  # noqa: E402
-from eval_learning_c import ANSWERS, CONFUSIONS, TEMPLATES  # noqa: E402
 
 PROMPT = (
     "你是软件工程课程的直接讲解式助教。针对给定知识点和学生表述，直接解释概念、纠正误解并给出例子。"

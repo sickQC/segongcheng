@@ -1,0 +1,16 @@
+{
+  "version": "e7-multiseed-v1",
+  "source": "synthetic scheduling inputs; not observed learners or a teaching knowledge graph",
+  "generator_version": "random-dag-v1",
+  "dev_seed_start": 11000,
+  "test_seed_start": 21000,
+  "dev_cases": 20,
+  "test_cases": 80,
+  "node_count": 30,
+  "edge_count": 40,
+  "profiles": ["mostly_unknown", "weak", "mixed", "mostly_mastered"],
+  "budgets": [10, 20, 40, 80, 160],
+  "repeats": 5,
+  "bootstrap_resamples": 2000,
+  "bootstrap_seed": 31000
+}

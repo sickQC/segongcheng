@@ -1,0 +1,63 @@
+{
+  "version": "read-http-benchmark-v1",
+  "concurrency": 10,
+  "requests_per_endpoint": 30,
+  "total_requests": 180,
+  "wall_seconds": 1.385478,
+  "requests_per_second": 129.919,
+  "endpoints": {
+    "health": {
+      "requests": 30,
+      "errors": 0,
+      "mean_ms": 34.091,
+      "p50_ms": 29.421,
+      "p95_ms": 51.28,
+      "max_ms": 133.241
+    },
+    "outline": {
+      "requests": 30,
+      "errors": 0,
+      "mean_ms": 81.717,
+      "p50_ms": 73.42,
+      "p95_ms": 157.293,
+      "max_ms": 182.904
+    },
+    "profile": {
+      "requests": 30,
+      "errors": 0,
+      "mean_ms": 89.949,
+      "p50_ms": 80.239,
+      "p95_ms": 158.051,
+      "max_ms": 190.266
+    },
+    "events": {
+      "requests": 30,
+      "errors": 0,
+      "mean_ms": 87.207,
+      "p50_ms": 80.185,
+      "p95_ms": 182.72,
+      "max_ms": 191.334
+    },
+    "snapshots": {
+      "requests": 30,
+      "errors": 0,
+      "mean_ms": 75.981,
+      "p50_ms": 69.528,
+      "p95_ms": 111.932,
+      "max_ms": 175.754
+    },
+    "recommendations": {
+      "requests": 30,
+      "errors": 0,
+      "mean_ms": 86.07,
+      "p50_ms": 73.476,
+      "p95_ms": 175.571,
+      "max_ms": 192.053
+    }
+  },
+  "p95_target_ms": 1000,
+  "meets_target": true,
+  "errors": 0,
+  "limitations": "Warm local HTTP measurements on current data only; not production load, cold start, AI latency, browser timing or a representative large-course claim. No answers or credentials stored.",
+  "latency_enforced": false
+}
