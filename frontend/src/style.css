@@ -18,6 +18,7 @@
 .work-nav a { padding:10px 16px; border:1px solid #dce5df; border-radius:8px; color:#245f50; background:white; text-decoration:none; }
 .work-nav a.router-link-active { background:#e1f0e8; border-color:#3a806b; }
 .learning-grid { display:grid; grid-template-columns:minmax(0, 1.25fr) minmax(0, 1fr); gap:20px; }
+.learning-grid.teacher-resources { grid-template-columns:minmax(0, 1fr); }
 .learning-grid .panel { min-width:0; }
 .resource-video { width:100%; background:#172a25; border-radius:10px; }
 .resource-document { width:100%; height:520px; border:1px solid #dce5df; }
@@ -47,3 +48,49 @@
 .practice-stats { justify-content:flex-start; margin-bottom:10px; }
 .practice-table { margin-top:12px; }
 @media(max-width:850px) { .learning-grid { grid-template-columns:1fr; } .metric-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .toolbar { flex-wrap:wrap; gap:10px; } .work-nav { gap:8px; } }
+
+/* Course shortcuts stay available from the course center and learning pages. */
+.sidebar { overflow-y:auto; }
+.sidebar .nav-label { margin-top:34px; }
+.sidebar .sidebar-nav { gap:5px; }
+.sidebar .sidebar-nav a { display:flex; align-items:center; padding:12px 13px; }
+.sidebar .sidebar-nav a > span { flex-shrink:0; }
+.sidebar-nav a small { display:block; margin-top:5px; color:#7b8d82; font-size:10px; font-weight:400; line-height:1.5; }
+.sidebar-course-context { margin:24px 0 13px; }
+.sidebar-course-context label { display:block; margin:0 12px 9px; color:#89958f; font-size:11px; letter-spacing:1px; }
+.sidebar-course-context .el-select { width:100%; }
+.sidebar-course-message { margin:10px 12px; font-size:12px; color:#7b8d82; }
+.sidebar .scope-note { margin-top:auto; }
+.sidebar .course-shortcuts { padding-bottom:24px; }
+.sidebar .dev-shortcuts { padding-bottom:16px; }
+.lecture-library-item { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:16px 0; border-top:1px solid #e4ebe6; }
+.lecture-library-item h3 { margin:0 0 6px; }.lecture-library-item p { margin:0; color:#7b8d82; font-size:12px; }
+.lecture-content-container { min-height:140px; }
+.lecture-toc { margin:14px 0; padding:13px 16px; background:#f3f7f2; border:1px solid #e0e8df; border-radius:8px; }
+.lecture-toc summary { cursor:pointer; color:#245f50; font-size:14px; font-weight:600; }
+.lecture-toc nav { max-height:230px; overflow:auto; margin-top:12px; gap:2px; }
+.lecture-toc button { text-align:left; border:0; border-radius:5px; background:transparent; padding:8px 12px; color:#516c5d; font-size:13px; cursor:pointer; }
+.lecture-toc button:hover,.lecture-toc button.selected { background:#e0ede4; color:#205c49; }
+.lecture-location { background:#fff6df; border-left:3px solid #c39a47; padding:8px 12px; font-size:12px; color:#755d2f; }
+.lecture-body { max-height:620px; overflow:auto; padding:0 16px 18px 2px; overscroll-behavior:contain; }
+.markdown-content { white-space:normal; overflow-wrap:anywhere; line-height:1.85; font-size:14px; }
+.markdown-content h1 { font-size:26px; }.markdown-content h2 { font-size:21px; }.markdown-content h3 { font-size:18px; }.markdown-content h4 { font-size:16px; }
+.markdown-content h1,.markdown-content h2,.markdown-content h3,.markdown-content h4 { line-height:1.6; margin:24px 0 12px; color:#214f40; scroll-margin-top:18px; }
+.markdown-content p { margin:10px 0; }.markdown-content ul,.markdown-content ol { padding-left:25px; }.markdown-content li { margin:6px 0; }
+.markdown-content blockquote { margin:14px 0; padding:4px 16px; border-left:3px solid #6d9c87; background:#f0f5ef; color:#42654e; }
+.markdown-content table { display:block; width:100%; overflow-x:auto; border-collapse:collapse; margin:16px 0; font-size:13px; }
+.markdown-content th,.markdown-content td { border:1px solid #dce5dd; padding:9px 12px; min-width:110px; text-align:left; vertical-align:top; }
+.markdown-content th { background:#eef4ee; }.markdown-content pre { overflow-x:auto; white-space:pre; }.markdown-content pre code { white-space:pre; }
+.markdown-content :not(pre)>code { background:#edf2ec; border-radius:4px; padding:2px 5px; font-size:12px; }.markdown-content a { color:#246958; text-decoration:underline; }
+.markdown-content img { max-width:100%; }.markdown-content .source-highlight { background:#fff1cb; border-left:3px solid #bf953f; padding:8px 12px; outline:none; }
+.chat-markdown h1,.chat-markdown h2 { font-size:17px; }.chat-markdown h3 { font-size:15px; }.chat-markdown p { margin:8px 0; }
+@media(max-width:620px) {
+  .sidebar { overflow:visible; }
+  .sidebar-course-context { margin:12px 0 0; }
+  .sidebar-course-context label { display:none; }
+  .sidebar-course-context .el-select { max-width:280px; }
+  .sidebar .sidebar-nav { flex-direction:row; flex-wrap:nowrap; overflow-x:auto; }
+  .sidebar .sidebar-nav a { padding:10px; flex-shrink:0; }
+  .sidebar-nav a small { display:none; }
+  .sidebar .course-shortcuts { padding-bottom:0; }
+}

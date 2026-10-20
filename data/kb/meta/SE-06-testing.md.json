@@ -1,0 +1,9 @@
+{
+  "file": "SE-06-testing.md",
+  "title": "软件测试：验证确认与测试用例设计",
+  "kps": [
+    {"name": "软件验证与确认", "definition": "验证关注软件是否符合规定要求；确认关注软件是否满足预期用途和用户实际需要。", "difficulty": 2, "bloom": "分析", "prereq_names": []},
+    {"name": "等价类划分", "definition": "将输入域划分为预期具有相似行为的类别，再从各类选择代表值，检查有效与无效输入。", "difficulty": 2, "bloom": "应用", "prereq_names": []},
+    {"name": "边界值分析", "definition": "优先检查允许范围边界及其邻近值，并按照边界是否包含及数据类型确定预期结果。", "difficulty": 2, "bloom": "应用", "prereq_names": ["等价类划分"]}
+  ]
+}

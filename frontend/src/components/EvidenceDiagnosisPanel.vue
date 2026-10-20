@@ -7,7 +7,7 @@ type Event = { event_id: string; source: string; timestamp: string; answer?: str
 type Point = { knowledge_point_id: string; name: string; events: Event[]; baseline: { graded_count: number; accuracy: number | null; behavior_available: boolean } }
 type Diagnosis = { knowledge_point_id: string; status: string; mastery: number | null; problem_type: string; explanation: string; recommendation: string; followup_question: string; evidence_event_ids: string[] }
 type Report = { id: string; status: string; snapshot: { cutoff: string; points: Point[] }; output: { points: Diagnosis[]; excluded_instruction_events: string[]; guardrail_actions?: unknown[]; observed_behaviors?: { knowledge_point_id: string; problem_type: string }[] } | null; error_message: string | null; trace_id: string; created_at: string }
-const props = defineProps<{ courseId: string }>()
+const props = defineProps<{ courseId: string; knowledgePointId?: string }>()
 const points = ref<{ id: string; name: string }[]>([]), selected = ref<string[]>([])
 const reports = ref<Report[]>([]), current = ref<Report>(), busy = ref(false), error = ref('')
 const labels: Record<string, string> = { concept_confusion: '概念混淆', prerequisite_gap: '前置知识可能不足', repeated_error: '反复错误', low_engagement: '有效学习记录偏少', practice_only: '答题与资源学习失衡', no_obvious_issue: '未发现明显问题', insufficient_evidence: '证据不足' }
@@ -33,11 +33,11 @@ async function load() {
     const outline = await api<{ chapters: { knowledge_points: { id: string; name: string }[] }[] }>(`/courses/${encodeURIComponent(props.courseId)}/outline`)
     if (run !== generation) return
     points.value = outline.chapters.flatMap(ch => ch.knowledge_points)
-    selected.value = points.value.slice(0, 20).map(p => p.id)
+    selected.value = props.knowledgePointId && points.value.some(p => p.id === props.knowledgePointId) ? [props.knowledgePointId] : points.value.slice(0, 20).map(p => p.id)
     const history = await api<Report[]>(base())
     if (run !== generation) return
     reports.value = history
-    if (history[0]) await refresh(history[0].id)
+    if (history[0] && !props.knowledgePointId) await refresh(history[0].id)
   } catch (e) { if (run === generation) error.value = errorMessage(e) }
 }
 async function analyze() {
@@ -61,13 +61,14 @@ async function retry() {
   finally { if (run === generation) busy.value = false }
 }
 async function open(id: string) { ++generation; clearTimeout(timer); busy.value = false; await refresh(id) }
-watch(() => props.courseId, () => void load(), { immediate: true })
+watch(() => [props.courseId, props.knowledgePointId], () => void load(), { immediate: true })
 onUnmounted(() => { ++generation; clearTimeout(timer) })
 </script>
 <template>
   <section class="panel" aria-label="综合学习诊断">
     <h2>综合学习诊断</h2>
     <p class="muted">汇总最近 30 天的实际答题、练习和学习对话。模型判断与客观正确率分别展示，不修改成绩或模拟画像。</p>
+    <p v-if="knowledgePointId" class="muted">已选中刚才学习的知识点。点击“分析最近学习记录”，将本次 5E 作答一起纳入新的诊断。</p>
     <el-alert v-if="error" :title="error" type="error" :closable="false" />
     <div v-if="session.user?.role === 'student'" class="practice-actions">
       <el-select v-model="selected" multiple :multiple-limit="20" collapse-tags aria-label="综合诊断知识点" :disabled="busy || current?.status === 'pending'"><el-option v-for="point in points" :key="point.id" :value="point.id" :label="point.name" /></el-select>
@@ -92,6 +93,6 @@ onUnmounted(() => { ++generation; clearTimeout(timer) })
         <details><summary>核对本次证据（{{ point.events.length }} 条）</summary><p v-for="event in point.events" :key="event.event_id">{{ event.source }} · {{ event.timestamp }}<br />{{ event.answer ?? '服务端行为测量' }}<br /><span class="muted">{{ event.event_id }}</span></p></details>
       </article>
     </template>
-    <p v-else class="muted">先完成练习或测验，再生成综合诊断。</p>
+    <p v-else class="muted">{{ knowledgePointId ? '点击上方按钮，分析这个知识点的原题与新作答。' : '先完成练习或测验，再生成综合诊断。' }}</p>
   </section>
 </template>

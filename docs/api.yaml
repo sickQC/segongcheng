@@ -2087,11 +2087,73 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/courses/{course_id}/resources/{resource_id}/content:
+    get:
+      tags:
+      - Workspace · 演示与占位
+      summary: 读取内置讲义原文
+      operationId: resource_content_api_v1_courses__course_id__resources__resource_id__content_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceContentOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+        '501':
+          description: 接口占位，业务尚未实现
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/v1/courses/{course_id}/chat:
     post:
       tags:
       - Workspace · 演示与占位
-      summary: 演示课程个性化答疑；5E 尚未实现
+      summary: 演示课程个性化答疑；5E使用独立会话接口
       operationId: chat_api_v1_courses__course_id__chat_post
       parameters:
       - name: course_id
@@ -2940,6 +3002,11 @@ components:
             minimum: 0.0
           - type: 'null'
           title: Seconds
+        section:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Section
       type: object
       required:
       - resource_id
@@ -3845,6 +3912,23 @@ components:
       required:
       - knowledge_point_ids
       title: ReportCreate
+    ResourceContentOut:
+      properties:
+        resource_id:
+          type: string
+          title: Resource Id
+        title:
+          type: string
+          title: Title
+        markdown:
+          type: string
+          title: Markdown
+      type: object
+      required:
+      - resource_id
+      - title
+      - markdown
+      title: ResourceContentOut
     ResourceOut:
       properties:
         id:
@@ -3872,6 +3956,12 @@ components:
             type: string
           type: array
           title: Knowledge Point Ids
+        format:
+          anyOf:
+          - type: string
+            const: markdown
+          - type: 'null'
+          title: Format
       type: object
       required:
       - id
@@ -3922,6 +4012,13 @@ components:
           maxLength: 36
           minLength: 1
           title: Knowledge Point Id
+        source_event_id:
+          anyOf:
+          - type: string
+            maxLength: 36
+            minLength: 1
+          - type: 'null'
+          title: Source Event Id
         request_id:
           type: string
           format: uuid

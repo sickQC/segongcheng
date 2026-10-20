@@ -1,15 +1,22 @@
+from datetime import timezone
+
 from fastapi import APIRouter, BackgroundTasks, Request
 from sqlalchemy import select
 
 from app.agents.learning_templates import TEMPLATES
 from app.api.deps import CurrentUser, Db, course_access
 from app.core.errors import fail
-from app.models import KnowledgePoint
+from app.models import Chapter, KnowledgePoint
 from app.models.learning_session import LearningSession, LearningTurn
 from app.schemas.learning_session import LearningAnswer, SessionCreate
+from app.services.learning_curriculum import lecture_links, lecture_materials
 from app.services.learning_session import create_session, run_turn, save_turn, session_out, turn_out
 
 router = APIRouter(tags=["Member C · 5E learning"])
+
+
+def utc_timestamp(value):
+    return value.replace(tzinfo=timezone.utc) if value.tzinfo is None else value.astimezone(timezone.utc)
 
 
 def accessible_session(db, user, session_id, write=False):
@@ -23,12 +30,25 @@ def accessible_session(db, user, session_id, write=False):
 
 
 @router.get("/courses/{course_id}/learning-templates")
-def templates(course_id: str, db: Db, user: CurrentUser):
+def templates(course_id: str, db: Db, user: CurrentUser, request: Request):
     course_access(db, user, course_id)
-    points = db.scalars(select(KnowledgePoint).where(KnowledgePoint.course_id == course_id))
+    points = db.execute(
+        select(KnowledgePoint, Chapter)
+        .join(Chapter, KnowledgePoint.chapter_id == Chapter.id)
+        .where(KnowledgePoint.course_id == course_id, Chapter.course_id == course_id)
+        .order_by(Chapter.sort_order, Chapter.id, KnowledgePoint.code)
+    )
     return [
-        {"knowledge_point_id": kp.id, "code": kp.code, "name": kp.name}
-        for kp in points
+        {
+            "knowledge_point_id": kp.id,
+            "code": kp.code,
+            "name": kp.name,
+            "chapter_id": chapter.id,
+            "chapter_title": chapter.title,
+            "chapter_order": chapter.sort_order,
+            "lectures": lecture_links(lecture_materials(request.app.state.settings, course_id, kp.code)),
+        }
+        for kp, chapter in points
         if kp.code in TEMPLATES
     ]
 
@@ -39,16 +59,19 @@ def list_sessions(course_id: str, db: Db, user: CurrentUser):
     rows = db.scalars(
         select(LearningSession)
         .where(LearningSession.course_id == course_id, LearningSession.student_id == user.id)
-        .order_by(LearningSession.created_at.desc())
+        .order_by(LearningSession.updated_at.desc(), LearningSession.created_at.desc())
         .limit(50)
     )
     return [
         {
             "id": row.id,
             "knowledge_point_name": row.snapshot["name"],
+            "knowledge_point_id": row.knowledge_point_id,
+            "source": row.snapshot.get("source"),
             "stage": row.stage,
             "status": row.status,
-            "created_at": row.created_at,
+            "created_at": utc_timestamp(row.created_at),
+            "updated_at": utc_timestamp(row.updated_at),
         }
         for row in rows
     ]
@@ -59,7 +82,7 @@ def start_session(body: SessionCreate, db: Db, user: CurrentUser, request: Reque
     course_access(db, user, body.course_id)
     if user.role != "student":
         fail(403, "STUDENT_REQUIRED", "学习会话由学生开始")
-    return create_session(request.app.state.sessions, user.id, body)
+    return create_session(request.app.state.sessions, user.id, body, request.app.state.settings)
 
 
 @router.get("/learning-sessions/{session_id}")

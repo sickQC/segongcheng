@@ -2,6 +2,7 @@
 
 import json
 import time
+from copy import deepcopy
 
 import httpx
 from pydantic import ValidationError
@@ -11,11 +12,87 @@ from sqlalchemy.exc import IntegrityError
 from app.agents.diagnosis_guardrails import contains_prompt_leak, is_instruction_attack
 from app.agents.learning_templates import LEARNING_PROMPT, LEARNING_PROMPT_VERSION, STAGES, TEMPLATES
 from app.core.errors import fail
-from app.models import KnowledgePoint, LearningEvent, ModelTrace
+from app.models import Diagnosis, KnowledgePoint, LearningEvent, ModelTrace
+from app.models.assessment import QuizAttempt
 from app.models.learning_session import LearningSession, LearningTurn
 from app.models.legacy import now, uid
+from app.models.practice import PracticeExercise, PracticeSubmission
 from app.schemas.learning_session import LearningFeedback
 from app.services.c_model_gateway import ModelCallError, complete_json
+from app.services.learning_curriculum import chapter_for, lecture_links, lecture_materials
+
+
+def source_context(db, student_id, body):
+    """Resolve the student's own submitted work; never accept client-authored context."""
+    if not body.source_event_id:
+        return None
+    event = db.get(LearningEvent, body.source_event_id)
+    if (
+        event is None
+        or event.actor != student_id
+        or event.context.get("course") != body.course_id
+        or event.context.get("synthetic") is not False
+    ):
+        fail(404, "SOURCE_NOT_FOUND", "本人的原题作答记录不存在")
+    kind = event.object.get("type")
+    reference = {}
+    if kind == "assessment":
+        attempt = db.get(QuizAttempt, event.object.get("attempt_id"))
+        question = (
+            next((q for q in attempt.questions if q["id"] == event.object.get("id")), None)
+            if attempt
+            else None
+        )
+        if (
+            not attempt
+            or attempt.student_id != student_id
+            or attempt.course_id != body.course_id
+            or attempt.status != "submitted"
+            or not question
+            or question["knowledge_point_id"] != body.knowledge_point_id
+        ):
+            fail(422, "SOURCE_MISMATCH", "原题必须是当前知识点的已提交测验")
+        reference = {"attempt_id": attempt.id, "options": question["options"]}
+    elif kind == "practice":
+        submission = db.scalar(
+            select(PracticeSubmission).where(PracticeSubmission.event_id == event.event_id)
+        )
+        exercise = db.get(PracticeExercise, submission.exercise_id) if submission else None
+        if (
+            not submission
+            or submission.student_id != student_id
+            or submission.course_id != body.course_id
+            or not exercise
+            or exercise.knowledge_point_id != body.knowledge_point_id
+        ):
+            fail(422, "SOURCE_MISMATCH", "原题必须是当前知识点的小练习")
+        reference = {"exercise_id": exercise.id}
+    else:
+        fail(422, "SOURCE_MISMATCH", "请选择测验或小练习的诊断记录")
+    diagnosis = db.scalar(
+        select(Diagnosis).where(Diagnosis.event_id == event.event_id).order_by(Diagnosis.created_at.desc())
+    )
+    if not diagnosis or diagnosis.status not in ("supported", "insufficient") or not diagnosis.output:
+        fail(409, "DIAGNOSIS_NOT_READY", "请等待原题诊断完成后开始针对性学习")
+    return {
+        "event_id": event.event_id,
+        "type": kind,
+        **reference,
+        "question": event.object.get("question", ""),
+        "original_answer": event.result.get("answer", ""),
+        "diagnosis": {
+            key: diagnosis.output.get(key, "")
+            for key in ("problem_description", "recommendation", "followup_question")
+        },
+    }
+
+
+def same_request(previous, body):
+    return (
+        previous.course_id == body.course_id
+        and previous.knowledge_point_id == body.knowledge_point_id
+        and (previous.snapshot.get("source") or {}).get("event_id") == body.source_event_id
+    )
 
 
 def session_out(db, session):
@@ -25,12 +102,22 @@ def session_out(db, session):
         .order_by(LearningTurn.created_at, LearningTurn.id)
     ).all()
     quiz = session.snapshot["template"]["quiz"]
+    exercise = db.scalar(
+        select(PracticeExercise).where(
+            PracticeExercise.course_id == session.course_id,
+            PracticeExercise.knowledge_point_id == session.knowledge_point_id,
+        )
+    )
     return {
         "id": session.id,
         "course_id": session.course_id,
         "student_id": session.student_id,
         "knowledge_point_id": session.knowledge_point_id,
         "knowledge_point_name": session.snapshot["name"],
+        "chapter": chapter_for(db, db.get(KnowledgePoint, session.knowledge_point_id)),
+        "lectures": lecture_links(session.snapshot.get("course_materials", [])),
+        "source": session.snapshot.get("source"),
+        "practice_available": exercise is not None,
         "stage": session.stage,
         "status": session.status,
         "pending_turn_id": session.pending_turn_id,
@@ -64,7 +151,7 @@ def turn_out(turn):
     }
 
 
-def create_session(sessions, student_id, body):
+def create_session(sessions, student_id, body, settings=None):
     try:
         with sessions.begin() as db:
             previous = db.scalar(
@@ -74,10 +161,7 @@ def create_session(sessions, student_id, body):
                 )
             )
             if previous:
-                if (
-                    previous.course_id != body.course_id
-                    or previous.knowledge_point_id != body.knowledge_point_id
-                ):
+                if not same_request(previous, body):
                     fail(409, "REQUEST_CONFLICT", "同一请求编号已用于另一个学习会话")
                 return session_out(db, previous)
             kp = db.get(KnowledgePoint, body.knowledge_point_id)
@@ -85,6 +169,12 @@ def create_session(sessions, student_id, body):
                 fail(422, "KNOWLEDGE_POINT_MISMATCH", "知识点必须属于当前课程")
             if kp.code not in TEMPLATES:
                 fail(422, "TEMPLATE_NOT_AVAILABLE", "该知识点尚未配置 5E 教学模板")
+            source = source_context(db, student_id, body)
+            template = deepcopy(TEMPLATES[kp.code])
+            if source:
+                template["tasks"][0] = (
+                    "回看下方原题和原答案：你当时是怎样判断的？现在最不确定的是哪一步？请说明理由。"
+                )
             session = LearningSession(
                 course_id=body.course_id,
                 student_id=student_id,
@@ -94,7 +184,10 @@ def create_session(sessions, student_id, body):
                     "code": kp.code,
                     "name": kp.name,
                     "definition": kp.definition,
-                    "template": TEMPLATES[kp.code],
+                    "chapter": chapter_for(db, kp),
+                    "course_materials": lecture_materials(settings, body.course_id, kp.code),
+                    "template": template,
+                    "source": source,
                 },
             )
             db.add(session)
@@ -109,11 +202,7 @@ def create_session(sessions, student_id, body):
                     LearningSession.request_id == str(body.request_id),
                 )
             )
-            if (
-                previous
-                and previous.course_id == body.course_id
-                and previous.knowledge_point_id == body.knowledge_point_id
-            ):
+            if previous and same_request(previous, body):
                 return session_out(db, previous)
         raise
 
@@ -171,6 +260,8 @@ def save_turn(sessions, settings, session_id, student_id, body):
                 "id": session_id,
                 "kp": [session.knowledge_point_id],
                 "stage": session.stage,
+                "question": session.snapshot["template"]["tasks"][STAGES.index(session.stage)],
+                "source_event_id": (session.snapshot.get("source") or {}).get("event_id"),
             },
             result={"answer": body.answer, "evaluation_choice": body.evaluation_choice},
             context={"course": session.course_id, "source": "learning_5e", "synthetic": False},
@@ -237,6 +328,12 @@ def run_turn(sessions, settings, turn_id):
             "event_id": turn.event_id,
             "stage": turn.stage_before,
             "answer": turn.answer,
+            "source_context": session.snapshot.get("source"),
+            "chapter": session.snapshot.get("chapter"),
+            "course_materials": session.snapshot.get("course_materials", []),
+            "evaluation_task": {
+                key: session.snapshot["template"]["quiz"][key] for key in ("stem", "options")
+            },
             "knowledge_point": {key: session.snapshot[key] for key in ("code", "name", "definition")},
             "stage_tasks": dict(zip(STAGES, session.snapshot["template"]["tasks"], strict=True)),
             "history": [
@@ -264,6 +361,11 @@ def run_turn(sessions, settings, turn_id):
         if contains_prompt_leak(json.dumps(output.model_dump(), ensure_ascii=False), LEARNING_PROMPT):
             raise ModelCallError("PROMPT_LEAK", "模型返回了系统指令，本轮结果已拒绝。")
         target, completed = checked_transition(turn.stage_before, output, turn.answer, quiz_correct)
+        if target == "evaluate" and turn.stage_before != "evaluate":
+            output.reply = (
+                f"请完成下方小测“{session.snapshot['template']['quiz']['stem']}”，选择选项并说明判断依据。"
+            )
+            guardrail_action = "evaluation_task_alignment"
         if turn.stage_before == "explore" or target == "explore":
             definition = session.snapshot["definition"].strip()
             if (len(definition) >= 12 and definition in output.reply) or not any(
