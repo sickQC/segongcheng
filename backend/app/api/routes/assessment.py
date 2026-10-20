@@ -1,9 +1,10 @@
 from fastapi import APIRouter, BackgroundTasks, Request
 from sqlalchemy import select, update
 
+from app.agents.learning_templates import TEMPLATES
 from app.api.deps import CurrentUser, Db, Teacher, course_access
 from app.core.errors import fail
-from app.models import Diagnosis, LearningEvent
+from app.models import Diagnosis, KnowledgePoint, LearningEvent
 from app.models.assessment import CourseQuiz, QuizAttempt
 from app.schemas.assessment import QuizCreate
 from app.services.assessment import public_attempt, publish_quiz
@@ -63,6 +64,8 @@ def attempt_diagnoses(course_id: str, attempt_id: str, db: Db, user: CurrentUser
     for diagnosis_id in attempt.result["diagnosis_ids"]:
         diagnosis = db.get(Diagnosis, diagnosis_id)
         event = db.get(LearningEvent, diagnosis.event_id)
+        question = next(q for q in attempt.questions if q["id"] == event.object["id"])
+        kp = db.get(KnowledgePoint, question["knowledge_point_id"])
         rows.append(
             {
                 "id": diagnosis.id,
@@ -72,6 +75,8 @@ def attempt_diagnoses(course_id: str, attempt_id: str, db: Db, user: CurrentUser
                 "question": event.object["question"],
                 "original_answer": event.result["answer"],
                 "event_id": event.event_id,
+                "knowledge_point_id": question["knowledge_point_id"],
+                "five_e_available": bool(kp and kp.code in TEMPLATES),
             }
         )
     return rows

@@ -20,7 +20,7 @@ export const router = createRouter({
     { path: '/teacher/courses/:id', component: CourseDetailView, meta: { auth: true, teacher: true } },
     { path: '/courses/:id/learn', component: LearningView, meta: { auth: true } },
     { path: '/courses/:id/quiz', component: QuizView, meta: { auth: true } },
-    { path: '/courses/:id/report', component: LearningReportView, meta: { auth: true } },
+    { path: '/courses/:id/report', component: LearningReportView, meta: { auth: true, student: true } },
     { path: '/teacher/courses/:id/dashboard', component: TeacherDashboardView, meta: { auth: true, teacher: true } },
     { path: '/dev/submit', component: SubmitView, meta: { dev: true, auth: true, student: true } },
     { path: '/diagnoses/:id?', component: DiagnosisView, meta: { dev: true, auth: true, student: true } },
@@ -35,8 +35,9 @@ router.beforeEach(async to => {
   if (to.meta.auth) {
     try { await loadSession() } catch { return { path: '/login', query: { unavailable: '1' } } }
     if (!session.user) return { path: '/login', query: { redirect: to.fullPath } }
+    if (session.user.role === 'teacher' && to.path === `/courses/${to.params.id}`) return `/teacher${to.path}`
     if (to.meta.teacher && session.user.role !== 'teacher') return '/courses'
-    if (to.meta.student && session.user.role !== 'student') return '/courses'
+    if (to.meta.student && session.user.role !== 'student') return to.params.id ? `/teacher/courses/${encodeURIComponent(String(to.params.id))}/dashboard` : '/courses'
   }
 })
 window.addEventListener('session-expired', () => {

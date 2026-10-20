@@ -3,11 +3,12 @@ import { computed, onUnmounted, reactive, ref, watch } from 'vue'
 import { api, errorMessage } from '../api/client'
 import { session } from '../composables/useSession'
 import type { PracticeExercise, PracticeProgress, PracticeSubmission } from '../types/foundation'
+import TargetedLearningButton from './TargetedLearningButton.vue'
 
 type Submission = PracticeSubmission & { parent_submission_id: string | null }
 const props = defineProps<{
   courseId: string; chapterId: string; knowledgePointId: string
-  exercise?: PracticeExercise; editable: boolean
+  exercise?: PracticeExercise; editable: boolean; fiveEAvailable?: boolean; focus?: boolean
 }>()
 const emit = defineEmits<{ created: [] }>()
 const opened = ref(false), busy = ref(false), loading = ref(false), error = ref('')
@@ -97,17 +98,19 @@ async function retry(row: PracticeSubmission) {
 }
 
 function toggle() { opened.value = !opened.value; if (opened.value) void load(); else clearTimeout(timer) }
+watch(() => props.focus, value => { if (value) { opened.value = true; void load() } }, { immediate: true })
 watch(() => [props.courseId, props.chapterId, props.knowledgePointId, props.exercise?.id], () => {
   ++generation; clearTimeout(timer); requests.clear()
-  opened.value = false; busy.value = false; loading.value = false; error.value = ''
+  opened.value = !!props.focus; busy.value = false; loading.value = false; error.value = ''
   question.value = ''; answer.value = ''; submissions.value = []; progress.value = undefined
   Object.keys(followupAnswers).forEach(key => delete followupAnswers[key])
+  if (opened.value) void load()
 })
 onUnmounted(() => { ++generation; clearTimeout(timer) })
 </script>
 
 <template>
-  <section v-if="exercise || editable" class="practice-box" aria-label="知识点小练习">
+  <section v-if="exercise || editable" :id="`practice-${knowledgePointId}`" class="practice-box" aria-label="知识点小练习">
     <div class="practice-entry">
       <div><strong>知识点小练习</strong><p v-if="exercise">{{ exercise.question_text }}</p></div>
       <el-button @click="toggle">{{ opened ? '收起' : !exercise ? '添加小练习' : teacher ? '查看提交情况' : '完成小练习' }}</el-button>
@@ -147,6 +150,7 @@ onUnmounted(() => { ++generation; clearTimeout(timer) })
             <p><strong>建议：</strong>{{ row.diagnosis.recommendation }}</p>
             <p class="muted">暂估掌握度：{{ row.diagnosis.mastery === null ? '证据不足，暂不判断' : `${Math.round(row.diagnosis.mastery * 100)}%` }} · 作答证据：{{ row.event_id }}</p>
             <p><strong>思考追问：</strong>{{ row.diagnosis.followup_question }}</p>
+            <TargetedLearningButton v-if="fiveEAvailable && !row.synthetic" :course-id="courseId" :knowledge-point-id="knowledgePointId" :event-id="row.event_id" />
             <el-input v-model="followupAnswers[row.id]" type="textarea" :rows="2" maxlength="4000" aria-label="回复本轮追问" />
             <el-button :disabled="!(followupAnswers[row.id] ?? '').trim()" :loading="busy" @click="submit(row)">回复追问并复核</el-button>
           </template>

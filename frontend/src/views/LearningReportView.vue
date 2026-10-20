@@ -1,6 +1,8 @@
 ﻿<script setup lang="ts">
 import { ref, watch } from 'vue'
 import WorkspaceHeader from '../components/WorkspaceHeader.vue'
+import { useRoute } from 'vue-router'
+import LearningJourneyPanel from '../components/LearningJourneyPanel.vue'
 import ReportPanels from '../components/ReportPanels.vue'
 import LearningProfilePanel from '../components/LearningProfilePanel.vue'
 import ProfileHistoryPanel from '../components/ProfileHistoryPanel.vue'
@@ -12,6 +14,7 @@ import * as sample from '../api/preview'
 import { errorMessage } from '../api/client'
 import type { Report } from '../types/workspace'
 
+const route = useRoute()
 const { courseId, preview, loading, error, run } = useWorkspace()
 const report = ref<Report>(), history = ref('real')
 const message = ref(''), reply = ref(''), replyContext = ref(''), busy = ref(false)
@@ -37,7 +40,8 @@ async function followup() {
 <template>
  <WorkspaceHeader :course-id="courseId" title="个人学习报告" v-model:preview="preview" :loading="loading || busy" :error="error" @reload="load" />
  <section class="panel"><div class="toolbar"><h2>报告数据来源</h2><el-select v-model="history" :disabled="preview || busy" aria-label="报告数据来源" style="width:220px"><el-option label="真实学习记录" value="real" /><el-option label="模拟历史演示" value="synthetic" /></el-select></div><p class="muted">真实报告仅包含当前学生的数据；模拟历史单独选择，不进入正式画像。</p></section>
- <EvidenceDiagnosisPanel v-if="!preview" :course-id="courseId" @completed="load" />
+ <LearningJourneyPanel v-if="!preview" :course-id="courseId" />
+ <EvidenceDiagnosisPanel v-if="!preview" :course-id="courseId" :knowledge-point-id="typeof route.query.knowledge_point === 'string' ? route.query.knowledge_point : undefined" @completed="load" />
  <LearningProfilePanel v-if="!preview && report?.learning_profile" :profile="report.learning_profile" :course-id="courseId" />
  <ProfileHistoryPanel v-if="!preview && report?.history_source === 'real'" :course-id="courseId" :refresh-token="report.learning_profile?.generated_at" />
  <RecommendationPanel v-if="!preview && report?.history_source === 'real'" :course-id="courseId" />

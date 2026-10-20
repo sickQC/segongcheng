@@ -17,6 +17,7 @@ const chapterForm = reactive({ id: '', title: '', sort_order: 0 })
 const kpForm = reactive({ id: '', chapter_id: '', code: '', name: '', definition: '', difficulty: 2, bloom_level: 'understand' as Bloom })
 const members = ref<Member[]>([]), memberName = ref(''), memberBusy = ref(false), memberError = ref(''), memberPage = ref(1), memberTotal = ref(0)
 const practices = ref<PracticeExercise[]>([])
+const fiveEPoints = ref<string[]>([])
 const practiceFor = (kpId: string) => practices.value.find(p => p.knowledge_point_id === kpId)
 async function loadPractices() { practices.value = await api<PracticeExercise[]>(`/courses/${courseId.value}/practices`) }
 let generation = 0
@@ -33,11 +34,13 @@ async function load() {
     if (run !== generation) return
     outline.value = data; active.value = data.chapters.map(c => c.id)
     await loadPractices()
-    if (editable.value) await loadMembers()
+    const templates = await api<{ knowledge_point_id: string }[]>(`/courses/${courseId.value}/learning-templates`)
+    if (run !== generation) return
+    fiveEPoints.value = templates.map(point => point.knowledge_point_id)
     await nextTick()
-    if (run === generation && route.query.knowledge_point) {
-      document.getElementById(`kp-${String(route.query.knowledge_point)}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+    if (typeof route.query.practice === 'string') document.getElementById(`practice-${route.query.practice}`)?.scrollIntoView({ block: 'center' })
+    else if (typeof route.query.knowledge_point === 'string') document.getElementById(`knowledge-${route.query.knowledge_point}`)?.scrollIntoView({ block: 'center' })
+    if (editable.value) await loadMembers()
   } catch (e) { if (run === generation) error.value = errorMessage(e) }
   finally { if (run === generation) loading.value = false }
 }
@@ -89,7 +92,7 @@ function closeDialog(done: () => void) { if (!saving.value) done() }
     <template v-if="outline">
       <section class="page-heading heading-row"><div><span class="eyebrow">{{ editable ? 'TEACHING WORKSPACE' : 'COURSE OUTLINE' }}</span><h1>{{ outline.course.title }}</h1><p>{{ outline.course.description || '沿着章节目录，了解课程知识结构。' }}</p></div><el-button v-if="editable" type="primary" size="large" @click="openChapter()">＋ 新建章节</el-button></section>
       <div class="course-summary"><div><strong>{{ outline.chapters.length }}</strong><span>课程章节</span></div><div><strong>{{ count }}</strong><span>知识点</span></div><p>{{ editable ? '编辑完成后，课程成员刷新目录即可看到更新。' : '阅读知识点定义，了解每一章节的学习目标。' }}</p></div>
-      <nav class="work-nav"><RouterLink :to="`/courses/${courseId}/learn`">资源学习</RouterLink><RouterLink :to="`/courses/${courseId}/quiz`">课程测验</RouterLink><RouterLink :to="`/courses/${courseId}/report`">学习报告</RouterLink><RouterLink v-if="editable" :to="`/teacher/courses/${courseId}/dashboard`">教师看板</RouterLink></nav>
+      <nav class="work-nav"><RouterLink :to="`/courses/${courseId}/learn`">{{ editable ? '课程讲义' : '资源学习' }}</RouterLink><RouterLink :to="`/courses/${courseId}/quiz`">{{ editable ? '测验管理' : '课程测验' }}</RouterLink><RouterLink v-if="session.user?.role === 'student'" :to="`/courses/${courseId}/report`">学习报告</RouterLink><RouterLink v-if="editable" :to="`/teacher/courses/${courseId}/dashboard`">教师看板</RouterLink></nav>
       <div class="section-bar"><h2>章节目录</h2><span class="muted">按教学顺序排列</span></div>
       <PrerequisiteEditor v-if="editable" :course-id="courseId" :points="outline.chapters.flatMap(ch => ch.knowledge_points)" />
       <StudyTimeEditor v-if="editable" :course-id="courseId" :points="outline.chapters.flatMap(ch => ch.knowledge_points)" @changed="load" />
@@ -99,7 +102,7 @@ function closeDialog(done: () => void) { if (!saving.value) done() }
           <template #title><div class="chapter-title"><span class="chapter-order">{{ String(chapter.sort_order).padStart(2, '0') }}</span><strong>{{ chapter.title }}</strong><span class="muted">{{ chapter.knowledge_points.length }} 个知识点</span></div></template>
           <div v-if="editable" class="chapter-actions"><el-button size="small" @click="openChapter(chapter)">编辑章节</el-button><el-button size="small" type="primary" plain @click="openKp(chapter)">＋ 添加知识点</el-button></div>
           <el-empty v-if="!chapter.knowledge_points.length" description="本章节暂无知识点" :image-size="60" />
-          <article v-for="kp in chapter.knowledge_points" :key="kp.id" :id="`kp-${kp.id}`" :class="{ 'recommended-point': String(route.query.knowledge_point) === kp.id }" class="knowledge-card"><div class="panel-meta"><span class="eyebrow">{{ kp.code }}</span><div class="tag-row"><el-tag size="small" effect="plain">{{ bloomLabels[kp.bloom_level] }}</el-tag><el-tag size="small" type="info" effect="plain">难度 {{ kp.difficulty }} / 5</el-tag></div></div><h3>{{ kp.name }}</h3><p>{{ kp.definition }}</p><PracticePanel :course-id="courseId" :chapter-id="chapter.id" :knowledge-point-id="kp.id" :exercise="practiceFor(kp.id)" :editable="editable" @created="loadPractices" /><div v-if="editable" class="knowledge-actions"><el-button size="small" text type="primary" @click="openKp(chapter, kp)">编辑</el-button><el-button size="small" text type="danger" @click="removeKp(kp)">删除</el-button></div></article>
+          <article v-for="kp in chapter.knowledge_points" :id="`knowledge-${kp.id}`" :key="kp.id" :class="{ 'recommended-point': String(route.query.knowledge_point) === kp.id }" class="knowledge-card"><div class="panel-meta"><span class="eyebrow">{{ kp.code }}</span><div class="tag-row"><el-tag size="small" effect="plain">{{ bloomLabels[kp.bloom_level] }}</el-tag><el-tag size="small" type="info" effect="plain">难度 {{ kp.difficulty }} / 5</el-tag></div></div><h3>{{ kp.name }}</h3><p>{{ kp.definition }}</p><RouterLink v-if="!editable && fiveEPoints.includes(kp.id)" :to="{ path: `/courses/${courseId}/learn`, query: { mode: '5e', knowledge_point: kp.id } }"><el-button text type="primary">学习本知识点（5E）</el-button></RouterLink><PracticePanel :course-id="courseId" :chapter-id="chapter.id" :knowledge-point-id="kp.id" :exercise="practiceFor(kp.id)" :editable="editable" :five-e-available="fiveEPoints.includes(kp.id)" :focus="route.query.practice === kp.id" @created="loadPractices" /><div v-if="editable" class="knowledge-actions"><el-button size="small" text type="primary" @click="openKp(chapter, kp)">编辑</el-button><el-button size="small" text type="danger" @click="removeKp(kp)">删除</el-button></div></article>
         </el-collapse-item>
       </el-collapse>
       <section v-if="editable" class="panel member-panel"><div class="section-bar"><h2>课程成员</h2><span class="muted">{{ memberTotal }} 人</span></div><p class="muted">通过已存在的学生用户名加入课程。演示学生：student01、student02。</p><el-alert v-if="memberError" :title="memberError" type="error" :closable="false" class="alert-space" /><el-form inline @submit.prevent="addMember"><el-form-item label="学生用户名"><el-input v-model="memberName" placeholder="例如 student01" maxlength="100" /></el-form-item><el-form-item><el-button native-type="submit" type="primary" :loading="memberBusy">加入课程</el-button></el-form-item></el-form><el-table :data="members"><el-table-column prop="user.display_name" label="显示名称" /><el-table-column prop="user.username" label="用户名" /><el-table-column label="身份"><template #default="scope">{{ scope.row.role === 'teacher' ? '教师' : '学生' }}</template></el-table-column></el-table><el-pagination v-if="memberTotal > 20" v-model:current-page="memberPage" :page-size="20" :total="memberTotal" layout="prev, pager, next" @current-change="loadMembers" /></section>

@@ -7,7 +7,7 @@ from sqlalchemy import select
 
 from app.api.deps import CurrentUser, Db, Teacher, course_access
 from app.core.errors import fail
-from app.models import CourseMember
+from app.models import CourseMember, KnowledgePoint
 from app.schemas.foundation import ErrorResponse
 from app.schemas.workspace import (
     AttemptOut,
@@ -20,6 +20,7 @@ from app.schemas.workspace import (
     PersonalizationOut,
     QuizOut,
     ReportOut,
+    ResourceContentOut,
     ResourceOut,
     ResultOut,
     StartAttemptIn,
@@ -27,7 +28,9 @@ from app.schemas.workspace import (
     TeacherStudentOut,
 )
 from app.services import assessment, tutor
+from app.services.course_documents import markdown_document
 from app.services.diagnosis import run_diagnosis
+from app.services.learning_curriculum import LECTURE_SECTIONS
 from app.services.personalization import DEMO_COURSE_ID, demo_history
 from app.services.profile import build_report
 from app.services.teacher_dashboard import dashboard as build_dashboard
@@ -85,6 +88,7 @@ def demo_answer(request, user, course_id, message, resource_id):
                 title=citation["doc_title"] + " · " + citation["section"],
                 page=None,
                 seconds=None,
+                section=citation["section"],
             )
             for citation in result["citations"]
         ],
@@ -120,13 +124,14 @@ def resources(course_id: str, db: Db, user: CurrentUser, request: Request):
     if course_id != DEMO_COURSE_ID:
         pending()
     titles = tutor.load_index(request.app.state.settings).doc_titles()
+    points = db.scalars(select(KnowledgePoint).where(KnowledgePoint.course_id == course_id)).all()
     return [
         ResourceOut(
             id="kb:all",
             title="全部内置讲义 · AI 问答",
             type="doc",
             url=None,
-            description="从内置 Markdown 讲义检索依据；原文件预览和上传功能尚未接入。",
+            description="浏览下方讲义原文，或让学习助手检索全部内置讲义。",
             knowledge_point_ids=[],
         ),
         *[
@@ -135,15 +140,28 @@ def resources(course_id: str, db: Db, user: CurrentUser, request: Request):
                 title=title,
                 type="doc",
                 url=None,
-                description="内置课程讲义，可用于限定本次答疑范围；原文件预览尚未接入。",
-                knowledge_point_ids=[],
+                description="可直接阅读讲义原文；学习助手将依据当前讲义回答问题。",
+                knowledge_point_ids=[
+                    kp.id for kp in points
+                    if LECTURE_SECTIONS.get(kp.code, (None,))[0] == "kb:" + doc_id
+                ],
+                format="markdown",
             )
             for doc_id, title in sorted(titles.items())
         ],
     ]
 
 
-@router.post("/chat", response_model=ChatOut, summary="演示课程个性化答疑；5E 尚未实现")
+@router.get("/resources/{resource_id}/content", response_model=ResourceContentOut,
+            summary="读取内置讲义原文")
+def resource_content(course_id: str, resource_id: str, db: Db, user: CurrentUser, request: Request):
+    course_access(db, user, course_id)
+    if course_id != DEMO_COURSE_ID:
+        pending()
+    return markdown_document(request.app.state.settings, resource_id)
+
+
+@router.post("/chat", response_model=ChatOut, summary="演示课程个性化答疑；5E使用独立会话接口")
 def chat(course_id: str, body: ChatIn, db: Db, user: CurrentUser, request: Request):
     course_access(db, user, course_id)
     if body.mode == "5e":

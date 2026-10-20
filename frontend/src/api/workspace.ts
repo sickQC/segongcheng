@@ -1,8 +1,9 @@
 import { api } from './client'
-import type { Resource, ChatReply, Quiz, Attempt, QuizResult, Report, Dashboard, TeacherStudentReport, EventPage } from '../types/workspace'
+import type { Resource, ResourceContent, ChatReply, Quiz, Attempt, QuizResult, Report, Dashboard, TeacherStudentReport, EventPage } from '../types/workspace'
 const base = (id: string) => `/courses/${encodeURIComponent(id)}`
 export const workspaceApi = {
  resources: (id: string) => api<Resource[]>(`${base(id)}/resources`),
+ resourceContent: (id: string, resourceId: string) => api<ResourceContent>(`${base(id)}/resources/${encodeURIComponent(resourceId)}/content`),
  chat: (id: string, body: { resource_id: string; message: string; mode: 'rag' | '5e' }) => api<ChatReply>(`${base(id)}/chat`, { method: 'POST', body }),
  quizzes: (id: string) => api<Quiz[]>(`${base(id)}/quizzes`),
  start: (id: string, quiz_id: string) => api<Attempt>(`${base(id)}/attempts`, { method: 'POST', body: { quiz_id } }),

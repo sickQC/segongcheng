@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-20",
+  "module": "D and main learning-curriculum integration",
+  "local_parent": "2b11042",
+  "incoming_parent": "34df21a",
+  "backend_full_regression": {
+    "tests": 360,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 178.401,
+    "junit_sha256": "3164b80ca86a0012e9e041ba6f79359b952e75128d6eeb267bed32e338efb377"
+  },
+  "frontend": {
+    "markdown_tests": 4,
+    "typecheck": "passed",
+    "production_build": "passed",
+    "warning": "existing large-chunk warning"
+  },
+  "integration_test": "targeted 5E -> real profile, export, snapshot and E7; original grade unchanged; cross-student isolation",
+  "derived_index": {
+    "lectures": 6,
+    "old_index_preserved": true,
+    "rebuild": "offline hashing TF-IDF"
+  },
+  "ruff": "passed",
+  "actionlint": "passed",
+  "openapi_matches_app": true,
+  "not_verified": [
+    "real model",
+    "browser clicks after merge",
+    "PostgreSQL",
+    "Docker",
+    "cloud CI"
+  ],
+  "committed_merge": false,
+  "pushed": false,
+  "env_edited": false,
+  "business_database_migrated_or_reset": false,
+  "source_files": [
+    {
+      "file": "README.md",
+      "sha256": "8af1345a99e58985e797a2fcaa3e62b7b6db04fccf325d4ac267654133843361"
+    },
+    {
+      "file": "backend/app/api/routes/workspace.py",
+      "sha256": "57cadd570f91ad738aa3d2b6dc5162de4908f62161e48236c5c6274aacaf2bea"
+    },
+    {
+      "file": "frontend/src/api/workspace.ts",
+      "sha256": "4ffb9bfc14c634131edee3e017a8a7560e14b8be025fad4ce7439418c2e017d9"
+    },
+    {
+      "file": "frontend/src/components/EvidenceDiagnosisPanel.vue",
+      "sha256": "917f1c3b02a002053ff54359efa85844538688c4971e0f32686169f75d48b21b"
+    },
+    {
+      "file": "frontend/src/views/CourseDetailView.vue",
+      "sha256": "7b5e4c29956e9f917bfe23ef8f4fc24a587925e8064f78a75a1f717bf8f336cd"
+    },
+    {
+      "file": "frontend/src/views/LearningReportView.vue",
+      "sha256": "a73b99ccc26b7afce0feebc107f91c774299b25f8e40eeb57e7830aeb2f6277a"
+    },
+    {
+      "file": "backend/tests/test_main_integration_d.py",
+      "sha256": "1018e115e1e63d36583d937ae671a6f7b74737703cbc524fba0eaa37cb6f4ee2"
+    },
+    {
+      "file": "docs/api.yaml",
+      "sha256": "a5c3e4d7a45c40f28bd67ecbc180f6356deeb0f6f21176417a1c8a98c07feb3e"
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "sha256": "6489ddb8580abedd1e8ace1e78648e89bb1e5841b81dbeedb1901105b4d1ebd5"
+    }
+  ]
+}

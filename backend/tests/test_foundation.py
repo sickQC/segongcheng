@@ -374,6 +374,8 @@ def test_synthetic_history_personalizes_only_related_questions(foundation, monke
         headers=sign_in(c, "student01"),
     )
     assert first.status_code == 200, first.text
+    assert first.json()["citations"]
+    assert all(citation["section"] for citation in first.json()["citations"])
     assert first.json()["personalization"]["source"] == "synthetic"
     assert "48%" in prompts[-1][1]
     assert "两者都是系统要实现的功能" in prompts[-1][1]

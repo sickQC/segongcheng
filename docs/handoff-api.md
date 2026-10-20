@@ -1,5 +1,7 @@
 # 前后端接口交接文档
 
+> 2026-10-20：新增讲义原文接口、引用小节定位与 5E 章节/讲义关联字段，学习会话可通过 `source_event_id` 绑定已完成诊断的作答。字段及错误语义见 [本轮接口变化](updates/2026-10-20-learning-flow.md#接口变化)，完整契约已重新导出至 [api.yaml](api.yaml)。
+
 > 2026-10-17 更新：`GET /api/v1/courses/{course_id}/dashboard` 和 `GET /api/v1/courses/{course_id}/students/{student_id}/report` 已接真实数据库聚合，支持 `days=1..90` 与 `include_demo`（默认 `false`）。教师看板通过已实现的 `POST /api/v1/courses/{course_id}/students/{student_id}/diagnosis-reports` 生成综合诊断。运行时字段与权限以 [当前 OpenAPI](api.yaml) 为准；下方旧接口表是历史规划。
 
 > 2026-10-16 新增：第 3.1 节的课程小练习接口已真实实现，使用迁移 `0004`。它与下文正式测验、看板等 501 占位接口相互独立。

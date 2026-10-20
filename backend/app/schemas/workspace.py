@@ -19,6 +19,13 @@ class ResourceOut(BaseModel):
     url: str | None
     description: str
     knowledge_point_ids: list[str]
+    format: Literal["markdown"] | None = None
+
+
+class ResourceContentOut(BaseModel):
+    resource_id: str
+    title: str
+    markdown: str
 
 
 class CitationOut(BaseModel):
@@ -26,6 +33,7 @@ class CitationOut(BaseModel):
     title: str
     page: int | None = Field(ge=1)
     seconds: float | None = Field(ge=0)
+    section: str | None = None
 
 
 class PersonalizationOut(BaseModel):
