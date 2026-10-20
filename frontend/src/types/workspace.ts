@@ -1,5 +1,6 @@
-export interface Resource { id: string; title: string; type: 'video' | 'doc'; url: string | null; description: string; knowledge_point_ids: string[] }
-export interface Citation { resource_id: string; title: string; page: number | null; seconds: number | null }
+export interface Resource { id: string; title: string; type: 'video' | 'doc'; url: string | null; description: string; knowledge_point_ids: string[]; format?: 'markdown' | null }
+export interface ResourceContent { resource_id: string; title: string; markdown: string }
+export interface Citation { resource_id: string; title: string; page: number | null; seconds: number | null; section?: string | null }
 export interface ChatReply { message: string; citations: Citation[]; phase: string | null; personalization?: { source: 'synthetic'; matched_knowledge_points: string[]; similarity: number } | null }
 export interface Question { id: string; type: 'single' | 'multiple' | 'boolean' | 'fill'; stem: string; options: string[]; points: number }
 export interface Quiz { id: string; title: string; duration_minutes: number; attempts_remaining: number }

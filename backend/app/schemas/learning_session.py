@@ -10,6 +10,7 @@ class SessionCreate(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
     course_id: str = Field(min_length=1, max_length=36)
     knowledge_point_id: str = Field(min_length=1, max_length=36)
+    source_event_id: str | None = Field(default=None, min_length=1, max_length=36)
     request_id: UUID = Field(default_factory=uuid4)
 
 
