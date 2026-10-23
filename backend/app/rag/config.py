@@ -108,8 +108,8 @@ class LLMConfig:
 
     provider: Literal["offline", "openai"] = "offline"
     api_key: str = ""
-    base_url: str = "https://api.openai.com/v1"
-    model: str = "gpt-4o-mini"
+    base_url: str = "https://api.deepseek.com"
+    model: str = "deepseek-flash"
     embedding_model: str = "text-embedding-3-small"
     timeout_s: float = 60.0
     max_retries: int = 2
@@ -154,7 +154,7 @@ class RagConfig:
         cfg.llm.provider = "openai" if key else "offline"
         cfg.llm.api_key = key
         cfg.llm.base_url = settings.llm_base_url
-        cfg.llm.model = settings.llm_model or "gpt-4o-mini"
+        cfg.llm.model = settings.llm_model or "deepseek-flash"
         cfg.llm.timeout_s = float(settings.llm_timeout_seconds)
         cfg.llm.temperature = cfg.answer.temperature
         cfg.llm.max_tokens = cfg.answer.max_tokens

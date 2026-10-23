@@ -4,6 +4,7 @@ import csv
 import json
 import os
 import sys
+from io import StringIO
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -161,7 +162,14 @@ def test_codex_adapter_uses_both_error_channels_and_releases_slot(
     settings = SimpleNamespace(c_codex_timeout_seconds=1, c_llm_model="test-model")
     monkeypatch.setattr(gateway, "ROOT", tmp_path)
     monkeypatch.setattr(gateway, "codex_arguments", lambda *a: ["test"])
-    process = SimpleNamespace(returncode=returncode, communicate=lambda *a, **kw: (stdout, stderr))
+    process = SimpleNamespace(
+        returncode=returncode,
+        stdin=StringIO(),
+        stdout=StringIO(stdout),
+        stderr=StringIO(stderr),
+        poll=lambda: returncode,
+        wait=lambda **kw: returncode,
+    )
     monkeypatch.setattr(gateway.subprocess, "Popen", lambda *a, **kw: process)
     with pytest.raises(gateway.ModelCallError) as failure:
         gateway.call_codex(settings, "prompt", {}, {})

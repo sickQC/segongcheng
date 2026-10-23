@@ -24,6 +24,29 @@ def base(context):
     return f"/api/v1/courses/{context[3]}/profile/snapshots"
 
 
+def test_snapshot_summary_distinguishes_backfill_and_original_diagnosis_time(scope, monkeypatch):  # noqa: F811
+    app, client, _, course, _, student = scope
+    events(scope)
+    mock(monkeypatch)
+    _, report = create(scope)
+    with app.state.sessions.begin() as db:
+        row = profile_history.save_snapshot(db, course, student, "test-backfill",
+                                            reason="diagnosis", report_id=report["id"], origin="backfill")
+        identifier = row.id
+    page = client.get(base(scope)).json()["items"]
+    saved = next(r for r in page if r["id"] == identifier)
+    assert saved["origin"] == "backfill"
+    assert saved["source_report_created_at"] == report["created_at"]
+    # Older snapshots have no provenance key; expose their original report time
+    # without relabelling or rewriting them as backfills.
+    with app.state.sessions.begin() as db:
+        row = db.get(ProfileSnapshot, identifier)
+        row.payload = {k: v for k, v in row.payload.items() if k != "_snapshot_origin"}
+    legacy = client.get(base(scope) + "/" + identifier).json()
+    assert legacy["origin"] == "diagnosis"
+    assert legacy["source_report_created_at"] == report["created_at"]
+
+
 def save(context, request=None, days=30):
     response = context[1].post(base(context), headers=context[2],
                              json={"request_id": request or str(uuid4()), "days": days})

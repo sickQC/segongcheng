@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { readableText } from '../utils/activity'
 import { computed, ref, watch } from 'vue'
 import WorkspaceHeader from '../components/WorkspaceHeader.vue'
 import EventExportPanel from '../components/EventExportPanel.vue'
@@ -116,19 +117,19 @@ async function diagnose() {
         <el-empty v-if="!detail.activities.length" description="当前范围内暂无作答" :image-size="55" />
         <article v-for="item in detail.activities" :key="item.evidence_id ?? item.at" class="knowledge-card">
           <div class="panel-meta"><strong>{{ item.kind === 'quiz' ? '测验' : '小练习' }} · {{ item.title }}</strong><el-tag v-if="item.simulated" type="warning">模拟</el-tag></div>
-          <p class="muted">{{ new Date(item.at).toLocaleString() }} · 证据 {{ item.evidence_id }}</p>
+          <p class="muted">{{ new Date(item.at).toLocaleString() }}</p>
           <p v-if="item.score_percent !== null">得分率 {{ item.score_percent }}%</p>
           <p v-if="item.answer"><strong>原答案：</strong><span class="answer-preview">{{ item.answer }}</span></p>
-          <p v-if="item.diagnosis"><strong>诊断：</strong>{{ item.diagnosis }}</p>
-          <p v-if="item.recommendation"><strong>建议：</strong>{{ item.recommendation }}</p>
+          <p v-if="item.diagnosis"><strong>诊断：</strong>{{ readableText(item.diagnosis) }}</p>
+          <p v-if="item.recommendation"><strong>建议：</strong>{{ readableText(item.recommendation) }}</p>
         </article>
         <h3>最近错题</h3>
         <el-empty v-if="!detail.mistakes.length" description="当前范围内没有错题记录" :image-size="55" />
-        <article v-for="item in detail.mistakes" :key="item.evidence_id ?? item.question" class="knowledge-card"><div class="panel-meta"><strong>{{ item.question }}</strong><el-tag v-if="item.simulated" type="warning">模拟</el-tag></div><p>学生作答：{{ item.original_answer }}</p><p>解析：{{ item.explanation }}</p><p class="muted">证据：{{ item.evidence_id || '无对应事件' }}</p></article>
+        <article v-for="item in detail.mistakes" :key="item.evidence_id ?? item.question" class="knowledge-card"><div class="panel-meta"><strong>{{ item.question }}</strong><el-tag v-if="item.simulated" type="warning">模拟</el-tag></div><p>学生作答：{{ item.original_answer }}</p><p>解析：{{ readableText(item.explanation) }}</p><p class="muted">作答时间：{{ new Date(item.at).toLocaleString() }}</p></article>
         <h3>综合诊断</h3>
         <p v-if="detail.latest_report">最近报告：{{ detail.latest_report.status }} · {{ new Date(detail.latest_report.created_at).toLocaleString() }}</p>
         <p v-else class="muted">暂无综合诊断报告。</p>
-        <article v-for="point in detail.latest_report?.points ?? []" :key="point.knowledge_point_id" class="knowledge-card"><p>{{ point.explanation }}</p><p>建议：{{ point.recommendation }}</p><p class="muted">证据：{{ point.evidence_event_ids.join('、') || '不足' }}</p></article>
+        <article v-for="point in detail.latest_report?.points ?? []" :key="point.knowledge_point_id" class="knowledge-card"><p>{{ readableText(point.explanation) }}</p><p>建议：{{ readableText(point.recommendation) }}</p><p class="muted">诊断依据：{{ point.evidence_event_ids.length }} 条学习记录</p></article>
         <div class="practice-actions"><el-select v-model="selectedPoint" aria-label="选择诊断知识点" style="width: 220px"><el-option v-for="point in data?.points ?? []" :key="point.knowledge_point_id" :label="point.name" :value="point.knowledge_point_id" /></el-select><el-button type="primary" :disabled="preview || !selectedPoint" :loading="triggerBusy" @click="diagnose">生成综合诊断</el-button><el-button @click="refreshStudent">刷新详情</el-button></div>
         <p class="muted">综合诊断由真实学习记录生成；模拟记录不会作为正式诊断证据。</p>
       </template>

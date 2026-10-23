@@ -9,7 +9,7 @@ const loading = ref(false), saving = ref(false), checking = ref(false), error = 
 const before = ref(''), after = ref(''), selected = ref<ProfileSnapshot | null>(null), comparison = ref<SnapshotComparison | null>(null)
 let generation = 0, detailVersion = 0, compareVersion = 0, requestId: string | null = null
 const time = (value: string) => new Date(value).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })
-const label = (s: SnapshotSummary) => `${time(s.created_at)} · ${s.reason === 'diagnosis' ? '诊断后' : '手动'} · ${s.days}天`
+const label = (s: SnapshotSummary) => `${s.origin === 'backfill' ? '升级回填' : s.reason === 'diagnosis' ? '诊断后' : '手动'} · 保存 ${time(s.created_at)}${s.source_report_created_at ? ` · 来源诊断 ${time(s.source_report_created_at)}` : ''} · ${s.days}天`
 const value = (n: number | null) => n === null ? '未知' : String(n)
 const preferenceNames: Record<string, string> = { video: '视频', read: '阅读', ask: '问答与5E', practice: '练习与测验' }
 const riskName = (level: string) => level === 'unknown' ? '未知' : level === 'attention' ? '需关注' : '未触发风险'
@@ -65,9 +65,9 @@ watch([before, after], () => { comparison.value = null; compareVersion++; checki
   <ul><li v-for="s in items" :key="s.id"><el-button text @click="open(s.id)">{{ label(s) }} · {{ s.rule_version }}</el-button></li></ul>
   <el-button v-if="next !== null" :loading="loading" @click="load(true)">加载更多</el-button>
   <template v-if="selected">
-   <h3>已保存快照：{{ time(selected.created_at) }}</h3>
+   <h3>已保存快照：{{ label(selected) }}</h3>
    <p>已知掌握度 {{ selected.profile.knowledge.known_points }}/{{ selected.profile.knowledge.total_points }} 个；有效活动 {{ selected.profile.engagement.event_count }} 次；风险 {{ selected.profile.risk.level === 'unknown' ? '未知' : selected.profile.risk.level === 'attention' ? '需关注' : '未触发风险' }}。</p>
-   <el-table :data="selected.profile.knowledge.points"><el-table-column prop="name" label="知识点" /><el-table-column label="掌握度（%）"><template #default="{ row }">{{ value(row.mastery_percent) }}</template></el-table-column><el-table-column label="客观正确率（%）"><template #default="{ row }">{{ value(row.accuracy_percent) }}</template></el-table-column><el-table-column prop="report_id" label="来源诊断ID" /></el-table>
+   <el-table :data="selected.profile.knowledge.points"><el-table-column prop="name" label="知识点" /><el-table-column label="掌握度（%）"><template #default="{ row }">{{ value(row.mastery_percent) }}</template></el-table-column><el-table-column label="客观正确率（%）"><template #default="{ row }">{{ value(row.accuracy_percent) }}</template></el-table-column><el-table-column label="诊断依据"><template #default="{ row }">{{ row.report_id ? `更新于 ${time(row.updated_at)} · ${row.evidence_ids.length} 条学习记录` : '尚无有效诊断' }}</template></el-table-column></el-table>
    <p class="muted">风险依据：{{ selected.profile.risk.reasons.join('；') || selected.profile.risk.explanation }}</p>
    <p>累计资源观测秒数：{{ value(selected.profile.engagement.effective_seconds) }}。{{ selected.profile.engagement.explanation }}</p>
    <ul><li v-for="p in selected.profile.preference.items" :key="p.key">{{ p.label }}：次数 {{ value(p.count) }}，占比 {{ value(p.percent) }}%</li></ul>

@@ -1,6 +1,7 @@
 import json
 import logging
 import time
+from urllib.parse import urlparse
 
 import httpx
 from pydantic import ValidationError
@@ -78,6 +79,11 @@ def call_model(
             headers={"Authorization": "Bearer " + settings.llm_api_key.get_secret_value()},
             json={
                 "model": settings.c_llm_model or settings.llm_model,
+                **(
+                    {"thinking": {"type": "disabled"}, "max_tokens": 2000}
+                    if urlparse(settings.llm_base_url).hostname == "api.deepseek.com"
+                    else {}
+                ),
                 "messages": [
                     {
                         "role": "system",

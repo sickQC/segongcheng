@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { readableText } from '../utils/activity'
 import { computed, onUnmounted, reactive, ref, watch } from 'vue'
 import { api, errorMessage } from '../api/client'
 import { session } from '../composables/useSession'
@@ -144,12 +145,12 @@ onUnmounted(() => { ++generation; clearTimeout(timer) })
         <article v-for="row in submissions" :key="row.id" class="practice-result">
           <div class="practice-result-head"><strong>{{ row.parent_submission_id ? '追问回复' : '原题作答' }}</strong><el-tag v-if="row.synthetic" type="warning">模拟数据</el-tag><el-tag :type="row.status === 'failed' ? 'danger' : 'info'">{{ statusLabels[row.status] }}</el-tag></div>
           <p>{{ row.original_answer }}</p>
-          <p v-if="row.parent_submission_id" class="muted">关联上一轮：{{ row.parent_submission_id }}</p>
+          <p v-if="row.parent_submission_id" class="muted">上一轮作答：{{ submissions.find(item => item.id === row.parent_submission_id)?.original_answer || '上一轮记录未加载' }}</p>
           <template v-if="row.diagnosis">
-            <p><strong>诊断：</strong>{{ row.diagnosis.problem_description }}</p>
-            <p><strong>建议：</strong>{{ row.diagnosis.recommendation }}</p>
-            <p class="muted">暂估掌握度：{{ row.diagnosis.mastery === null ? '证据不足，暂不判断' : `${Math.round(row.diagnosis.mastery * 100)}%` }} · 作答证据：{{ row.event_id }}</p>
-            <p><strong>思考追问：</strong>{{ row.diagnosis.followup_question }}</p>
+            <p><strong>诊断：</strong>{{ readableText(row.diagnosis.problem_description) }}</p>
+            <p><strong>建议：</strong>{{ readableText(row.diagnosis.recommendation) }}</p>
+            <p class="muted">暂估掌握度：{{ row.diagnosis.mastery === null ? '证据不足，暂不判断' : `${Math.round(row.diagnosis.mastery * 100)}%` }} · 提交于 {{ new Date(row.created_at).toLocaleString() }}</p>
+            <p><strong>思考追问：</strong>{{ readableText(row.diagnosis.followup_question) }}</p>
             <TargetedLearningButton v-if="fiveEAvailable && !row.synthetic" :course-id="courseId" :knowledge-point-id="knowledgePointId" :event-id="row.event_id" />
             <el-input v-model="followupAnswers[row.id]" type="textarea" :rows="2" maxlength="4000" aria-label="回复本轮追问" />
             <el-button :disabled="!(followupAnswers[row.id] ?? '').trim()" :loading="busy" @click="submit(row)">回复追问并复核</el-button>

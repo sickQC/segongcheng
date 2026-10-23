@@ -160,6 +160,8 @@ def test_success_updates_mastery_once_failure_and_insufficient_preserve_it(scope
     def broken(*args):
         raise ModelCallError("MODEL_UNAVAILABLE", "offline")
 
+    # A changed model configuration must bypass same-evidence result reuse.
+    app.state.settings.c_llm_model = "offline-test-model"
     monkeypatch.setattr("app.services.evidence_diagnosis.complete_json", broken)
     _, failed = create(scope)
     assert failed["status"] == "failed"

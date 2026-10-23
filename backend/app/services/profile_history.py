@@ -4,21 +4,30 @@ from sqlalchemy import select
 
 from app.core.errors import fail
 from app.models import ProfileSnapshot
+from app.models.diagnosis_report import DiagnosisReport
 from app.models.legacy import now, uid
 from app.schemas.profile import LearningProfileOut
 from app.services.learning_events import utc
 
 
 def summary(row):
+    report = None
+    if row.report_id:
+        from sqlalchemy.orm import object_session
+
+        session = object_session(row)
+        report = session.get(DiagnosisReport, row.report_id) if session is not None else None
     return dict(id=row.id, reason=row.reason, report_id=row.report_id, days=row.days,
-                created_at=utc(row.created_at), rule_version=row.payload["rule_version"])
+                created_at=utc(row.created_at), rule_version=row.payload["rule_version"],
+                origin=row.payload.get("_snapshot_origin", row.reason),
+                source_report_created_at=utc(report.created_at) if report else None)
 
 
 def detail(row):
     return dict(**summary(row), profile=row.payload)
 
 
-def save_snapshot(db, course, student, request_id, days=30, reason="manual", report_id=None):
+def save_snapshot(db, course, student, request_id, days=30, reason="manual", report_id=None, origin=None):
     from app.services.profile import build_profile, insert_for
 
     scope = (ProfileSnapshot.course_id == course, ProfileSnapshot.student_id == student,
@@ -32,7 +41,7 @@ def save_snapshot(db, course, student, request_id, days=30, reason="manual", rep
     db.execute(insert_for(db, ProfileSnapshot).values(
         id=uid(), course_id=course, student_id=student, request_id=request_id,
         days=days, reason=reason, report_id=report_id,
-        payload=profile.model_dump(mode="json"), created_at=now(),
+        payload={**profile.model_dump(mode="json"), "_snapshot_origin": origin or reason}, created_at=now(),
     ).on_conflict_do_nothing(index_elements=["course_id", "student_id", "request_id"]))
     row = db.scalar(select(ProfileSnapshot).where(*scope))
     if (row.days, row.reason, row.report_id) != (days, reason, report_id):
