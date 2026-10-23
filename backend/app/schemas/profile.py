@@ -95,6 +95,8 @@ class SnapshotSummary(BaseModel):
     days: int
     created_at: datetime
     rule_version: str
+    origin: Literal["manual", "diagnosis", "backfill"] = "diagnosis"
+    source_report_created_at: datetime | None = None
 
     @field_validator("created_at")
     @classmethod

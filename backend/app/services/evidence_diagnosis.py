@@ -1,5 +1,6 @@
 """Scope, freeze and validate evidence before it can affect a learning diagnosis."""
 
+import hashlib
 import json
 import time
 from copy import deepcopy
@@ -19,7 +20,46 @@ from app.models.legacy import now
 from app.schemas.diagnosis_report import PointDiagnosis, ReportFeedback
 from app.services.c_model_gateway import ModelCallError, complete_json
 from app.services.diagnosis_presentation import PRESENTATION_VERSION, render_point, verified_behavior
+from app.services.prerequisites import lock_course
 from app.services.profile import apply_report
+
+
+def input_fingerprint(settings, snapshot):
+    # Moving window endpoints alone are not new evidence. Contents, scope and
+    # inference configuration must all match; never include credentials.
+    data = {
+        "version": "evidence-reuse-v1",
+        "prompt": PROMPT_VERSION,
+        "presentation": PRESENTATION_VERSION,
+        "backend": settings.c_llm_backend,
+        "model": settings.c_llm_model or settings.llm_model,
+        "endpoint": settings.llm_base_url if settings.c_llm_backend == "api" else "local-codex",
+        "student": snapshot["student_id"], "course": snapshot["course_id"],
+        "days": snapshot["days"],
+        "points": sorted(snapshot["points"], key=lambda p: p["knowledge_point_id"]),
+        "candidate_limit_reached": snapshot.get("candidate_limit_reached", False),
+    }
+    return hashlib.sha256(json.dumps(data, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
+
+def reusable_result(db, row, fingerprint):
+    if not fingerprint:
+        return None
+    prior = db.scalar(
+        select(DiagnosisReport).join(ModelTrace, ModelTrace.trace_id == DiagnosisReport.trace_id)
+        .where(DiagnosisReport.course_id == row.course_id,
+               DiagnosisReport.student_id == row.student_id,
+               DiagnosisReport.id != row.id,
+               DiagnosisReport.status.in_(("supported", "insufficient")),
+               ModelTrace.details["input_fingerprint"].as_string() == fingerprint)
+        .order_by(DiagnosisReport.created_at, DiagnosisReport.id).limit(1)
+    )
+    if prior is None or not prior.output:
+        return None
+    output = deepcopy(prior.output)
+    output["model_called"] = False
+    output["reuse"] = {"report_id": prior.id, "reason": "same_evidence_and_configuration"}
+    return output
 
 
 def utc(value):
@@ -211,7 +251,8 @@ def create_report(sessions, settings, course_id, student_id, body):
                     "cutoff": snapshot["cutoff"],
                     "event_count": sum(len(p["events"]) for p in snapshot["points"]),
                 },
-                details={"backend": settings.c_llm_backend},
+                details={"backend": settings.c_llm_backend,
+                         "input_fingerprint": input_fingerprint(settings, snapshot)},
             )
             db.add(trace)
             db.flush()
@@ -483,9 +524,14 @@ def run_report(sessions, settings, report_id, trace_id):
         if row.status != "pending" or row.trace_id != trace_id:
             return
         snapshot = row.snapshot
+        fingerprint = (db.get(ModelTrace, trace_id).details or {}).get("input_fingerprint")
+        reused = reusable_result(db, row, fingerprint)
     output, usage, actual_model, failure, failure_details = None, None, None, None, None
     try:
-        output, usage, actual_model = infer_snapshot(settings, snapshot)
+        if reused is not None:
+            output = reused
+        else:
+            output, usage, actual_model = infer_snapshot(settings, snapshot)
     except ModelCallError as exc:
         failure = (exc.code, exc.message)
         failure_details = exc.details
@@ -496,10 +542,19 @@ def run_report(sessions, settings, report_id, trace_id):
     except Exception:
         failure = ("INTERNAL_DIAGNOSIS_ERROR", "诊断处理失败，请凭 trace 编号排查。")
     with sessions.begin() as db:
+        # Serialize the final decision: concurrently completed identical inputs
+        # keep the first accepted result, even if both started model inference.
+        lock_course(db, snapshot["course_id"])
         row = db.get(DiagnosisReport, report_id)
         if row.status != "pending" or row.trace_id != trace_id:
             return
         trace = db.get(ModelTrace, trace_id)
+        accepted = reusable_result(db, row, fingerprint)
+        if accepted is not None:
+            # Preserve the fact/usage of a concurrent model call even though
+            # its estimate loses to the already accepted identical input.
+            accepted["model_called"] = bool(output and output.get("model_called"))
+            output, failure, failure_details = accepted, None, None
         trace.latency_ms = round((time.perf_counter() - started) * 1000)
         trace.usage = usage
         if failure:
@@ -514,6 +569,8 @@ def run_report(sessions, settings, report_id, trace_id):
                 "supported" if any(p["status"] == "supported" for p in output["points"]) else "insufficient"
             )
             trace.status = "succeeded" if output["model_called"] else "insufficient"
+            if output.get("reuse"):
+                trace.status = "reused"
             trace.model = actual_model or "unconfigured" if output["model_called"] else "not_called"
             trace.details = {
                 **(trace.details or {}),
@@ -521,6 +578,8 @@ def run_report(sessions, settings, report_id, trace_id):
                 "guardrail_actions": output["guardrail_actions"],
                 "presentation_version": output["presentation_version"],
                 "observed_behaviors": output["observed_behaviors"],
+                "reuse": output.get("reuse"),
+                "inference_attempted": reused is None,
             }
             # Commit the diagnosis and its idempotent mastery projection together.
             db.flush()
@@ -546,7 +605,8 @@ def retry_report(sessions, settings, report_id):
             prompt_version=PROMPT_VERSION,
             model=settings.c_llm_model or settings.llm_model,
             input_summary={"report_id": report_id, "cutoff": row.snapshot["cutoff"]},
-            details={"backend": settings.c_llm_backend, "retry_of": row.trace_id},
+            details={"backend": settings.c_llm_backend, "retry_of": row.trace_id,
+                     "input_fingerprint": input_fingerprint(settings, row.snapshot)},
         )
         db.add(trace)
         db.flush()

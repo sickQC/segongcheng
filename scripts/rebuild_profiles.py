@@ -18,7 +18,7 @@ def main():
     try:
         with sessions.begin() as db:
             count = sum(
-                apply_report(db, row)
+                apply_report(db, row, snapshot_origin="backfill")
                 for row in db.scalars(
                     select(DiagnosisReport)
                     .where(DiagnosisReport.status == "supported")

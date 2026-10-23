@@ -106,8 +106,8 @@ $env:ALLOWED_ORIGINS='["http://127.0.0.1:8765","http://localhost:8765"]'
 
 ```dotenv
 LLM_API_KEY=填写自己的APIKey
-LLM_BASE_URL=填写兼容API基础地址
-LLM_MODEL=填写模型名称
+LLM_BASE_URL=https://api.deepseek.com
+LLM_MODEL=deepseek-flash
 C_LLM_BACKEND=api
 C_LLM_MODEL=
 ```
@@ -116,7 +116,7 @@ C_LLM_MODEL=
 
 模型不可用时，答案与客观分数仍保存，失败诊断可重试；5E 的真实反馈与阶段推进需要可用模型。共享部署使用 API，各自的密钥填写在被 Git 忽略的 `.env` 中。
 
-本机个人演示可将 `C_LLM_BACKEND` 改为 `codex`，并在 `C_LLM_MODEL` 填写本机登录可用的模型名。Windows 上 `C_CODEX_BINARY` 留空会优先查找桌面应用自带的 CLI；手动指定路径时，程序必须存在并已登录。此方式只切换诊断与 5E，课程答疑仍使用 `LLM_*` API 配置。
+当前统一使用 DeepSeek API：课程答疑、练习诊断、测验诊断、综合诊断与 5E 均使用 `deepseek-flash`。保持 `C_LLM_BACKEND=api`、`C_LLM_MODEL` 留空即可共用 `LLM_MODEL`。克隆项目后须填写自己的 DeepSeek API Key，并完成前述数据库初始化；本机密钥、账号登录状态和学习记录不会随仓库分发。
 
 ## 基本使用
 

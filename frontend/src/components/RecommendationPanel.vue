@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { readableText } from '../utils/activity'
 import { onUnmounted, ref, watch } from 'vue'
 import { api, errorMessage } from '../api/client'
 import { recommendationApi } from '../api/recommendation'
 import type { LearningPath, PathFeedback, RecommendationMetrics } from '../types/recommendation'
+import MinuteInput from './MinuteInput.vue'
 
 const props = defineProps<{ courseId: string }>()
 const points = ref<{ id: string; name: string; code: string }[]>([]), target = ref('')
@@ -71,7 +73,7 @@ onUnmounted(() => { version++ })
   <h2>先修路径与时间预算推荐</h2>
   <p>基础策略按先修顺序安排预算内的前缀；E7 在先修满足且放得下的步骤中，综合薄弱程度、目标距离和估时选择下一步。两者都列出未安排的步骤。</p>
   <el-alert v-if="error" :title="error" type="error" :closable="false" />
-  <div class="toolbar"><el-select v-model="target" filterable aria-label="推荐目标知识点" style="width: min(360px, 100%)" :disabled="busy || feedbackBusy"><el-option v-for="p in points" :key="p.id" :value="p.id" :label="`${p.code} ${p.name}`" /></el-select><el-select v-model="strategy" aria-label="推荐策略" :disabled="busy || feedbackBusy" style="width:190px"><el-option label="基础顺序" value="baseline" /><el-option label="E7 时间预算" value="budgeted" /></el-select><label>本次预算（分钟） <el-input-number v-model="budget" :min="1" :max="240" :precision="0" aria-label="本次时间预算" :disabled="busy || feedbackBusy" /></label><el-button type="primary" :disabled="!target || budget == null || busy || feedbackBusy" @click="generate">生成学习路径</el-button></div>
+  <div class="toolbar"><el-select v-model="target" filterable aria-label="推荐目标知识点" style="width: min(360px, 100%)" :disabled="busy || feedbackBusy"><el-option v-for="p in points" :key="p.id" :value="p.id" :label="p.name" /></el-select><el-select v-model="strategy" aria-label="推荐策略" :disabled="busy || feedbackBusy" style="width:190px"><el-option label="基础顺序" value="baseline" /><el-option label="E7 时间预算" value="budgeted" /></el-select><label>本次预算（分钟） <MinuteInput v-model="budget" aria-label="本次时间预算" :disabled="busy || feedbackBusy" /></label><el-button type="primary" :disabled="!target || budget == null || busy || feedbackBusy" @click="generate">生成学习路径</el-button></div>
   <el-select v-if="history.length" :model-value="current?.id" @change="open" aria-label="推荐历史" :disabled="busy || feedbackBusy" style="width:min(600px, 100%)"><el-option v-for="p in history" :key="p.id" :value="p.id" :label="`${time(p.created_at)} · ${strategyLabel(p.strategy)} · ${p.time_budget_minutes ?? '不限'}分钟 · ${p.target_name}`" /></el-select>
   <template v-if="current">
    <h3>目标：{{ current.target_name }}</h3>
@@ -81,16 +83,16 @@ onUnmounted(() => { version++ })
    <el-alert v-if="current.goal_in_plan === false" title="本次预算内尚未安排到目标；请按步骤学习，之后继续剩余路径。" type="info" :closable="false" />
    <el-alert v-if="current.status === 'target_mastered'" title="目标已达到掌握阈值，本次无需安排新路径。" type="success" :closable="false" />
    <article v-for="step in current.steps" :key="step.knowledge_point_id" class="knowledge-card">
-    <h3>{{ step.order }}. {{ step.name }}</h3><p>{{ step.reason }}</p>
+    <h3>{{ step.order }}. {{ step.name }}</h3><p>{{ readableText(step.reason) }}</p>
     <p v-if="step.estimated_minutes != null">预计 {{ step.estimated_minutes }} 分钟（{{ step.estimate_source === 'teacher' ? '教师估时' : '规则估时，非实测' }}）</p>
     <p class="muted">依据：{{ step.reason_source === 'diagnosis' ? '有效综合诊断' : '先修规则，尚待测评' }} · 置信度 {{ step.confidence === null ? '未知' : `${Math.round(step.confidence * 100)}%` }}</p>
-    <details v-if="step.diagnosis_id"><summary>核对诊断来源</summary><p>综合诊断 {{ step.diagnosis_id }} · 输入截止 {{ step.input_cutoff ? time(step.input_cutoff) : '未知' }}</p><p v-for="id in step.evidence_ids" :key="id">事件 {{ id }}</p></details>
+    <details v-if="step.diagnosis_id"><summary>核对诊断来源</summary><p>综合诊断 · 输入截止 {{ step.input_cutoff ? time(step.input_cutoff) : '未知' }}</p><p>依据 {{ step.evidence_ids.length }} 条学习记录，可在综合学习诊断中核对原始作答。</p></details>
     <div class="tag-row"><RouterLink v-for="action in step.actions" :key="`${action.kind}-${action.id}`" :to="action.url"><el-button text type="primary">{{ action.title }}</el-button></RouterLink></div>
-    <p v-for="note in step.notes" :key="note" class="muted">{{ note }}</p>
+    <p v-for="note in step.notes" :key="note" class="muted">{{ readableText(note) }}</p>
    </article>
-   <details v-if="current.remaining_steps?.length" open><summary>未安排 {{ current.remaining_steps.length }} 步 · 合计估时 {{ current.remaining_estimated_minutes }} 分钟</summary><article v-for="step in current.remaining_steps" :key="step.knowledge_point_id" class="knowledge-card"><h4>{{ step.name }} · 预计 {{ step.estimated_minutes }} 分钟</h4><p>{{ step.deferral_reason }}</p></article></details>
-   <details v-if="current.skipped.length"><summary>已跳过 {{ current.skipped.length }} 个已掌握知识点</summary><article v-for="point in current.skipped" :key="point.knowledge_point_id" class="knowledge-card"><h4>{{ point.name }}</h4><p>{{ point.reason }}</p><p class="muted">综合诊断 {{ point.diagnosis_id }}</p></article></details>
-   <p v-for="note in current.notes" :key="note" class="muted">{{ note }}</p>
+   <details v-if="current.remaining_steps?.length" open><summary>未安排 {{ current.remaining_steps.length }} 步 · 合计估时 {{ current.remaining_estimated_minutes }} 分钟</summary><article v-for="step in current.remaining_steps" :key="step.knowledge_point_id" class="knowledge-card"><h4>{{ step.name }} · 预计 {{ step.estimated_minutes }} 分钟</h4><p>{{ readableText(step.deferral_reason) }}</p></article></details>
+   <details v-if="current.skipped.length"><summary>已跳过 {{ current.skipped.length }} 个已掌握知识点</summary><article v-for="point in current.skipped" :key="point.knowledge_point_id" class="knowledge-card"><h4>{{ point.name }}</h4><p>{{ readableText(point.reason) }}</p><p class="muted">{{ point.diagnosis_id ? '依据综合诊断，已达到掌握阈值' : '暂无诊断来源' }}</p></article></details>
+   <p v-for="note in current.notes" :key="note" class="muted">{{ readableText(note) }}</p>
    <h3>是否愿意采用这份计划？</h3><p class="muted">此反馈只记录你的意愿，不代表完成学习，也不更新掌握度。每份计划保留一次反馈，可对新计划再次反馈。</p>
    <p v-if="feedback">已反馈：{{ feedback.choice === 'accepted' ? '愿意采用' : '暂不采用' }}</p><div v-else class="tag-row"><el-button :loading="feedbackBusy" @click="saveFeedback('accepted')">愿意采用</el-button><el-button :disabled="feedbackBusy" @click="saveFeedback('declined')">暂不采用</el-button></div>
   </template>

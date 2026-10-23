@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watch } from 'vue'
 import { api, errorMessage } from '../api/client'
+import { activityLabel, readableText } from '../utils/activity'
 import { session } from '../composables/useSession'
 
-type Event = { event_id: string; source: string; timestamp: string; answer?: string }
+type Event = { event_id: string; source: string; timestamp: string; answer?: string; question?: string }
 type Point = { knowledge_point_id: string; name: string; events: Event[]; baseline: { graded_count: number; accuracy: number | null; behavior_available: boolean } }
 type Diagnosis = { knowledge_point_id: string; status: string; mastery: number | null; problem_type: string; explanation: string; recommendation: string; followup_question: string; evidence_event_ids: string[] }
-type Report = { id: string; status: string; snapshot: { cutoff: string; points: Point[] }; output: { points: Diagnosis[]; excluded_instruction_events: string[]; guardrail_actions?: unknown[]; observed_behaviors?: { knowledge_point_id: string; problem_type: string }[] } | null; error_message: string | null; trace_id: string; created_at: string }
+type Report = { id: string; status: string; snapshot: { cutoff: string; points: Point[] }; output: { points: Diagnosis[]; excluded_instruction_events: string[]; reuse?: { report_id: string }; guardrail_actions?: unknown[]; observed_behaviors?: { knowledge_point_id: string; problem_type: string }[] } | null; error_message: string | null; trace_id: string; created_at: string }
 const props = defineProps<{ courseId: string; knowledgePointId?: string }>()
 const emit = defineEmits<{ completed: [] }>()
 const points = ref<{ id: string; name: string }[]>([]), selected = ref<string[]>([])
@@ -78,7 +79,8 @@ onUnmounted(() => { ++generation; clearTimeout(timer) })
     </div>
     <el-select v-if="reports.length" placeholder="查看诊断历史" aria-label="综合诊断历史" @change="open(String($event))"><el-option v-for="row in reports" :key="row.id" :value="row.id" :label="`${new Date(row.created_at).toLocaleString()} · ${row.status}`" /></el-select>
     <template v-if="current">
-      <p class="muted">证据截止：{{ new Date(current.snapshot.cutoff).toLocaleString() }} · Trace：{{ current.trace_id }}</p>
+      <p class="muted">证据截止：{{ new Date(current.snapshot.cutoff).toLocaleString() }}</p>
+      <el-alert v-if="current.output?.reuse" title="学习证据、诊断范围与分析配置未变化，沿用此前的有效诊断；有新作答后会重新分析。" type="info" :closable="false" />
       <el-alert v-if="current.status === 'pending'" title="正在分析，证据快照已保存…" type="info" :closable="false" />
       <el-alert v-if="current.output?.guardrail_actions?.length" title="部分判断已根据学习记录修正，请核对引用证据。" type="warning" :closable="false" />
       <template v-else-if="current.status === 'failed'"><el-alert :title="current.error_message ?? '诊断失败'" type="error" :closable="false" /><el-button :loading="busy" @click="retry">重试综合诊断</el-button></template>
@@ -89,10 +91,10 @@ onUnmounted(() => { ++generation; clearTimeout(timer) })
         <template v-for="item in current.output?.points.filter(p => p.knowledge_point_id === point.knowledge_point_id) ?? []" :key="item.knowledge_point_id">
           <el-tag :type="item.status === 'insufficient' ? 'info' : 'warning'">{{ labels[item.problem_type] }}</el-tag>
           <p>模型暂估掌握度：{{ item.mastery === null ? '未知' : `${Math.round(item.mastery * 100)}%` }}</p>
-          <p>{{ item.explanation }}</p><p>建议：{{ item.recommendation }}</p><p>思考追问：{{ item.followup_question }}</p>
-          <p class="muted">引用事件：{{ item.evidence_event_ids.join('、') || '无可用证据' }}</p>
+          <p>{{ readableText(item.explanation, point.events) }}</p><p>建议：{{ readableText(item.recommendation, point.events) }}</p><p>思考追问：{{ readableText(item.followup_question, point.events) }}</p>
+          <details><summary>查看诊断引用的作答（{{ item.evidence_event_ids.length }} 条）</summary><p v-for="event in point.events.filter(e => item.evidence_event_ids.includes(e.event_id))" :key="event.event_id">{{ activityLabel(event.source) }} · {{ new Date(event.timestamp).toLocaleString() }}<br />{{ event.question || point.name }}<br />{{ event.answer || '未记录作答内容' }}</p><p v-if="!item.evidence_event_ids.length">暂无可用依据</p></details>
         </template>
-        <details><summary>核对本次证据（{{ point.events.length }} 条）</summary><p v-for="event in point.events" :key="event.event_id">{{ event.source }} · {{ event.timestamp }}<br />{{ event.answer ?? '服务端行为测量' }}<br /><span class="muted">{{ event.event_id }}</span></p></details>
+        <details><summary>核对本次证据（{{ point.events.length }} 条）</summary><p v-for="event in point.events" :key="event.event_id">{{ activityLabel(event.source) }} · {{ new Date(event.timestamp).toLocaleString() }}<br />{{ event.question || point.name }}<br />{{ event.answer ?? '服务端行为测量' }}</p></details>
       </article>
     </template>
     <p v-else class="muted">{{ knowledgePointId ? '点击上方按钮，分析这个知识点的原题与新作答。' : '先完成练习或测验，再生成综合诊断。' }}</p>

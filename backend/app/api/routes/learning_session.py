@@ -10,7 +10,14 @@ from app.models import Chapter, KnowledgePoint
 from app.models.learning_session import LearningSession, LearningTurn
 from app.schemas.learning_session import LearningAnswer, SessionCreate
 from app.services.learning_curriculum import lecture_links, lecture_materials
-from app.services.learning_session import create_session, run_turn, save_turn, session_out, turn_out
+from app.services.learning_session import (
+    create_session,
+    retry_turn,
+    run_turn,
+    save_turn,
+    session_out,
+    turn_out,
+)
 
 router = APIRouter(tags=["Member C · 5E learning"])
 
@@ -115,3 +122,13 @@ def get_turn(session_id: str, turn_id: str, db: Db, user: CurrentUser):
     if turn is None or turn.session_id != session_id:
         fail(404, "TURN_NOT_FOUND", "本会话的作答不存在")
     return turn_out(turn)
+
+
+@router.post("/learning-sessions/{session_id}/turns/{turn_id}/retry", status_code=202)
+def retry_answer(
+    session_id: str, turn_id: str, db: Db, user: CurrentUser, request: Request, tasks: BackgroundTasks
+):
+    accessible_session(db, user, session_id, write=True)
+    result = retry_turn(request.app.state.sessions, request.app.state.settings, session_id, user.id, turn_id)
+    tasks.add_task(run_turn, request.app.state.sessions, request.app.state.settings, turn_id)
+    return result

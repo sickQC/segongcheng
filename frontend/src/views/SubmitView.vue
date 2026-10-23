@@ -35,6 +35,6 @@ async function submit() {
     <aside class="right-column"><section class="panel"><span class="eyebrow">本次运行方式</span><h3>选择诊断模式</h3><el-radio-group v-model="mode" class="mode-options" @change="changeMode"><el-radio value="live" border><strong>真实模型调用</strong></el-radio><el-radio v-if="question.demo_enabled" value="demo" border><strong>模拟演示 · 无模型调用</strong></el-radio></el-radio-group>
       <el-alert v-if="mode === 'demo'" title="固定示例，仅展示流程" description="诊断文本与数值均为模拟数据，不代表 AI 真实输出或学习效果。" type="warning" :closable="false" show-icon />
       <el-alert v-else :title="question.model_configured ? '模型参数已配置' : '尚未配置模型密钥与模型名称'" :description="question.model_configured ? '提交后将请求配置的模型服务，可能产生费用。' : '仍可保存作答并展示明确的诊断失败状态。'" :type="question.model_configured ? 'success' : 'info'" :closable="false" show-icon />
-    </section><section class="guide-card"><div class="eyebrow">你将看到什么</div><h3>结果背后，也有证据。</h3><p>每次作答生成独立事件编号；每次诊断保留 trace ID，方便查看结果来源与失败原因。</p><ul><li>原始答案与学习事件</li><li>诊断建议与引导性追问</li><li>模型、提示版本与调用耗时</li></ul></section></aside>
+    </section><section class="guide-card"><div class="eyebrow">你将看到什么</div><h3>结果背后，也有证据。</h3><p>每次作答保留原始内容和提交时间，可结合诊断建议回顾自己的理解与进步。</p><ul><li>原始答案与学习事件</li><li>诊断建议与引导性追问</li><li>模型、提示版本与调用耗时</li></ul></section></aside>
   </div>
 </template>

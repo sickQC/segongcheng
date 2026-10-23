@@ -1691,6 +1691,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
           description: Unprocessable Content
+  /api/v1/learning-sessions/{session_id}/turns/{turn_id}/retry:
+    post:
+      tags:
+      - Member C · 5E learning
+      summary: 使用已保存的答案重试最后一次失败的学习反馈
+      description: 仅学生本人可重试当前阶段最新失败轮次，保留原作答事件与旧调用记录。
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: turn_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: 已接收重试，可查询会话状态获取反馈
+        '401':
+          description: 尚未登录
+        '403':
+          description: 无权访问课程
+        '404':
+          description: 本人的学习会话或轮次不存在
+        '409':
+          description: 存在待处理轮次，或当前轮次不满足重试条件
+        '422':
+          description: 请求参数错误
   /api/v1/learning-sessions/{session_id}/turns/{turn_id}:
     get:
       tags:
@@ -6177,6 +6207,20 @@ components:
         rule_version:
           type: string
           title: Rule Version
+        origin:
+          type: string
+          enum:
+          - manual
+          - diagnosis
+          - backfill
+          title: Origin
+          default: diagnosis
+        source_report_created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Source Report Created At
         profile:
           $ref: '#/components/schemas/LearningProfileOut'
       type: object
@@ -6232,6 +6276,20 @@ components:
         rule_version:
           type: string
           title: Rule Version
+        origin:
+          type: string
+          enum:
+          - manual
+          - diagnosis
+          - backfill
+          title: Origin
+          default: diagnosis
+        source_report_created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Source Report Created At
       type: object
       required:
       - id

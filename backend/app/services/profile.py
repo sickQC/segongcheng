@@ -23,7 +23,7 @@ def insert_for(db, table):
     return (sqlite_insert if db.bind.dialect.name == "sqlite" else pg_insert)(table)
 
 
-def apply_report(db, report):
+def apply_report(db, report, *, snapshot_origin="diagnosis"):
     """Call inside the diagnosis transaction. Upserts are atomic on SQLite and PostgreSQL.
 
     A report can be applied once; a later completion with an older input never replaces newer mastery.
@@ -125,7 +125,7 @@ def apply_report(db, report):
         from app.services.profile_history import save_snapshot
 
         save_snapshot(db, report.course_id, report.student_id, f"diagnosis-{report.id}",
-                      reason="diagnosis", report_id=report.id)
+                      reason="diagnosis", report_id=report.id, origin=snapshot_origin)
     return applied
 
 

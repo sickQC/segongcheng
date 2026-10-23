@@ -299,6 +299,66 @@ def save_turn(sessions, settings, session_id, student_id, body):
     return result, True
 
 
+def retry_turn(sessions, settings, session_id, student_id, turn_id):
+    """Retry the latest failed answer, retaining its event and every model attempt."""
+    with sessions.begin() as db:
+        session = db.get(LearningSession, session_id)
+        if session is None or session.student_id != student_id:
+            fail(404, "SESSION_NOT_FOUND", "本人的学习会话不存在")
+        turn = db.get(LearningTurn, turn_id)
+        if turn is None or turn.session_id != session_id:
+            fail(404, "TURN_NOT_FOUND", "本会话的作答不存在")
+        latest = db.scalar(
+            select(LearningTurn)
+            .where(LearningTurn.session_id == session_id)
+            .order_by(LearningTurn.created_at.desc(), LearningTurn.id.desc())
+            .limit(1)
+        )
+        if (
+            turn.status != "failed"
+            or latest.id != turn_id
+            or session.status != "active"
+            or session.stage != turn.stage_before
+        ):
+            fail(409, "RETRY_NOT_ALLOWED", "仅当前阶段最后一次失败的作答可重试")
+        claimed = db.execute(
+            update(LearningSession)
+            .where(
+                LearningSession.id == session_id,
+                LearningSession.pending_turn_id.is_(None),
+                LearningSession.status == "active",
+                LearningSession.stage == turn.stage_before,
+            )
+            .values(pending_turn_id=turn_id, updated_at=now())
+        )
+        if not claimed.rowcount:
+            fail(409, "TURN_IN_PROGRESS", "上一轮仍在处理，请等待结果后再重试")
+        changed = db.execute(
+            update(LearningTurn)
+            .where(
+                LearningTurn.id == turn_id,
+                LearningTurn.status == "failed",
+            )
+            .values(status="pending", error_code=None, error_message=None)
+        )
+        if not changed.rowcount:
+            fail(409, "RETRY_NOT_ALLOWED", "本轮已经处理，请刷新后查看")
+        old_trace = db.get(ModelTrace, turn.trace_id)
+        trace = ModelTrace(
+            event_id=turn.event_id,
+            feature="learning.5e",
+            source="live",
+            model=settings.c_llm_model or settings.llm_model or "unconfigured",
+            prompt_version=LEARNING_PROMPT_VERSION,
+            input_summary=dict(old_trace.input_summary),
+            details={"backend": settings.c_llm_backend, "retry_of": turn.trace_id},
+        )
+        db.add(trace)
+        db.flush()
+        turn.trace_id = trace.trace_id
+        return turn_out(turn)
+
+
 def checked_transition(stage, output, answer, quiz_correct):
     before, after = STAGES.index(stage), STAGES.index(output.next_stage)
     if abs(after - before) > 1:
@@ -349,12 +409,14 @@ def run_turn(sessions, settings, turn_id):
                 "correct": quiz_correct,
             }
     output, usage, failure, target, completed = None, None, None, None, False
+    call_details = None
     guardrail_action = None
     try:
         if is_instruction_attack(turn.answer):
             raise ModelCallError("UNSAFE_LEARNING_INPUT", "作答包含修改学习规则的指令，已保存但未请求模型。")
         reply = complete_json(settings, LEARNING_PROMPT, data, LearningFeedback.model_json_schema())
         usage = reply.usage
+        call_details = reply.details
         output = LearningFeedback.model_validate_json(reply.text)
         if output.evidence_event_ids != [turn.event_id]:
             raise ModelCallError("INVALID_EVIDENCE", "模型使用了不属于本轮作答的证据。")
@@ -378,6 +440,7 @@ def run_turn(sessions, settings, turn_id):
                 guardrail_action = "template_hint_replacement"
     except ModelCallError as exc:
         failure = (exc.code, exc.message)
+        call_details = exc.details
     except httpx.TimeoutException:
         failure = ("MODEL_TIMEOUT", "模型请求超时；本轮答案已保存。")
     except (httpx.HTTPError, ValidationError, ValueError, KeyError, TypeError, IndexError):
@@ -391,6 +454,8 @@ def run_turn(sessions, settings, turn_id):
             return
         trace = db.get(ModelTrace, turn.trace_id)
         trace.usage, trace.latency_ms = usage, round((time.perf_counter() - started) * 1000)
+        if call_details:
+            trace.details = {**(trace.details or {}), "model_call": call_details}
         if failure:
             turn.status, trace.status = "failed", "failed"
             turn.error_code, turn.error_message = failure

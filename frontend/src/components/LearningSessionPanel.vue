@@ -94,6 +94,16 @@ async function submit() {
   finally { if (run === generation) busy.value = false }
 }
 async function resume(id: string) { clearTimeout(timer); const run = ++generation; busy.value = false; pendingKey = undefined; error.value = ''; current.value = undefined; answer.value = ''; choice.value = ''; localStorage.setItem(storageKey.value, id); await refresh(id); if (run === generation && current.value) emit('selected', id) }
+async function retry(turn: Turn) {
+  if (!current.value || busy.value || current.value.pending_turn_id) return
+  const run = generation, id = current.value.id
+  busy.value = true; error.value = ''
+  try {
+    await api(`/learning-sessions/${encodeURIComponent(id)}/turns/${encodeURIComponent(turn.id)}/retry`, { method: 'POST' })
+    if (run === generation) await refresh(id)
+  } catch (e) { if (run === generation) error.value = errorMessage(e) }
+  finally { if (run === generation) busy.value = false }
+}
 watch(selected, () => { startRequest = crypto.randomUUID() })
 watch(() => [props.courseId, props.sessionId, props.knowledgePointId, props.resourceId], () => void load(), { immediate: true })
 onUnmounted(() => { ++generation; clearTimeout(timer) })
@@ -140,6 +150,7 @@ onUnmounted(() => { ++generation; clearTimeout(timer) })
         <strong>{{ labels[turn.stage_before] }} · 我的作答</strong><p>{{ turn.answer }}</p>
         <template v-if="turn.output"><p>{{ turn.output.reply }}</p><p class="muted">回答质量 {{ Math.round(turn.output.quality * 100) }}% · {{ turn.output.transition_reason }}</p><p v-if="turn.output.evaluation_correct !== null">小测：{{ turn.output.evaluation_correct ? '正确' : '仍需巩固' }}</p></template>
         <p v-else>{{ turn.status === 'pending' ? '正在生成反馈…' : turn.error_message }}</p>
+        <el-button v-if="student && turn.status === 'failed' && current.status === 'active' && current.turns.at(-1)?.id === turn.id && current.stage === turn.stage_before" :loading="busy" :disabled="!!current.pending_turn_id" @click="retry(turn)">用已保存的答案重试</el-button>
       </article>
       <div v-if="current.status === 'completed'" aria-label="完成后的学习安排">
         <el-alert title="五阶段学习已完成，评价小测与本轮解释已通过" type="success" :closable="false" />

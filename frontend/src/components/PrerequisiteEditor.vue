@@ -8,7 +8,7 @@ import type { Prerequisite } from '../types/recommendation'
 const props = defineProps<{ courseId: string; points: { id: string; code: string; name: string }[] }>()
 const edges = ref<Prerequisite[]>([]), from = ref(''), to = ref(''), busy = ref(false), error = ref('')
 let version = 0
-const label = (id: string) => { const point = props.points.find(p => p.id === id); return point ? `${point.code} ${point.name}` : id }
+const label = (id: string) => { const point = props.points.find(p => p.id === id); return point ? point.name : '知识点已移除' }
 function describe(e: unknown) {
  if (e instanceof ApiError && e.fields && typeof e.fields === 'object' && 'cycle' in e.fields) {
   const cycle = e.fields.cycle
