@@ -47,7 +47,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '422':
-          description: Unprocessable Content
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
@@ -90,7 +90,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '422':
-          description: Unprocessable Content
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
@@ -129,7 +129,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '422':
-          description: Unprocessable Content
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
@@ -194,7 +194,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
     post:
       tags:
       - Courses
@@ -242,7 +242,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/outline:
     get:
       tags:
@@ -292,7 +292,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/chapters:
     post:
       tags:
@@ -348,7 +348,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/members:
     get:
       tags:
@@ -415,7 +415,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
     post:
       tags:
       - Courses
@@ -470,7 +470,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/chapters/{chapter_id}:
     patch:
       tags:
@@ -526,7 +526,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/chapters/{chapter_id}/knowledge-points:
     post:
       tags:
@@ -582,7 +582,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/knowledge-points/{kp_id}:
     patch:
       tags:
@@ -638,7 +638,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
     delete:
       tags:
       - Knowledge
@@ -683,7 +683,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/chapters/{chapter_id}/practices:
     post:
       tags:
@@ -745,7 +745,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/practices:
     get:
       tags:
@@ -799,7 +799,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/practices/{exercise_id}/submissions:
     post:
       tags:
@@ -861,7 +861,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/practices/{exercise_id}/submissions/me:
     get:
       tags:
@@ -921,7 +921,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/practices/{exercise_id}/submissions/{submission_id}/followups:
     post:
       tags:
@@ -989,7 +989,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/practices/{exercise_id}/submissions/{submission_id}/retry:
     post:
       tags:
@@ -1051,7 +1051,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/practices/{exercise_id}/progress:
     get:
       tags:
@@ -1107,7 +1107,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/quizzes:
     post:
       tags:
@@ -1162,7 +1162,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
     get:
       tags:
       - Workspace · 演示与占位
@@ -1214,7 +1214,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -1269,7 +1269,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/attempts/{attempt_id}:
     get:
       tags:
@@ -1324,7 +1324,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/attempts/{attempt_id}/diagnoses:
     get:
       tags:
@@ -1379,7 +1379,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/attempts/{attempt_id}/diagnoses/{diagnosis_id}/retry:
     post:
       tags:
@@ -1440,7 +1440,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/learning-templates:
     get:
       tags:
@@ -1489,7 +1489,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/learning-sessions:
     get:
       tags:
@@ -1538,7 +1538,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/learning-sessions:
     post:
       tags:
@@ -1582,7 +1582,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
         '422':
-          description: Unprocessable Content
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
@@ -1635,7 +1635,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/learning-sessions/{session_id}/turns:
     post:
       tags:
@@ -1690,37 +1690,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
-  /api/v1/learning-sessions/{session_id}/turns/{turn_id}/retry:
-    post:
-      tags:
-      - Member C · 5E learning
-      summary: 使用已保存的答案重试最后一次失败的学习反馈
-      description: 仅学生本人可重试当前阶段最新失败轮次，保留原作答事件与旧调用记录。
-      parameters:
-      - name: session_id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: turn_id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '202':
-          description: 已接收重试，可查询会话状态获取反馈
-        '401':
-          description: 尚未登录
-        '403':
-          description: 无权访问课程
-        '404':
-          description: 本人的学习会话或轮次不存在
-        '409':
-          description: 存在待处理轮次，或当前轮次不满足重试条件
-        '422':
-          description: 请求参数错误
+          description: Unprocessable Entity
   /api/v1/learning-sessions/{session_id}/turns/{turn_id}:
     get:
       tags:
@@ -1775,7 +1745,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
+  /api/v1/learning-sessions/{session_id}/turns/{turn_id}/retry:
+    post:
+      tags:
+      - Member C · 5E learning
+      summary: Retry Answer
+      operationId: retry_answer_api_v1_learning_sessions__session_id__turns__turn_id__retry_post
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Session Id
+      - name: turn_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Turn Id
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/diagnosis-reports:
     post:
       tags:
@@ -1831,7 +1856,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
     get:
       tags:
       - Learning diagnosis
@@ -1884,7 +1909,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/students/{student_id}/diagnosis-reports:
     post:
       tags:
@@ -1946,7 +1971,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/diagnosis-reports/{report_id}:
     get:
       tags:
@@ -2002,7 +2027,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/diagnosis-reports/{report_id}/retry:
     post:
       tags:
@@ -2057,12 +2082,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/resources:
     get:
       tags:
       - Workspace · 演示与占位
-      summary: 演示讲义列表
+      summary: 本课程资料列表
       operationId: resources_api_v1_courses__course_id__resources_get
       parameters:
       - name: course_id
@@ -2110,18 +2135,73 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+      - Course resources
+      summary: Upload
+      operationId: upload_api_v1_courses__course_id__resources_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_upload_api_v1_courses__course_id__resources_post'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseJob'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/resources/{resource_id}/content:
     get:
       tags:
       - Workspace · 演示与占位
-      summary: 读取内置讲义原文
+      summary: 读取本课程资料解析正文
       operationId: resource_content_api_v1_courses__course_id__resources__resource_id__content_get
       parameters:
       - name: course_id
@@ -2172,7 +2252,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2183,7 +2263,7 @@ paths:
     post:
       tags:
       - Workspace · 演示与占位
-      summary: 演示课程个性化答疑；5E使用独立会话接口
+      summary: 依据当前课程资料答疑；5E使用独立会话接口
       operationId: chat_api_v1_courses__course_id__chat_post
       parameters:
       - name: course_id
@@ -2234,7 +2314,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2296,7 +2376,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2364,7 +2444,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2440,7 +2520,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2502,7 +2582,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2574,7 +2654,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2652,7 +2732,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
@@ -2714,13 +2794,541 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
         '501':
           description: 接口占位，业务尚未实现
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/courses/{course_id}/resources/import-builtin:
+    post:
+      tags:
+      - Course resources
+      summary: Import Builtin
+      operationId: import_builtin_api_v1_courses__course_id__resources_import_builtin_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/resources/{resource_id}:
+    patch:
+      tags:
+      - Course resources
+      summary: Edit
+      operationId: edit_api_v1_courses__course_id__resources__resource_id__patch
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcePatch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+    delete:
+      tags:
+      - Course resources
+      summary: Remove
+      operationId: remove_api_v1_courses__course_id__resources__resource_id__delete
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Id
+      responses:
+        '204':
+          description: Successful Response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/resources/{resource_id}/versions:
+    get:
+      tags:
+      - Course resources
+      summary: Versions
+      operationId: versions_api_v1_courses__course_id__resources__resource_id__versions_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VersionOut'
+                title: Response Versions Api V1 Courses  Course Id  Resources  Resource
+                  Id  Versions Get
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+    post:
+      tags:
+      - Course resources
+      summary: Replace
+      operationId: replace_api_v1_courses__course_id__resources__resource_id__versions_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Id
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_replace_api_v1_courses__course_id__resources__resource_id__versions_post'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseJob'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/resources/{resource_id}/retry:
+    post:
+      tags:
+      - Course resources
+      summary: Retry
+      operationId: retry_api_v1_courses__course_id__resources__resource_id__retry_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Id
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseJob'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/resources/{resource_id}/versions/{version_number}/activate:
+    post:
+      tags:
+      - Course resources
+      summary: Activate
+      operationId: activate_api_v1_courses__course_id__resources__resource_id__versions__version_number__activate_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Id
+      - name: version_number
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Version Number
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/resources/{resource_id}/file:
+    get:
+      tags:
+      - Course resources
+      summary: File
+      operationId: file_api_v1_courses__course_id__resources__resource_id__file_get
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Id
+      - name: inline
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Inline
+      - name: version
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            minimum: 1
+          - type: 'null'
+          title: Version
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
+  /api/v1/courses/{course_id}/resources/{resource_id}/complete:
+    post:
+      tags:
+      - Course resources
+      summary: Complete Video
+      operationId: complete_video_api_v1_courses__course_id__resources__resource_id__complete_post
+      parameters:
+      - name: course_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Course Id
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceOut'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/profile:
     get:
       tags:
@@ -2779,7 +3387,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/students/{student_id}/profile:
     get:
       tags:
@@ -2844,7 +3452,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/profile/snapshots:
     post:
       tags:
@@ -2908,7 +3516,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
     get:
       tags:
       - Learning profile and events
@@ -2982,7 +3590,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/profile/snapshots/compare:
     get:
       tags:
@@ -3052,7 +3660,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/profile/snapshots/{snapshot_id}:
     get:
       tags:
@@ -3116,7 +3724,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/learning-events:
     get:
       tags:
@@ -3226,7 +3834,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/learning-events/export:
     get:
       tags:
@@ -3328,7 +3936,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/knowledge-points/{point_id}/study-time:
     patch:
       tags:
@@ -3390,7 +3998,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/recommendation-metrics:
     get:
       tags:
@@ -3440,7 +4048,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/recommendations/{recommendation_id}/feedback:
     get:
       tags:
@@ -3500,7 +4108,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
     post:
       tags:
       - Prerequisites and recommendation
@@ -3561,7 +4169,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/prerequisites:
     get:
       tags:
@@ -3615,7 +4223,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
     post:
       tags:
       - Prerequisites and recommendation
@@ -3670,7 +4278,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/prerequisites/{edge_id}:
     delete:
       tags:
@@ -3722,7 +4330,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/recommendations:
     post:
       tags:
@@ -3778,7 +4386,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
     get:
       tags:
       - Prerequisites and recommendation
@@ -3840,7 +4448,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/students/{student_id}/recommendations:
     get:
       tags:
@@ -3909,7 +4517,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
   /api/v1/courses/{course_id}/recommendations/{recommendation_id}:
     get:
       tags:
@@ -3965,7 +4573,320 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-          description: Unprocessable Content
+          description: Unprocessable Entity
+  /api/dev/question:
+    get:
+      tags:
+      - Development demo
+      summary: Question
+      operationId: question_api_dev_question_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/dev/submissions:
+    post:
+      tags:
+      - Development demo
+      summary: Submit
+      operationId: submit_api_dev_submissions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Submission'
+        required: true
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/diagnoses:
+    get:
+      tags:
+      - Development demo
+      summary: List Diagnoses
+      operationId: list_diagnoses_api_diagnoses_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/diagnoses/{diagnosis_id}:
+    get:
+      tags:
+      - Development demo
+      summary: Get Diagnosis
+      operationId: get_diagnosis_api_diagnoses__diagnosis_id__get
+      parameters:
+      - name: diagnosis_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Diagnosis Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/diagnoses/{diagnosis_id}/retry:
+    post:
+      tags:
+      - Development demo
+      summary: Retry
+      operationId: retry_api_diagnoses__diagnosis_id__retry_post
+      parameters:
+      - name: diagnosis_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Diagnosis Id
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/tutor/kb:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Kb Overview
+      description: 知识库规模与文档清单。
+      operationId: kb_overview_api_tutor_kb_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/tutor/knowledge-points:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Knowledge Points
+      operationId: knowledge_points_api_tutor_knowledge_points_get
+      parameters:
+      - name: doc_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 按文档过滤，如 SE-01
+          title: Doc Id
+        description: 按文档过滤，如 SE-01
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 按名称或定义过滤
+          title: Keyword
+        description: 按名称或定义过滤
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/tutor/graph:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Knowledge Graph
+      description: 知识点先修图（M4 可视化与 M9 路径规划的数据源）。
+      operationId: knowledge_graph_api_tutor_graph_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /api/tutor/retrieve-debug:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Retrieve Debug
+      description: 检索中间结果：稠密/稀疏排名、RRF、覆盖率、可回答性特征。
+      operationId: retrieve_debug_api_tutor_retrieve_debug_get
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          title: Q
+      - name: top_n
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 20
+          minimum: 1
+          default: 6
+          title: Top N
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/tutor/ask:
+    post:
+      tags:
+      - M7 AI 助教
+      summary: Tutor Ask
+      description: 回答学生问题，并把问题、回答、引用与知识点写入 asked 学习事件（M6-2）。
+      operationId: tutor_ask_api_tutor_ask_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TutorAskRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Tutor Ask Api Tutor Ask Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/tutor/ask/stream:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Tutor Ask Stream
+      description: SSE 流式回答；首字符延迟需真实模型实测，不在接口中承诺。
+      operationId: tutor_ask_stream_api_tutor_ask_stream_get
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          title: Q
+      - name: mode
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^(live|demo)$
+          default: live
+          title: Mode
+      - name: top_n
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+            maximum: 20
+            minimum: 1
+          - type: 'null'
+          title: Top N
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/traces/{trace_id}:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Trace Detail
+      description: 按 trace ID 回放一次模型调用（NF-14）。
+      operationId: trace_detail_api_traces__trace_id__get
+      parameters:
+      - name: trace_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Trace Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/cost-report:
+    get:
+      tags:
+      - M7 AI 助教
+      summary: Cost Report
+      description: 按功能汇总调用次数、token 与耗时（NF-4）。
+      operationId: cost_report_api_cost_report_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
   /health:
     get:
       tags:
@@ -4074,6 +4995,47 @@ components:
       - expires_at
       - courses
       title: AuthOut
+    Body_replace_api_v1_courses__course_id__resources__resource_id__versions_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+      type: object
+      required:
+      - file
+      title: Body_replace_api_v1_courses__course_id__resources__resource_id__versions_post
+    Body_upload_api_v1_courses__course_id__resources_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        title:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Title
+        description:
+          type: string
+          maxLength: 4000
+          title: Description
+          default: ''
+        chapter_id:
+          type: string
+          maxLength: 36
+          title: Chapter Id
+          default: ''
+        knowledge_point_ids:
+          type: string
+          maxLength: 5000
+          title: Knowledge Point Ids
+          default: '[]'
+      type: object
+      required:
+      - file
+      - title
+      title: Body_upload_api_v1_courses__course_id__resources_post
     ChapterCreate:
       properties:
         title:
@@ -4235,6 +5197,13 @@ components:
           - rag
           - 5e
           title: Mode
+        history:
+          type: string
+          enum:
+          - real
+          - synthetic
+          title: History
+          default: real
       additionalProperties: false
       type: object
       required:
@@ -4724,6 +5693,15 @@ components:
       required:
       - message
       title: FollowupIn
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     JobOut:
       properties:
         job_id:
@@ -5188,6 +6166,23 @@ components:
       - page
       - page_size
       title: Page[MemberOut]
+    ParseJob:
+      properties:
+        resource_id:
+          type: string
+          title: Resource Id
+        version:
+          type: integer
+          title: Version
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - resource_id
+      - version
+      - status
+      title: ParseJob
     PathPoint:
       properties:
         knowledge_point_id:
@@ -6015,6 +7010,66 @@ components:
             const: markdown
           - type: 'null'
           title: Format
+        chapter_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chapter Id
+        origin:
+          anyOf:
+          - type: string
+            enum:
+            - builtin
+            - upload
+          - type: 'null'
+          title: Origin
+        uploaded_by:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Uploaded By
+        status:
+          type: string
+          title: Status
+          default: ready
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        version:
+          type: integer
+          title: Version
+          default: 1
+        filename:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Filename
+        file_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: File Type
+        size_bytes:
+          type: integer
+          title: Size Bytes
+          default: 0
+        download_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Download Url
+        created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Created At
+        completed:
+          type: boolean
+          title: Completed
+          default: false
       type: object
       required:
       - id
@@ -6024,6 +7079,38 @@ components:
       - description
       - knowledge_point_ids
       title: ResourceOut
+    ResourcePatch:
+      properties:
+        title:
+          anyOf:
+          - type: string
+            maxLength: 200
+            minLength: 1
+          - type: 'null'
+          title: Title
+        description:
+          anyOf:
+          - type: string
+            maxLength: 4000
+          - type: 'null'
+          title: Description
+        chapter_id:
+          anyOf:
+          - type: string
+            maxLength: 36
+          - type: 'null'
+          title: Chapter Id
+        knowledge_point_ids:
+          anyOf:
+          - items:
+              type: string
+            type: array
+            maxItems: 100
+          - type: 'null'
+          title: Knowledge Point Ids
+      additionalProperties: false
+      type: object
+      title: ResourcePatch
     ResultOut:
       properties:
         attempt_id:
@@ -6395,6 +7482,31 @@ components:
       required:
       - estimated_minutes
       title: StudyTimeUpdate
+    Submission:
+      properties:
+        answer:
+          type: string
+          maxLength: 4000
+          minLength: 1
+          title: Answer
+        duration_seconds:
+          type: integer
+          maximum: 86400.0
+          minimum: 0.0
+          title: Duration Seconds
+          default: 0
+        mode:
+          type: string
+          enum:
+          - live
+          - demo
+          title: Mode
+          default: live
+      additionalProperties: false
+      type: object
+      required:
+      - answer
+      title: Submission
     SubmissionOut:
       properties:
         id:
@@ -6707,6 +7819,39 @@ components:
       - at
       - description
       title: TimelineItem
+    TutorAskRequest:
+      properties:
+        question:
+          type: string
+          maxLength: 2000
+          minLength: 1
+          title: Question
+        mode:
+          type: string
+          enum:
+          - live
+          - demo
+          title: Mode
+          default: live
+        top_n:
+          anyOf:
+          - type: integer
+            maximum: 20.0
+            minimum: 1.0
+          - type: 'null'
+          title: Top N
+          description: 进入上下文的片段数
+      additionalProperties: false
+      type: object
+      required:
+      - question
+      title: TutorAskRequest
+      description: 'M7 AI 助教的提问请求。
+
+
+        `mode` 与诊断接口保持同一语义：live 走真实大模型，demo 使用检索证据的演示回答。
+
+        提问者身份由服务端固定（Sprint 0 无登录鉴权），不接受客户端传入，避免越权写入他人事件。'
     UserOut:
       properties:
         id:
@@ -6731,6 +7876,72 @@ components:
       - display_name
       - role
       title: UserOut
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    VersionOut:
+      properties:
+        id:
+          type: string
+          title: Id
+        version:
+          type: integer
+          title: Version
+        filename:
+          type: string
+          title: Filename
+        file_type:
+          type: string
+          title: File Type
+        size_bytes:
+          type: integer
+          title: Size Bytes
+        status:
+          type: string
+          title: Status
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - version
+      - filename
+      - file_type
+      - size_bytes
+      - status
+      - error
+      - created_at
+      title: VersionOut
     WeakKnowledgePointOut:
       properties:
         name:

@@ -17,6 +17,7 @@
 **/*.egg-info
 data/index
 data/logs
+data/uploads
 .agents
 .codex
 .aws

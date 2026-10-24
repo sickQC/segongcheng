@@ -57,7 +57,7 @@ def _match_learning_history(hits: list[RetrievedChunk], index: RagIndex, history
                     for hit in hits
                     if hit.relevance >= PROFILE_MATCH_THRESHOLD and is_supporting(hit, index.cfg)
                     and any(
-                        kp is not None and kp.name == weak["rag_topic"]
+                        kp is not None and kp.name in (weak["rag_topic"], weak["name"])
                         for kp in (index.kp_by_id(kp_id) for kp_id in hit.chunk.kp_ids)
                     )
                 ),

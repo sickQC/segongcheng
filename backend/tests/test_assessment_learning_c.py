@@ -21,24 +21,11 @@ from app.services.c_model_gateway import ModelCallError, ModelReply, codex_argum
 @pytest.fixture
 def context(foundation):  # noqa: F811
     app, client, _ = foundation
-    headers = sign_in(client)
+    sign_in(client)
     cid = course_id(client)
     outline = client.get(f"/api/v1/courses/{cid}/outline").json()
-    chapter = outline["chapters"][0]
     points = {point["code"]: point for row in outline["chapters"] for point in row["knowledge_points"]}
-    response = client.post(
-        f"/api/v1/chapters/{chapter['id']}/knowledge-points",
-        headers=headers,
-        json={
-            "code": "KP-BOUND-01",
-            "name": "边界值分析",
-            "definition": "选取边界及其紧邻值进行测试。",
-            "difficulty": 2,
-            "bloom_level": "apply",
-        },
-    )
-    assert response.status_code == 201, response.text
-    points["KP-BOUND-01"] = response.json()
+    assert "KP-BOUND-01" in points
     return app, client, cid, points
 
 

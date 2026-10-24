@@ -7,7 +7,7 @@ from sqlalchemy import select
 
 from app.api.deps import CurrentUser, Db, Teacher, course_access
 from app.core.errors import fail
-from app.models import CourseMember, KnowledgePoint
+from app.models import CourseMember
 from app.schemas.foundation import ErrorResponse
 from app.schemas.workspace import (
     AttemptOut,
@@ -28,11 +28,11 @@ from app.schemas.workspace import (
     TeacherStudentOut,
 )
 from app.services import assessment, tutor
-from app.services.course_documents import markdown_document
+from app.services import resources as resource_service
 from app.services.diagnosis import run_diagnosis
-from app.services.learning_curriculum import LECTURE_SECTIONS
-from app.services.personalization import DEMO_COURSE_ID, demo_history
+from app.services.personalization import demo_history
 from app.services.profile import build_report
+from app.services.resource_uploads import VIDEO_TYPES
 from app.services.teacher_dashboard import dashboard as build_dashboard
 from app.services.teacher_dashboard import student_report as build_student_report
 from app.services.tutor import TutorError
@@ -55,14 +55,21 @@ def learner_demo(user, course_id):
     return history
 
 
-def demo_answer(request, user, course_id, message, resource_id):
-    history = learner_demo(user, course_id)
+def course_answer(request, db, user, course_id, message, resource_id, history=None):
     settings = request.app.state.settings
-    index = tutor.load_index(settings)
-    titles = index.doc_titles()
-    if resource_id != "kb:all" and not (resource_id.startswith("kb:") and resource_id[3:] in titles):
-        fail(404, "RESOURCE_NOT_FOUND", "课程讲义不存在")
-    doc_ids = None if resource_id == "kb:all" else [resource_id[3:]]
+    if resource_id == "kb:all":
+        doc_ids = None
+    else:
+        resource = resource_service.get_resource(db, course_id, resource_id)
+        if resource_service.version_for(db, resource).file_type in VIDEO_TYPES:
+            fail(422, "VIDEO_HAS_NO_TEXT", "视频可直接播放；课程答疑请选择配套讲义")
+        if resource_service.version_for(db, resource).status != "ready":
+            fail(409, "RESOURCE_NOT_READY", "所选资料尚未解析成功")
+        doc_ids = [resource.builtin_key or resource.id]
+    index = resource_service.course_index(db, settings, course_id)
+    if not index.chunks:
+        result = tutor.record_empty_course(request.app.state.sessions, settings, user.id, course_id, message)
+        return ChatOut(message=result["answer"], citations=[], phase=None)
     try:
         result = tutor.ask(
             request.app.state.sessions,
@@ -74,6 +81,7 @@ def demo_answer(request, user, course_id, message, resource_id):
             feature="course.chat",
             learner_history=history,
             doc_ids=doc_ids,
+            index=index,
         )
     except TutorError as exc:
         fail(503, exc.code, exc.message)
@@ -84,9 +92,9 @@ def demo_answer(request, user, course_id, message, resource_id):
         message=result["answer"],
         citations=[
             CitationOut(
-                resource_id="kb:" + citation["doc_id"],
+                resource_id=("kb:" + citation["doc_id"] if citation["doc_id"].startswith("SE-") else citation["doc_id"]),
                 title=citation["doc_title"] + " · " + citation["section"],
-                page=None,
+                page=int(citation["section"].split()[1]) if citation["section"].startswith("第 ") and citation["section"].endswith(" 页") else None,
                 seconds=None,
                 section=citation["section"],
             )
@@ -118,55 +126,30 @@ def student_access(db, user, course_id, student_id):
         fail(404, "STUDENT_NOT_FOUND", "该课程中不存在此学生")
 
 
-@router.get("/resources", response_model=list[ResourceOut], summary="演示讲义列表")
+@router.get("/resources", response_model=list[ResourceOut], summary="本课程资料列表")
 def resources(course_id: str, db: Db, user: CurrentUser, request: Request):
     course_access(db, user, course_id)
-    if course_id != DEMO_COURSE_ID:
-        pending()
-    titles = tutor.load_index(request.app.state.settings).doc_titles()
-    points = db.scalars(select(KnowledgePoint).where(KnowledgePoint.course_id == course_id)).all()
-    return [
-        ResourceOut(
-            id="kb:all",
-            title="全部内置讲义 · AI 问答",
-            type="doc",
-            url=None,
-            description="浏览下方讲义原文，或让学习助手检索全部内置讲义。",
-            knowledge_point_ids=[],
-        ),
-        *[
-            ResourceOut(
-                id="kb:" + doc_id,
-                title=title,
-                type="doc",
-                url=None,
-                description="可直接阅读讲义原文；学习助手将依据当前讲义回答问题。",
-                knowledge_point_ids=[
-                    kp.id for kp in points
-                    if LECTURE_SECTIONS.get(kp.code, (None,))[0] == "kb:" + doc_id
-                ],
-                format="markdown",
-            )
-            for doc_id, title in sorted(titles.items())
-        ],
-    ]
+    return resource_service.list_resources(db, course_id, student_id=user.id if user.role == "student" else None)
 
 
 @router.get("/resources/{resource_id}/content", response_model=ResourceContentOut,
-            summary="读取内置讲义原文")
+            summary="读取本课程资料解析正文")
 def resource_content(course_id: str, resource_id: str, db: Db, user: CurrentUser, request: Request):
     course_access(db, user, course_id)
-    if course_id != DEMO_COURSE_ID:
-        pending()
-    return markdown_document(request.app.state.settings, resource_id)
+    content = resource_service.document_content(db, course_id, resource_id)
+    if user.role == "student":
+        resource = resource_service.get_resource(db, course_id, resource_id)
+        resource_service.record_access(db, user.id, resource, resource_service.version_for(db, resource), "preview_text")
+    return content
 
 
-@router.post("/chat", response_model=ChatOut, summary="演示课程个性化答疑；5E使用独立会话接口")
+@router.post("/chat", response_model=ChatOut, summary="依据当前课程资料答疑；5E使用独立会话接口")
 def chat(course_id: str, body: ChatIn, db: Db, user: CurrentUser, request: Request):
     course_access(db, user, course_id)
     if body.mode == "5e":
         pending()
-    return demo_answer(request, user, course_id, body.message, body.resource_id)
+    history = learner_demo(user, course_id) if body.history == "synthetic" else None
+    return course_answer(request, db, user, course_id, body.message, body.resource_id, history)
 
 
 @router.get("/quizzes", response_model=list[QuizOut], summary="可参加测验列表")
@@ -239,7 +222,7 @@ def report(
 @router.post("/report/followup", response_model=ChatOut, summary="基于演示学习历史的个性化提问")
 def followup(course_id: str, body: FollowupIn, db: Db, user: CurrentUser, request: Request):
     course_access(db, user, course_id)
-    return demo_answer(request, user, course_id, body.message, "kb:all")
+    return course_answer(request, db, user, course_id, body.message, "kb:all", learner_demo(user, course_id))
 
 
 @router.get("/dashboard", response_model=DashboardOut, summary="教师课程学情汇总")

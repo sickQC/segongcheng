@@ -55,9 +55,13 @@ class RagIndex:
 
     # ------------------------------------------------------------------ build
     def build(self) -> "RagIndex":
+        chunks, parents, raw_kps = load_kb(self.cfg.kb_dir, self.cfg.chunk)
+        return self.build_materials(chunks, parents, raw_kps)
+
+    def build_materials(self, chunks, parents, raw_kps) -> "RagIndex":
+        """Build an in-memory course index from authorized database material."""
         t0 = time.perf_counter()
         cfg = self.cfg
-        chunks, parents, raw_kps = load_kb(cfg.kb_dir, cfg.chunk)
 
         self.synonyms = load_synonyms(cfg.synonyms_path)
         self.chunks = chunks

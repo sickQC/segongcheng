@@ -6,6 +6,7 @@ from app.models.legacy import Diagnosis, LearningEvent, ModelTrace
 from app.models.practice import PracticeExercise, PracticeSubmission
 from app.models.profile import MasteryProfile, ProfileApplication, ProfileSnapshot
 from app.models.recommendation import KnowledgeEdge, Recommendation, RecommendationFeedback
+from app.models.resources import CourseResource, ResourceChunk, ResourceVersion, VideoCompletion
 
 __all__ = [
     "Chapter",
@@ -30,4 +31,8 @@ __all__ = [
     "KnowledgeEdge",
     "Recommendation",
     "RecommendationFeedback",
+    "CourseResource",
+    "ResourceVersion",
+    "ResourceChunk",
+    "VideoCompletion",
 ]

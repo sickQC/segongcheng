@@ -20,6 +20,18 @@ class ResourceOut(BaseModel):
     description: str
     knowledge_point_ids: list[str]
     format: Literal["markdown"] | None = None
+    chapter_id: str | None = None
+    origin: Literal["builtin", "upload"] | None = None
+    uploaded_by: str | None = None
+    status: str = "ready"
+    error: str | None = None
+    version: int = 1
+    filename: str | None = None
+    file_type: str | None = None
+    size_bytes: int = 0
+    download_url: str | None = None
+    created_at: datetime | None = None
+    completed: bool = False
 
 
 class ResourceContentOut(BaseModel):
@@ -46,6 +58,7 @@ class ChatIn(Input):
     resource_id: str = Field(min_length=1, max_length=100)
     message: str = Field(min_length=1, max_length=2000)
     mode: Literal["rag", "5e"]
+    history: Literal["real", "synthetic"] = "real"
 
 
 class FollowupIn(Input):

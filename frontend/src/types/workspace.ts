@@ -1,4 +1,5 @@
-export interface Resource { id: string; title: string; type: 'video' | 'doc'; url: string | null; description: string; knowledge_point_ids: string[]; format?: 'markdown' | null }
+export interface Resource { id: string; title: string; type: 'video' | 'doc'; url: string | null; description: string; knowledge_point_ids: string[]; format?: 'markdown' | null; chapter_id?: string | null; origin?: 'builtin' | 'upload' | null; uploaded_by?: string | null; status?: string; error?: string | null; version?: number; filename?: string | null; file_type?: string | null; size_bytes?: number; download_url?: string | null; completed?: boolean }
+export interface ResourceVersion { id: string; version: number; filename: string; file_type: string; size_bytes: number; status: string; error: string | null; created_at: string }
 export interface ResourceContent { resource_id: string; title: string; markdown: string }
 export interface Citation { resource_id: string; title: string; page: number | null; seconds: number | null; section?: string | null }
 export interface ChatReply { message: string; citations: Citation[]; phase: string | null; personalization?: { source: 'synthetic'; matched_knowledge_points: string[]; similarity: number } | null }

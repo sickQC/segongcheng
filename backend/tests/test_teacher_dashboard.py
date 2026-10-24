@@ -5,6 +5,7 @@ from test_foundation import PASSWORD, course_id, foundation, sign_in  # noqa: F4
 
 from app.schemas.diagnosis_report import ReportCreate
 from app.services.evidence_diagnosis import collect_snapshot
+from app.services.seed import seed_id
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from scripts.seed_teacher_demo import seed  # noqa: E402
@@ -41,14 +42,14 @@ def test_demo_seed_and_teacher_dashboard_keep_sources_separate(foundation):  # n
     with app.state.sessions() as db:
         snapshot = collect_snapshot(
             db, cid, learner["id"],
-            ReportCreate(knowledge_point_ids=[demo["points"][0]["knowledge_point_id"]], days=30),
+            ReportCreate(knowledge_point_ids=[seed_id("KP-REQ-01")], days=30),
         )
     assert snapshot["points"][0]["events"] == []
     no_data = next(row for row in demo["students"] if row["username"] == "demo_student_10")
     assert no_data["accuracy_percent"] is None and no_data["question_count"] == 0
 
     practice = next(row for row in client.get(base + "/practices").json()
-                    if row["knowledge_point_id"] == demo["points"][0]["knowledge_point_id"])
+                    if row["knowledge_point_id"] == seed_id("KP-REQ-01"))
     progress = client.get(base + f"/practices/{practice['id']}/progress").json()
     demo_progress = next(row for row in progress["students"] if row["username"] == "demo_student_01")
     assert demo_progress["latest_submission"]["synthetic"] is True

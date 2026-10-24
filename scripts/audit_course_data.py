@@ -14,8 +14,18 @@ def audit(db, course_id):
     from fastapi import HTTPException
     from sqlalchemy import select
 
-    from app.models import Chapter, Course, CourseQuiz, KnowledgeEdge, KnowledgePoint, PracticeExercise
+    from app.models import (
+        Chapter,
+        Course,
+        CourseQuiz,
+        CourseResource,
+        KnowledgeEdge,
+        KnowledgePoint,
+        PracticeExercise,
+        ResourceVersion,
+    )
     from app.services.prerequisites import ordered_graph
+    from app.services.resource_uploads import VIDEO_TYPES
 
     if db.get(Course, course_id) is None:
         raise ValueError("Course not found")
@@ -24,6 +34,11 @@ def audit(db, course_id):
     edges = db.scalars(select(KnowledgeEdge).where(KnowledgeEdge.course_id == course_id)).all()
     quizzes = db.scalars(select(CourseQuiz).where(CourseQuiz.course_id == course_id)).all()
     practices = db.scalars(select(PracticeExercise).where(PracticeExercise.course_id == course_id)).all()
+    resource_rows = db.execute(select(CourseResource, ResourceVersion.file_type).join(ResourceVersion, (
+        ResourceVersion.resource_id == CourseResource.id
+    ) & (ResourceVersion.version == CourseResource.current_version)).where(
+        CourseResource.course_id == course_id, CourseResource.deleted_at.is_(None), ResourceVersion.status == "ready"
+    )).all()
     issues = []
     chapter_ids, point_ids = {p.id for p in chapters}, {p.id for p in points}
     if any(p.chapter_id not in chapter_ids for p in points):
@@ -51,7 +66,8 @@ def audit(db, course_id):
             issues.append("practice_scope")
     counts = {"chapters": len(chapters), "knowledge_points": len(points), "prerequisites": len(edges),
               "unique_objective_questions": len(content), "published_question_instances": raw_questions,
-              "practice_exercises": len(practices), "videos": None, "documents": None}
+              "practice_exercises": len(practices), "videos": sum(kind in VIDEO_TYPES for _, kind in resource_rows),
+              "documents": sum(kind not in VIDEO_TYPES for _, kind in resource_rows)}
     targets = {"chapters": 2, "knowledge_points": 30, "prerequisites": 40,
                "unique_objective_questions": 100, "videos": 10, "documents": 10}
     checks = {key: {"count": counts[key], "minimum": minimum,
@@ -62,7 +78,7 @@ def audit(db, course_id):
             "missing_objective_types": sorted({"single", "multiple", "boolean", "fill"} - types),
             "issues": sorted(set(issues)), "ready": not issues and all(c["status"] == "passed" for c in checks.values())
             and {"single", "multiple", "boolean", "fill"} <= types,
-            "limitations": "Counts only; no question answers or content quality claim. Resource tables are not implemented, so video/document counts remain unknown. Practice questions reported separately; unique objective stems/types/options deduplicated across quizzes. Operator tool, not a student-facing export."}
+            "limitations": "Counts only; no question answers or content quality claim. Documents and videos count active ready current versions. Video completion means opened, not measured watch time. Practice questions reported separately; unique objective stems/types/options deduplicated across quizzes. Operator tool, not a student-facing export."}
 
 
 def main():

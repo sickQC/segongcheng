@@ -2,6 +2,8 @@
 
 更新：2026-10-14。以下为已实现账号课程范围；未来功能仍以需求规划和接口草案为目标。
 
+2026-10-24 补充：下表保留 P1 历史阶段，不代表当前全平台状态。课程资料模块已实现 M3 的上传校验、文本解析、预览下载、关联编辑及版本管理，当前课程 RAG 答疑已解除固定演示课程和学生限制。实现路径为 `routes/resources`、`services/resources`、`services/document_parser` 与迁移 `0012`；对应 `backend/tests/test_resources.py`、`test_course_documents.py`、`test_learning_curriculum.py`。格式支持和验证边界见[本轮说明](updates/2026-10-24-course-resources.md)。
+
 | 需求 | 用户故事 | 模块/接口 | 测试 | 状态 |
 |---|---|---|---|---|
 | M1-1 | US-01 登录 | routes/auth、security、deps；/api/v1/auth/* | test_login_logout_and_no_secret_leak、test_expiry_rotation_and_independent_sessions | 已实现/验证 |

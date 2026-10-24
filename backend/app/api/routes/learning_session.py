@@ -53,7 +53,7 @@ def templates(course_id: str, db: Db, user: CurrentUser, request: Request):
             "chapter_id": chapter.id,
             "chapter_title": chapter.title,
             "chapter_order": chapter.sort_order,
-            "lectures": lecture_links(lecture_materials(request.app.state.settings, course_id, kp.code)),
+            "lectures": lecture_links(lecture_materials(request.app.state.settings, course_id, kp.code, db=db)),
         }
         for kp, chapter in points
         if kp.code in TEMPLATES

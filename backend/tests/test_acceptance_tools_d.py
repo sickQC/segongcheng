@@ -36,9 +36,9 @@ def test_inventory_is_read_only_and_resources_remain_unknown(scope):  # noqa: F8
     with app.state.sessions() as db:
         before = [(p.id, p.name) for p in db.scalars(select(KnowledgePoint))]
         report = audit(db, course)
-        assert report["counts"]["chapters"] == 2 and report["counts"]["knowledge_points"] == 4
+        assert report["counts"]["chapters"] == 2 and report["counts"]["knowledge_points"] == 5
         assert report["checks"]["knowledge_points"]["status"] == "shortfall"
-        assert report["checks"]["videos"]["status"] == "unknown" and not report["ready"]
+        assert report["checks"]["videos"]["status"] == "shortfall" and report["counts"]["videos"] == 0 and not report["ready"]
         assert [(p.id, p.name) for p in db.scalars(select(KnowledgePoint))] == before
 
 

@@ -6,11 +6,12 @@ export class ApiError extends Error {
 export async function api<T>(path: string, options: { method?: string; body?: unknown } = {}): Promise<T> {
   const method = options.method ?? 'GET'
   const headers: Record<string, string> = {}
-  if (options.body !== undefined) headers['Content-Type'] = 'application/json'
+  const multipart = options.body instanceof FormData
+  if (options.body !== undefined && !multipart) headers['Content-Type'] = 'application/json'
   if (method !== 'GET' && csrfToken) headers['X-CSRF-Token'] = csrfToken
   const response = await fetch('/api/v1' + path, {
-    method, headers, credentials: 'same-origin', signal: AbortSignal.timeout(15000),
-    body: options.body === undefined ? undefined : JSON.stringify(options.body),
+    method, headers, credentials: 'same-origin', signal: AbortSignal.timeout(multipart || path.endsWith('/chat') ? 120000 : 15000),
+    body: options.body === undefined ? undefined : multipart ? options.body as FormData : JSON.stringify(options.body),
   })
   if (response.status === 204) return undefined as T
   const data = await response.json()

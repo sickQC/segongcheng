@@ -3,11 +3,55 @@ from uuid import NAMESPACE_URL, uuid5
 from sqlalchemy import select
 
 from app.core.security import hash_password
-from app.models import Chapter, Course, CourseMember, KnowledgePoint, User
+from app.models import Chapter, Course, CourseMember, KnowledgePoint, PracticeExercise, User
+from app.schemas.recommendation import EdgeCreate
+from app.services.prerequisites import add_edge, lock_course
 
 
 def seed_id(name):
     return str(uuid5(NAMESPACE_URL, "se-learning/seed/" + name))
+
+
+def seed_boundary_value(db):
+    """Complete the existing seed course without replacing teacher-authored content."""
+    course_id = seed_id("course")
+    if db.get(Course, course_id) is None:
+        raise ValueError("请先初始化预置课程，再补充边界值分析")
+    lock_course(db, course_id)
+    prerequisite = db.scalar(select(KnowledgePoint).where(
+        KnowledgePoint.course_id == course_id, KnowledgePoint.code == "KP-TEST-01"
+    ))
+    if prerequisite is None:
+        raise ValueError("预置课程缺少等价类划分知识点，未补充边界值分析")
+    point = db.scalar(select(KnowledgePoint).where(
+        KnowledgePoint.course_id == course_id, KnowledgePoint.code == "KP-BOUND-01"
+    ))
+    if point is None:
+        point = KnowledgePoint(
+            id=seed_id("KP-BOUND-01"), course_id=course_id, chapter_id=prerequisite.chapter_id,
+            code="KP-BOUND-01", name="边界值分析",
+            definition="优先检查允许范围的边界及其邻近值，结合等价类划分设计测试；"
+                       "先明确端点是否包含和输入的最小变化单位，再说明各测试值的预期结果。",
+            difficulty=2, bloom_level="apply", estimated_minutes=10,
+        )
+        db.add(point)
+        db.flush()
+    chapter = db.get(Chapter, point.chapter_id)
+    if chapter is None or chapter.course_id != course_id:
+        raise ValueError("边界值分析的章节归属无效，未补充配套内容")
+    exercise = db.scalar(select(PracticeExercise).where(PracticeExercise.knowledge_point_id == point.id))
+    if exercise is None:
+        exercise = PracticeExercise(
+            id=seed_id("KP-BOUND-01/practice"), course_id=course_id,
+            chapter_id=point.chapter_id, knowledge_point_id=point.id,
+            question_text="某系统要求密码长度为 8–20 个字符，包含两端；本题只考虑字符数，"
+                          "长度按整数计，其他密码规则均已满足。请设计覆盖上下边界及内外紧邻长度的测试用例，"
+                          "逐一说明预期接受还是拒绝及判断依据，并解释只测试长度为 12 的密码有什么不足。",
+        )
+        db.add(exercise)
+        db.flush()
+    edge = add_edge(db, course_id, EdgeCreate(from_kp_id=prerequisite.id, to_kp_id=point.id))
+    return {"knowledge_point_id": point.id, "exercise_id": exercise.id, "prerequisite_id": edge.id}
 
 
 def seed_data(db, password):
@@ -104,4 +148,8 @@ def seed_data(db, password):
                 )
             )
     db.flush()
-    return {"accounts": [u.username for u in users], "course_id": course_id}
+    boundary = seed_boundary_value(db)
+    from app.services.resources import import_builtins
+
+    import_builtins(db, course_id)
+    return {"accounts": [u.username for u in users], "course_id": course_id, "boundary_value": boundary}

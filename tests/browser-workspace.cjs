@@ -20,7 +20,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000';
    const route=suffix==='dashboard'?`/teacher/courses/${cid}/dashboard`:`/courses/${cid}/${suffix}`;
    await page.goto(base+'/#'+route);
    await page.getByRole('heading',{name:title,exact:true}).waitFor();
-   if(suffix==='learn') await page.getByRole('heading',{name:'全部内置讲义 · AI 问答',exact:true}).waitFor();
+   if(suffix==='learn') await page.getByRole('heading',{name:/^全部课程资料/}).waitFor();
    else await page.getByText('此业务尚未实现；可手动开启界面预览查看布局。',{exact:true}).waitFor();
    await page.locator('.el-switch').click();
    await page.getByText(/界面样例：所有内容仅供预览/).waitFor();
@@ -61,7 +61,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000';
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`${suffix} mobile overflow`);
    await page.setViewportSize({width:1440,height:1000});
    await page.locator('.el-switch').click();
-   if(suffix==='learn') await page.getByRole('heading',{name:'全部内置讲义 · AI 问答',exact:true}).waitFor();
+   if(suffix==='learn') await page.getByRole('heading',{name:/^全部课程资料/}).waitFor();
    else await page.getByText('此业务尚未实现；可手动开启界面预览查看布局。',{exact:true}).waitFor();
   }
   assert.deepEqual(writes,[], 'preview must not POST business data');

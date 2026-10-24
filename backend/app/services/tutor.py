@@ -68,7 +68,7 @@ def reset_cache() -> None:
         _index_cache.clear()
 
 
-def build_rag(settings, mode: str) -> TutorRAG:
+def build_rag(settings, mode: str, index=None) -> TutorRAG:
     if mode == "demo" and not settings.enable_demo:
         raise TutorError("DEMO_DISABLED", "模拟演示已禁用。")
     cfg = RagConfig.from_settings(settings)
@@ -80,7 +80,7 @@ def build_rag(settings, mode: str) -> TutorRAG:
         llm: BaseLLM = get_llm(replace(cfg.llm, provider="openai"))
     else:
         llm = get_llm(replace(cfg.llm, provider="offline"))
-    return TutorRAG(load_index(settings), cfg, llm=llm)
+    return TutorRAG(index if index is not None else load_index(settings), cfg, llm=llm)
 
 
 def _status_of(result, mode: str) -> tuple[str, str | None]:
@@ -109,12 +109,13 @@ def ask(
     feature: str = FEATURE,
     learner_history: dict | None = None,
     doc_ids: list[str] | None = None,
+    index=None,
 ) -> dict:
     """回答一个学生问题，并把问题、回答、引用与知识点写入学习事件（M6-2）。"""
     started = time.perf_counter()
 
     try:
-        rag = build_rag(settings, mode)
+        rag = build_rag(settings, mode, index=index)
     except TutorError as exc:
         # 与诊断接口一致：模型暂时不可用时也要先把学生的问题存下来，不能丢数据。
         # 这里写入的是失败记录，不写入任何伪造的回答。
@@ -344,6 +345,17 @@ def _persist(
 def kb_overview(settings) -> dict:
     index = load_index(settings)
     return {"stats": index.stats, "documents": index.doc_titles()}
+
+
+def record_empty_course(sessions, settings, actor, course_id, question):
+    answer = "本课程暂无解析成功的资料，请教师先上传并完成解析后再提问。"
+    return _persist(
+        sessions, actor=actor, feature="course.chat", question=question, mode="live", answer=answer,
+        citations=[], abstained=True, guardrail={"action": "allow", "reasons": [], "message": ""},
+        citation_report={}, kp_ids=[], status="abstained", error_code=None, model_name="not-called",
+        latency_ms=0, usage=None, input_summary={"question_length": len(question), "retrieval_count": 0},
+        details={"reason": "no_ready_course_resources"}, course_id=course_id,
+    )
 
 
 def knowledge_points(settings, *, doc_id: str | None = None, keyword: str | None = None) -> dict:

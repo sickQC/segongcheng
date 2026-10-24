@@ -47,6 +47,6 @@ def test_repeated_initialization_preserves_existing_data(tmp_path, monkeypatch):
             assert db.scalar(select(User).where(User.username == "teacher")).password_hash == original_hash
             assert db.get(Course, original_course).title == "Teacher-edited course retained"
             assert len(list(db.scalars(select(User)))) == 3
-            assert db.execute(text("SELECT version_num FROM alembic_version")).scalar() == "0011"
+            assert db.execute(text("SELECT version_num FROM alembic_version")).scalar() == "0013"
     finally:
         engine.dispose()

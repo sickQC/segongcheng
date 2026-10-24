@@ -3,7 +3,14 @@ from sqlalchemy import select
 
 from app.api.deps import Db, Teacher, course_access
 from app.core.errors import fail
-from app.models import Chapter, KnowledgeEdge, KnowledgePoint, MasteryProfile, PracticeExercise
+from app.models import (
+    Chapter,
+    CourseResource,
+    KnowledgeEdge,
+    KnowledgePoint,
+    MasteryProfile,
+    PracticeExercise,
+)
 from app.schemas.foundation import ChapterOut, ChapterPatch, KpCreate, KpOut, KpPatch
 from app.services.prerequisites import lock_course
 
@@ -63,6 +70,11 @@ def delete_kp(kp_id: str, user: Teacher, db: Db):
         fail(409, "PRACTICE_EXISTS", "该知识点已有小练习，暂不可删除")
     if db.scalar(select(MasteryProfile).where(MasteryProfile.knowledge_point_id == kp_id)):
         fail(409, "PROFILE_EXISTS", "该知识点已有学习画像记录，暂不可删除")
+    resources = db.scalars(select(CourseResource).where(
+        CourseResource.course_id == row.course_id, CourseResource.deleted_at.is_(None)
+    ))
+    if any(kp_id in resource.knowledge_point_ids for resource in resources):
+        fail(409, "RESOURCE_EXISTS", "该知识点关联课程资料，请先在资料管理中解除关联")
     db.delete(row)
     db.flush()
     return Response(status_code=204)

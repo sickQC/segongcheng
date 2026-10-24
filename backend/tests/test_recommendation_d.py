@@ -6,7 +6,7 @@ from uuid import uuid4
 
 import pytest
 from fastapi import HTTPException
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select
 from test_evidence_diagnosis import events, mock
 from test_foundation import course_id, foundation, sign_in  # noqa: F401
 
@@ -23,7 +23,10 @@ def graph(foundation):  # noqa: F811
     headers = sign_in(client)
     course = course_id(client)
     outline = client.get(f"/api/v1/courses/{course}/outline").json()
-    points = [p for ch in outline["chapters"] for p in ch["knowledge_points"]]
+    # These cases construct their own four-node graphs, independent of demo content.
+    with app.state.sessions.begin() as db:
+        db.execute(delete(KnowledgeEdge).where(KnowledgeEdge.course_id == course))
+    points = [p for ch in outline["chapters"] for p in ch["knowledge_points"] if p["code"] != "KP-BOUND-01"]
     return app, client, headers, course, points
 
 

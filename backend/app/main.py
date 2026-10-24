@@ -16,6 +16,7 @@ from app.api.routes import (
     practice,
     profile,
     recommendation,
+    resources,
     workspace,
 )
 from app.api.routes.dev import create_dev_router
@@ -26,6 +27,7 @@ from app.models import Diagnosis, LearningEvent, ModelTrace, User
 from app.schemas.foundation import ErrorResponse
 from app.services.evidence_diagnosis import recover_reports
 from app.services.learning_session import recover_interrupted
+from app.services.resources import recover_parsing
 
 
 def create_app(settings=None):
@@ -57,6 +59,9 @@ def create_app(settings=None):
         if inspect(engine).has_table("diagnosis_reports"):
             with sessions.begin() as session:
                 recover_reports(session)
+        if inspect(engine).has_table("resource_versions"):
+            with sessions.begin() as session:
+                recover_parsing(session)
         yield
         engine.dispose()
 
@@ -74,6 +79,7 @@ def create_app(settings=None):
     api.include_router(learning_session.router)
     api.include_router(diagnosis_report.router)
     api.include_router(workspace.router)
+    api.include_router(resources.router)
     api.include_router(profile.router)
     api.include_router(recommendation.router)
     app.include_router(api)

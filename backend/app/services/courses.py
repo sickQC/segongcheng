@@ -1,6 +1,6 @@
 from sqlalchemy import select
 
-from app.models import Chapter, Course, CourseMember, KnowledgePoint
+from app.models import Chapter, Course, CourseMember, CourseResource, KnowledgePoint
 from app.schemas.foundation import ChapterOutline, CourseOut, KpOut, Outline
 
 
@@ -31,12 +31,18 @@ def outline(db, course):
     points = db.scalars(
         select(KnowledgePoint).where(KnowledgePoint.course_id == course.id).order_by(KnowledgePoint.code)
     ).all()
+    resources = db.scalars(select(CourseResource).where(
+        CourseResource.course_id == course.id, CourseResource.deleted_at.is_(None)
+    )).all()
     return Outline(
         course=CourseOut.model_validate(course),
         chapters=[
             ChapterOutline(
                 **{k: getattr(ch, k) for k in ("id", "course_id", "title", "sort_order")},
-                knowledge_points=[KpOut.model_validate(kp) for kp in points if kp.chapter_id == ch.id],
+                knowledge_points=[KpOut.model_validate(kp).model_copy(update={
+                    "resource_ids": ["kb:" + r.builtin_key if r.builtin_key else r.id
+                                     for r in resources if kp.id in r.knowledge_point_ids]
+                }) for kp in points if kp.chapter_id == ch.id],
             )
             for ch in chapters
         ],

@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[3]
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ROOT / ".env", env_file_encoding="utf-8", extra="ignore")
     database_url: str = f"sqlite:///{(ROOT / 'backend' / 'learning.db').as_posix()}"
+    video_upload_dir: Path = ROOT / "data" / "uploads" / "videos"
     llm_api_key: SecretStr = SecretStr("")
     llm_base_url: str = "https://api.deepseek.com"
     llm_model: str = "deepseek-flash"

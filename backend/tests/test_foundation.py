@@ -40,6 +40,7 @@ def foundation(request, tmp_path):
         enable_dev_routes=False,
         allowed_origins=["http://testserver"],
         seed_password=PASSWORD,
+        video_upload_dir=tmp_path / "videos",
     )
     app = create_app(settings)
     try:
@@ -229,7 +230,11 @@ def test_delete_and_unknown_resources(foundation):
     _, c, _ = foundation
     h = sign_in(c)
     course = course_id(c)
-    kp = c.get(f"/api/v1/courses/{course}/outline").json()["chapters"][0]["knowledge_points"][0]
+    chapter = c.get(f"/api/v1/courses/{course}/outline").json()["chapters"][0]
+    kp = c.post(f"/api/v1/chapters/{chapter['id']}/knowledge-points", headers=h, json={
+        "code": "KP-DELETE", "name": "待删除知识点", "definition": "尚无资料或学习记录", "difficulty": 1,
+        "bloom_level": "remember",
+    }).json()
     assert c.delete(f"/api/v1/knowledge-points/{kp['id']}", headers=h).status_code == 204
     assert c.delete(f"/api/v1/knowledge-points/{kp['id']}", headers=h).status_code == 404
     assert c.get("/api/v1/courses/missing/outline").status_code == 404
@@ -250,7 +255,7 @@ def test_seed_is_idempotent_and_preserves_changes(foundation):
         assert course.title == "Edited title"
         assert db.scalar(select(func.count()).select_from(Course)) == 1
         assert db.scalar(select(func.count()).select_from(Chapter)) == 2
-        assert db.scalar(select(func.count()).select_from(KnowledgePoint)) == 4
+        assert db.scalar(select(func.count()).select_from(KnowledgePoint)) == 5
         assert db.scalar(select(func.count()).select_from(CourseMember)) == 3
 
 
@@ -319,7 +324,7 @@ def test_workspace_contracts_do_not_fake_success(foundation):
         c.post(
             base + "/chat", json={"resource_id": "r", "message": "question", "mode": "rag"}, headers=h
         ).status_code
-        == 501
+        == 404
     )
     assert c.post(base + "/attempts", json={"quiz_id": "q"}, headers=ORIGIN).status_code == 403
     assert (
@@ -370,7 +375,7 @@ def test_synthetic_history_personalizes_only_related_questions(foundation, monke
     question = "功能性需求与非功能性需求有什么区别？"
     first = c.post(
         base + "/chat",
-        json={"resource_id": "kb:all", "message": question, "mode": "rag"},
+        json={"resource_id": "kb:all", "message": question, "mode": "rag", "history": "synthetic"},
         headers=sign_in(c, "student01"),
     )
     assert first.status_code == 200, first.text

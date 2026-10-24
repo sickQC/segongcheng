@@ -185,7 +185,7 @@ def create_session(sessions, student_id, body, settings=None):
                     "name": kp.name,
                     "definition": kp.definition,
                     "chapter": chapter_for(db, kp),
-                    "course_materials": lecture_materials(settings, body.course_id, kp.code),
+                    "course_materials": lecture_materials(settings, body.course_id, kp.code, db=db),
                     "template": template,
                     "source": source,
                 },

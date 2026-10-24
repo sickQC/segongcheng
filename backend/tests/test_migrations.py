@@ -74,7 +74,7 @@ def test_foundation_0002_upgrades_without_losing_accounts(tmp_path, monkeypatch)
     command.upgrade(config, "head")
     with engine.connect() as conn:
         assert conn.execute(text("SELECT username FROM users WHERE id='preserved'")).scalar() == "preserved"
-        assert conn.execute(text("SELECT version_num FROM alembic_version")).scalar() == "0011"
+        assert conn.execute(text("SELECT version_num FROM alembic_version")).scalar() == "0013"
     assert {"mastery_profiles", "profile_applications"} <= set(inspect(engine).get_table_names())
     assert {"knowledge_edges", "recommendations"} <= set(inspect(engine).get_table_names())
     assert "recommendation_feedback" in inspect(engine).get_table_names()
