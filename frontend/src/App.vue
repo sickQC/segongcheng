@@ -20,7 +20,7 @@ const courseLinks = computed(() => {
     { label: isTeacher.value ? '测验管理' : '课程测验', path: `${base}/quiz`, detail: isTeacher.value ? '发布测验与题目设置' : '作答、成绩与错题诊断' },
   ]
   if (isTeacher.value) links.push({ label: '教师看板', path: `/teacher${base}/dashboard`, detail: '班级学情与学生原始作答' })
-  else links.push({ label: '学习报告', path: `${base}/report`, detail: '学习记录与综合诊断' })
+  else links.push({ label: '学习报告', path: `${base}/report`, detail: '学习记录与综合诊断' }, { label: '知识图谱（演示）', path: `${base}/graph-demo`, detail: '示例知识结构与学习路径' })
   return links
 })
 let sidebarGeneration = 0
@@ -52,7 +52,7 @@ function switchCourse(value: unknown) {
   const base = `/courses/${encodeURIComponent(id)}`
   const section = routeCourseId.value ? route.path.split('/').at(-1) : ''
   const target = section === 'dashboard' && isTeacher.value ? `/teacher${base}/dashboard`
-    : ['learn', 'quiz', 'report'].includes(section ?? '') ? `${base}/${section}`
+    : ['learn', 'quiz', 'report', 'graph-demo'].includes(section ?? '') ? `${base}/${section}`
       : isTeacher.value ? `/teacher${base}` : base
   void router.push(target)
 }

@@ -10,6 +10,7 @@ import QuizView from '../views/QuizView.vue'
 import LearningReportView from '../views/LearningReportView.vue'
 import TeacherDashboardView from '../views/TeacherDashboardView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
+import KnowledgeGraphDemoView from '../views/KnowledgeGraphDemoView.vue'
 export const router = createRouter({
   history: createWebHashHistory(), scrollBehavior: () => ({ top: 0 }),
   routes: [
@@ -21,6 +22,7 @@ export const router = createRouter({
     { path: '/courses/:id/learn', component: LearningView, meta: { auth: true } },
     { path: '/courses/:id/quiz', component: QuizView, meta: { auth: true } },
     { path: '/courses/:id/report', component: LearningReportView, meta: { auth: true, student: true } },
+    { path: '/courses/:id/graph-demo', component: KnowledgeGraphDemoView, meta: { auth: true, student: true } },
     { path: '/teacher/courses/:id/dashboard', component: TeacherDashboardView, meta: { auth: true, teacher: true } },
     { path: '/dev/submit', component: SubmitView, meta: { dev: true, auth: true, student: true } },
     { path: '/diagnoses/:id?', component: DiagnosisView, meta: { dev: true, auth: true, student: true } },

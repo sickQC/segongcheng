@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test:markdown": "node --experimental-strip-types --test tests/markdown.test.ts",
+    "test:graph": "node --experimental-strip-types --test tests/graphDemo.test.ts",
     "dev": "vite --host 127.0.0.1",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1"
